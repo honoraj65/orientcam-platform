@@ -1,0 +1,7 @@
+# Core Supabase dependencies
+supabase==2.3.4
+asyncpg==0.29.0
+
+# Authentication
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4

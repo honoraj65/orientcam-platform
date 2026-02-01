@@ -1,0 +1,97 @@
+{
+  "university": "Université de Bertoua",
+  "academic_year": "2024-2025",
+  "programs": [
+    {
+      "code": "INFO-L3",
+      "name": "Licence en Informatique",
+      "level": "Licence",
+      "department": "Sciences et Technologies",
+      "description": "Formation en développement logiciel, réseaux, bases de données et systèmes d'information",
+      "objectives": "Former des informaticiens polyvalents capables de concevoir, développer et maintenir des systèmes informatiques",
+      "career_prospects": "Développeur, Administrateur réseau, Analyste de données, Chef de projet IT",
+      "prerequisites": {
+        "required_bac_series": ["C", "D", "E"],
+        "min_bac_grade": 12,
+        "required_subjects": ["Mathématiques", "Physique", "Anglais"]
+      },
+      "riasec_match": "IRC",
+      "costs": {
+        "registration_fee": 50000,
+        "annual_tuition": 150000,
+        "total_cost_3years": 500000
+      },
+      "employment_rate": 85,
+      "average_starting_salary": 250000,
+      "capacity": 60,
+      "subjects": [
+        {"name": "Programmation C/C++", "credits": 6, "semester": 1, "is_mandatory": true},
+        {"name": "Algorithmique", "credits": 6, "semester": 1, "is_mandatory": true},
+        {"name": "Mathématiques discrètes", "credits": 5, "semester": 1, "is_mandatory": true},
+        {"name": "Architecture des ordinateurs", "credits": 5, "semester": 1, "is_mandatory": true},
+        {"name": "Bases de données", "credits": 6, "semester": 2, "is_mandatory": true},
+        {"name": "Programmation Java", "credits": 6, "semester": 2, "is_mandatory": true},
+        {"name": "Réseaux informatiques", "credits": 5, "semester": 2, "is_mandatory": true}
+      ]
+    },
+    {
+      "code": "MATH-L3",
+      "name": "Licence en Mathématiques",
+      "level": "Licence",
+      "department": "Sciences et Technologies",
+      "description": "Formation approfondie en mathématiques pures et appliquées",
+      "objectives": "Former des mathématiciens capables d'enseigner ou de poursuivre en recherche",
+      "career_prospects": "Enseignant, Actuaire, Statisticien, Analyste quantitatif",
+      "prerequisites": {
+        "required_bac_series": ["C", "D"],
+        "min_bac_grade": 13,
+        "required_subjects": ["Mathématiques", "Physique"]
+      },
+      "riasec_match": "IAC",
+      "costs": {
+        "registration_fee": 50000,
+        "annual_tuition": 120000,
+        "total_cost_3years": 410000
+      },
+      "employment_rate": 70,
+      "average_starting_salary": 200000,
+      "capacity": 40,
+      "subjects": [
+        {"name": "Analyse mathématique", "credits": 6, "semester": 1, "is_mandatory": true},
+        {"name": "Algèbre linéaire", "credits": 6, "semester": 1, "is_mandatory": true},
+        {"name": "Probabilités et statistiques", "credits": 5, "semester": 2, "is_mandatory": true},
+        {"name": "Géométrie", "credits": 5, "semester": 2, "is_mandatory": true}
+      ]
+    },
+    {
+      "code": "GEST-L3",
+      "name": "Licence en Gestion",
+      "level": "Licence",
+      "department": "Sciences Économiques et de Gestion",
+      "description": "Formation en management, marketing, finance et ressources humaines",
+      "objectives": "Former des gestionnaires polyvalents pour les entreprises et organisations",
+      "career_prospects": "Manager, Responsable RH, Consultant, Chef de projet",
+      "prerequisites": {
+        "required_bac_series": ["A", "B", "C", "D"],
+        "min_bac_grade": 11,
+        "required_subjects": ["Mathématiques", "Économie", "Français"]
+      },
+      "riasec_match": "ECS",
+      "costs": {
+        "registration_fee": 50000,
+        "annual_tuition": 180000,
+        "total_cost_3years": 590000
+      },
+      "employment_rate": 80,
+      "average_starting_salary": 220000,
+      "capacity": 80,
+      "subjects": [
+        {"name": "Principes de gestion", "credits": 6, "semester": 1, "is_mandatory": true},
+        {"name": "Comptabilité générale", "credits": 6, "semester": 1, "is_mandatory": true},
+        {"name": "Marketing", "credits": 5, "semester": 2, "is_mandatory": true},
+        {"name": "Gestion des ressources humaines", "credits": 5, "semester": 2, "is_mandatory": true},
+        {"name": "Finance d'entreprise", "credits": 6, "semester": 2, "is_mandatory": true}
+      ]
+    }
+  ]
+}

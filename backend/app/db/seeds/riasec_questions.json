@@ -1,0 +1,85 @@
+{
+  "version": "1.0",
+  "dimensions": [
+    {
+      "code": "R",
+      "name": "Réaliste",
+      "description": "Préfère les activités concrètes, techniques et manuelles",
+      "color": "#2563EB"
+    },
+    {
+      "code": "I",
+      "name": "Investigateur",
+      "description": "Aime analyser, chercher, comprendre et résoudre des problèmes",
+      "color": "#7C3AED"
+    },
+    {
+      "code": "A",
+      "name": "Artistique",
+      "description": "Apprécie la créativité, l'expression et l'originalité",
+      "color": "#EC4899"
+    },
+    {
+      "code": "S",
+      "name": "Social",
+      "description": "Préfère aider, enseigner et prendre soin des autres",
+      "color": "#10B981"
+    },
+    {
+      "code": "E",
+      "name": "Entreprenant",
+      "description": "Aime diriger, convaincre et prendre des initiatives",
+      "color": "#F59E0B"
+    },
+    {
+      "code": "C",
+      "name": "Conventionnel",
+      "description": "Préfère organiser, classer et suivre des procédures",
+      "color": "#6B7280"
+    }
+  ],
+  "questions": [
+    {"question_number": 1, "dimension": "R", "text": "Je serais intéressé par la réparation de motos-taxis (bendskins) ou de véhicules"},
+    {"question_number": 2, "dimension": "R", "text": "J'aimerais travailler dans l'installation de panneaux solaires ou systèmes électriques"},
+    {"question_number": 3, "dimension": "R", "text": "Je me verrais bien dans la construction de routes ou de bâtiments"},
+    {"question_number": 4, "dimension": "R", "text": "Je serais à l'aise dans un atelier de menuiserie ou de soudure"},
+    {"question_number": 5, "dimension": "R", "text": "J'aimerais travailler dans l'agriculture moderne ou l'élevage"},
+
+    {"question_number": 6, "dimension": "I", "text": "Je suis attiré par la recherche en santé publique ou en médecine tropicale"},
+    {"question_number": 7, "dimension": "I", "text": "J'aimerais analyser des données pour améliorer les services publics au Cameroun"},
+    {"question_number": 8, "dimension": "I", "text": "Je serais intéressé par la recherche sur l'agriculture ou la foresterie"},
+    {"question_number": 9, "dimension": "I", "text": "J'aimerais étudier les sciences pour résoudre des problèmes environnementaux locaux"},
+    {"question_number": 10, "dimension": "I", "text": "Je me verrais bien faire de la recherche en pharmacologie ou biotechnologie"},
+
+    {"question_number": 11, "dimension": "A", "text": "J'aimerais créer du contenu pour les médias camerounais (radio, TV, réseaux sociaux)"},
+    {"question_number": 12, "dimension": "A", "text": "Je serais intéressé par le design graphique pour des entreprises camerounaises"},
+    {"question_number": 13, "dimension": "A", "text": "J'aimerais travailler dans l'industrie musicale camerounaise (Makossa, Bikutsi, Afrobeat)"},
+    {"question_number": 14, "dimension": "A", "text": "Je me verrais bien créer des contenus pour promouvoir la culture camerounaise"},
+    {"question_number": 15, "dimension": "A", "text": "J'aimerais travailler dans le cinéma ou la production audiovisuelle camerounaise"},
+
+    {"question_number": 16, "dimension": "S", "text": "Je serais intéressé par l'enseignement dans les écoles ou universités camerounaises"},
+    {"question_number": 17, "dimension": "S", "text": "J'aimerais travailler comme infirmier ou sage-femme dans les centres de santé"},
+    {"question_number": 18, "dimension": "S", "text": "Je me verrais bien conseiller les jeunes sur leur orientation professionnelle"},
+    {"question_number": 19, "dimension": "S", "text": "J'aimerais travailler dans les ONG pour aider les communautés rurales"},
+    {"question_number": 20, "dimension": "S", "text": "Je serais intéressé par le travail social ou l'accompagnement des personnes vulnérables"},
+
+    {"question_number": 21, "dimension": "E", "text": "J'aimerais créer ma propre entreprise au Cameroun"},
+    {"question_number": 22, "dimension": "E", "text": "Je me verrais bien gérer une équipe commerciale ou diriger un projet"},
+    {"question_number": 23, "dimension": "E", "text": "J'aimerais travailler dans la vente ou le marketing pour des produits camerounais"},
+    {"question_number": 24, "dimension": "E", "text": "Je serais intéressé par l'organisation d'événements culturels ou sportifs"},
+    {"question_number": 25, "dimension": "E", "text": "J'aimerais travailler dans la diplomatie ou les relations publiques"},
+
+    {"question_number": 26, "dimension": "C", "text": "Je serais à l'aise dans la comptabilité ou la gestion financière d'une entreprise"},
+    {"question_number": 27, "dimension": "C", "text": "J'aimerais travailler dans l'administration publique ou les services gouvernementaux"},
+    {"question_number": 28, "dimension": "C", "text": "Je me verrais bien gérer des archives, des bibliothèques ou des bases de données"},
+    {"question_number": 29, "dimension": "C", "text": "J'aimerais travailler dans la banque ou les assurances"},
+    {"question_number": 30, "dimension": "C", "text": "Je serais intéressé par le secrétariat médical ou la gestion administrative"}
+  ],
+  "answer_scale": {
+    "1": "Pas du tout d'accord",
+    "2": "Peu d'accord",
+    "3": "Moyennement d'accord",
+    "4": "D'accord",
+    "5": "Tout à fait d'accord"
+  }
+}

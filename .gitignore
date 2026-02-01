@@ -1,0 +1,60 @@
+# Ignore everything by default
+*
+*/
+
+# But track these project directories
+!backend/
+!backend/**
+!frontend/
+!frontend/**
+
+# Project files
+!docker-compose.yml
+!start-app.bat
+!start-orientcam.bat
+!stop-orientcam.bat
+!restart-orientcam.bat
+!.gitignore
+!README.md
+
+# Python
+backend/**/__pycache__/
+backend/**/*.py[cod]
+backend/**/*.so
+backend/**/venv/
+backend/**/env/
+backend/**/*.egg-info/
+
+# Node.js
+frontend/**/node_modules/
+frontend/**/.next/
+frontend/**/out/
+frontend/**/*.tsbuildinfo
+frontend/**/next-env.d.ts
+
+# Environment variables
+backend/**/.env
+backend/**/.env.*
+frontend/**/.env
+frontend/**/.env.local
+frontend/**/.env.*.local
+
+# Database
+backend/**/*.db
+backend/**/*.sqlite
+backend/**/*.sqlite3
+
+# Vercel
+frontend/**/.vercel
+
+# Logs
+**/*.log
+**/logs/
+
+# IDE
+**/.vscode/
+**/.idea/
+
+# OS
+**/.DS_Store
+**/Thumbs.db

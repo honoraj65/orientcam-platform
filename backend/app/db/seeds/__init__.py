@@ -1,0 +1,3 @@
+"""
+Database seeds package
+"""
