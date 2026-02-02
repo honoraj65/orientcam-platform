@@ -248,11 +248,11 @@ export default function RiasecQuizPage() {
               {/* Divider */}
               <div className="hidden sm:block h-12 w-px bg-gradient-to-b from-transparent via-gray-300 to-transparent"></div>
 
-              {/* OrientCam Branding */}
+              {/* OrientUniv Branding */}
               <Link href="/" className="flex flex-col">
                 <div className="flex items-center gap-2">
                   <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-ubertoua-blue to-primary-700 bg-clip-text text-transparent">
-                    OrientCam
+                    OrientUniv
                   </span>
                   <span className="hidden lg:inline-block px-2 py-0.5 bg-ubertoua-blue/10 text-ubertoua-blue text-xs font-semibold rounded-full border border-ubertoua-blue/20">
                     UBertoua

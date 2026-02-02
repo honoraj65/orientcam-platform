@@ -157,6 +157,17 @@ export const riasecAPI = {
     const response = await apiClient.delete('/api/v1/riasec/draft');
     return response.data;
   },
+
+  // ========================================
+  // Download PDF Report
+  // ========================================
+
+  downloadPDF: async (): Promise<Blob> => {
+    const response = await apiClient.get('/api/v1/riasec/results/latest/download-pdf', {
+      responseType: 'blob',
+    });
+    return response.data;
+  },
 };
 
 // ============================================================================

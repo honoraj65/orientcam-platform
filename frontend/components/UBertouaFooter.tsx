@@ -25,7 +25,7 @@ export default function UBertouaFooter() {
               </a>
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-bold text-gray-900">OrientCam</h3>
+                  <h3 className="text-lg font-bold text-gray-900">OrientUniv</h3>
                   <span className="px-2 py-0.5 bg-ubertoua-blue/10 text-ubertoua-blue text-xs font-semibold rounded-full border border-ubertoua-blue/20">
                     UBertoua
                   </span>

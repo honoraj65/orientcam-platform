@@ -37,7 +37,7 @@ export default function AboutPage() {
               <div className="bg-gradient-to-br from-primary-50 to-purple-50 p-8 sm:p-12 rounded-2xl border border-primary-100">
                 <h2 className="text-3xl font-bold text-gray-900 mb-6">Notre Mission</h2>
                 <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                  OrientCam a pour mission d'aider les étudiants camerounais à faire des choix
+                  OrientUniv a pour mission d'aider les étudiants camerounais à faire des choix
                   éclairés concernant leur parcours académique et professionnel. Nous croyons que
                   chaque étudiant mérite d'avoir accès à des outils d'orientation de qualité,
                   adaptés au contexte local.
@@ -202,7 +202,7 @@ export default function AboutPage() {
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">Université de Bertoua</h2>
               <p className="text-lg text-gray-700 mb-6">
-                OrientCam est une initiative de l'Université de Bertoua visant à améliorer
+                OrientUniv est une initiative de l'Université de Bertoua visant à améliorer
                 l'orientation académique et professionnelle des étudiants camerounais.
               </p>
               <p className="text-lg text-gray-700 mb-8">

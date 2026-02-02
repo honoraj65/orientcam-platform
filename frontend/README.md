@@ -1,4 +1,4 @@
-# OrientCam Frontend
+# OrientUniv Frontend
 
 [![Next.js](https://img.shields.io/badge/Next.js-15.5.9-black?logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.0.0-blue?logo=react)](https://react.dev/)
@@ -21,7 +21,7 @@ Plateforme web d'orientation académique et professionnelle pour les étudiants 
 
 ## 🎯 Vue d'ensemble
 
-OrientCam est une application web complète qui aide les étudiants camerounais à :
+OrientUniv est une application web complète qui aide les étudiants camerounais à :
 - Découvrir leurs intérêts professionnels via le test RIASEC
 - Explorer les programmes universitaires disponibles
 - Recevoir des recommandations personnalisées basées sur leur profil
@@ -52,7 +52,7 @@ OrientCam est une application web complète qui aide les étudiants camerounais 
 ### Prérequis
 
 - Node.js 18+ et npm
-- Backend OrientCam en cours d'exécution (port 8000)
+- Backend OrientUniv en cours d'exécution (port 8000)
 
 ### Étapes
 
@@ -70,7 +70,7 @@ cp .env.example .env.local
 # Configuration de base
 # .env.local
 NEXT_PUBLIC_API_URL=http://localhost:8000
-NEXT_PUBLIC_APP_NAME=OrientCam
+NEXT_PUBLIC_APP_NAME=OrientUniv
 NEXT_PUBLIC_APP_VERSION=1.0.0
 
 # Lancer le serveur de développement
@@ -341,7 +341,7 @@ vercel --prod
 Configurer dans le dashboard Vercel :
 ```
 NEXT_PUBLIC_API_URL=https://api.orientcam.com
-NEXT_PUBLIC_APP_NAME=OrientCam
+NEXT_PUBLIC_APP_NAME=OrientUniv
 NEXT_PUBLIC_APP_VERSION=1.0.0
 ```
 
@@ -381,11 +381,11 @@ npm run build
 
 ## 📝 License
 
-© 2024 OrientCam. Université de Bertoua. Tous droits réservés.
+© 2024 OrientUniv. Université de Bertoua. Tous droits réservés.
 
 ## 📞 Contact
 
-Pour toute question ou support, contactez l'équipe OrientCam à l'Université de Bertoua.
+Pour toute question ou support, contactez l'équipe OrientUniv à l'Université de Bertoua.
 
 ---
 

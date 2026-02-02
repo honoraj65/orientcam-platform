@@ -1,5 +1,5 @@
 # ============================================================================
-# OrientCam Backend Dependencies (Supabase Edition)
+# OrientUniv Backend Dependencies (Supabase Edition)
 # ============================================================================
 # Install with: pip install -r requirements.supabase.txt
 

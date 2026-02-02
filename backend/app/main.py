@@ -1,5 +1,5 @@
 """
-OrientCam API - Main FastAPI application
+OrientUniv API - Main FastAPI application
 """
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware

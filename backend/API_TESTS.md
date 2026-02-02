@@ -1,4 +1,4 @@
-# Tests API OrientCam
+# Tests API OrientUniv
 
 Documentation des tests pour les endpoints d'authentification.
 
@@ -181,7 +181,7 @@ curl -X POST http://localhost:8000/api/v1/auth/logout \
 
 ### Configuration
 
-1. Créer une nouvelle collection "OrientCam API"
+1. Créer une nouvelle collection "OrientUniv API"
 2. Ajouter une variable `base_url` = `http://localhost:8000`
 3. Ajouter une variable `access_token` (sera remplie automatiquement)
 

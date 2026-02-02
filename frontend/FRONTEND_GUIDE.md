@@ -1,8 +1,8 @@
-# OrientCam Frontend Guide
+# OrientUniv Frontend Guide
 
 ## Vue d'ensemble
 
-Frontend web responsive de la plateforme OrientCam, construit avec Next.js 15 et React 19. Interface mobile-first pour guider les étudiants camerounais dans leur orientation académique.
+Frontend web responsive de la plateforme OrientUniv, construit avec Next.js 15 et React 19. Interface mobile-first pour guider les étudiants camerounais dans leur orientation académique.
 
 ## Technologies
 
@@ -50,7 +50,7 @@ frontend/
 ### Prérequis
 
 - Node.js 18+ et npm
-- Backend OrientCam en cours d'exécution (port 8000)
+- Backend OrientUniv en cours d'exécution (port 8000)
 
 ### Installation
 
@@ -65,7 +65,7 @@ Créer `.env.local` :
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
-NEXT_PUBLIC_APP_NAME=OrientCam
+NEXT_PUBLIC_APP_NAME=OrientUniv
 NEXT_PUBLIC_APP_VERSION=1.0.0
 ```
 

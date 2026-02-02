@@ -1,7 +1,7 @@
 {
-  "name": "orientcam-frontend",
+  "name": "orientuniv-frontend",
   "version": "1.0.0",
-  "description": "OrientCam - Plateforme d'orientation académique et professionnelle",
+  "description": "OrientUniv - Plateforme d'orientation académique et professionnelle",
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",

@@ -151,7 +151,7 @@ def test_logout(access_token):
 def main():
     """Run all tests"""
     print("=" * 60)
-    print("OrientCam API - Authentication Tests")
+    print("OrientUniv API - Authentication Tests")
     print("=" * 60)
 
     try:

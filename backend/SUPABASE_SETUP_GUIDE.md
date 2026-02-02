@@ -1,6 +1,6 @@
-# 🚀 OrientCam - Guide de Migration vers Supabase
+# 🚀 OrientUniv - Guide de Migration vers Supabase
 
-Ce guide vous explique comment migrer votre base de données OrientCam vers Supabase avec les meilleures pratiques pour une application fluide, sécurisée et facile à déployer.
+Ce guide vous explique comment migrer votre base de données OrientUniv vers Supabase avec les meilleures pratiques pour une application fluide, sécurisée et facile à déployer.
 
 ## 📋 Table des Matières
 
@@ -19,7 +19,7 @@ Ce guide vous explique comment migrer votre base de données OrientCam vers Supa
 
 ## 🎯 Pourquoi Supabase?
 
-### Avantages de Supabase pour OrientCam
+### Avantages de Supabase pour OrientUniv
 
 ✅ **Base de données PostgreSQL gérée** - Pas besoin de gérer l'infrastructure
 ✅ **Row Level Security (RLS)** - Sécurité au niveau des lignes
@@ -134,7 +134,7 @@ cp .env.supabase.example .env
 
 ```env
 # Application
-APP_NAME=OrientCam API
+APP_NAME=OrientUniv API
 DEBUG=True
 
 # Supabase Database
@@ -391,7 +391,7 @@ Avant de passer en production, vérifiez:
 
 ## 🎉 Félicitations!
 
-Votre application OrientCam est maintenant connectée à Supabase avec:
+Votre application OrientUniv est maintenant connectée à Supabase avec:
 - ✅ Base de données PostgreSQL performante
 - ✅ Sécurité au niveau des lignes (RLS)
 - ✅ API REST automatique

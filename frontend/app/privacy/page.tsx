@@ -4,8 +4,8 @@ import ModernHeader from '@/components/layout/ModernHeader';
 import UBertouaFooter from '@/components/UBertouaFooter';
 
 export const metadata: Metadata = {
-  title: 'Politique de confidentialité - OrientCam',
-  description: 'Politique de confidentialité et protection des données personnelles sur OrientCam',
+  title: 'Politique de confidentialité - OrientUniv',
+  description: 'Politique de confidentialité et protection des données personnelles sur OrientUniv',
 };
 
 export default function PrivacyPage() {
@@ -44,14 +44,14 @@ export default function PrivacyPage() {
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Introduction</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                OrientCam, développé par TECH MAINT SERVICES (TMS) en partenariat avec l'Université de Bertoua,
+                OrientUniv, développé par TECH MAINT SERVICES (TMS) en partenariat avec l'Université de Bertoua,
                 s'engage à protéger la confidentialité et la sécurité des données personnelles de ses utilisateurs.
                 Cette politique de confidentialité décrit comment nous collectons, utilisons, stockons et protégeons
                 vos informations personnelles.
               </p>
               <p className="text-gray-700 leading-relaxed">
                 En utilisant notre plateforme, vous acceptez les pratiques décrites dans cette politique.
-                Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser OrientCam.
+                Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser OrientUniv.
               </p>
             </section>
 
@@ -61,7 +61,7 @@ export default function PrivacyPage() {
 
               <h3 className="text-xl font-semibold text-gray-900 mb-3">2.1 Données d'inscription</h3>
               <p className="text-gray-700 leading-relaxed mb-4">
-                Lors de votre inscription sur OrientCam, nous collectons les informations suivantes :
+                Lors de votre inscription sur OrientUniv, nous collectons les informations suivantes :
               </p>
               <ul className="list-disc pl-6 mb-4 text-gray-700 space-y-2">
                 <li>Nom complet</li>
@@ -259,7 +259,7 @@ export default function PrivacyPage() {
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">7. Cookies et technologies similaires</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                OrientCam utilise des cookies et technologies similaires pour améliorer votre expérience utilisateur.
+                OrientUniv utilise des cookies et technologies similaires pour améliorer votre expérience utilisateur.
               </p>
 
               <h3 className="text-xl font-semibold text-gray-900 mb-3">7.1 Types de cookies utilisés</h3>
@@ -280,7 +280,7 @@ export default function PrivacyPage() {
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">8. Protection des mineurs</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                OrientCam est principalement destiné aux étudiants et lycéens, dont certains peuvent être mineurs.
+                OrientUniv est principalement destiné aux étudiants et lycéens, dont certains peuvent être mineurs.
                 Nous prenons des mesures spéciales pour protéger les données des utilisateurs de moins de 18 ans :
               </p>
               <ul className="list-disc pl-6 mb-4 text-gray-700 space-y-2">

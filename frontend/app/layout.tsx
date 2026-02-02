@@ -10,10 +10,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "OrientCam - Plateforme d'Orientation Académique",
+  title: "OrientUniv - Plateforme d'Orientation Académique",
   description: "Plateforme d'orientation académique et professionnelle pour l'Université de Bertoua",
   keywords: ["orientation", "université", "cameroun", "bertoua", "études", "formation"],
-  authors: [{ name: "OrientCam Team" }],
+  authors: [{ name: "OrientUniv Team" }],
   viewport: {
     width: "device-width",
     initialScale: 1,

@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About */}
           <div>
-            <h3 className="text-lg font-bold text-primary-600 mb-4">OrientCam</h3>
+            <h3 className="text-lg font-bold text-primary-600 mb-4">OrientUniv</h3>
             <p className="text-sm text-gray-600 mb-4">
               Plateforme d'orientation académique et professionnelle pour les étudiants camerounais.
             </p>
@@ -93,7 +93,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-gray-600">
-            &copy; {currentYear} OrientCam. Tous droits réservés.
+            &copy; {currentYear} OrientUniv. Tous droits réservés.
           </p>
 
           <div className="flex flex-col items-center gap-2 text-sm text-gray-600">

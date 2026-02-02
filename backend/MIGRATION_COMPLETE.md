@@ -2,7 +2,7 @@
 
 ## Statut: SUCCES
 
-Votre application OrientCam est maintenant connectee a Supabase avec succes!
+Votre application OrientUniv est maintenant connectee a Supabase avec succes!
 
 ## Ce qui a ete fait
 

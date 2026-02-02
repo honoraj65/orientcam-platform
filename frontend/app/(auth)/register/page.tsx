@@ -115,11 +115,11 @@ export default function RegisterPage() {
             {/* Divider */}
             <div className="h-12 w-px bg-gradient-to-b from-transparent via-gray-300 to-transparent"></div>
 
-            {/* OrientCam Branding */}
+            {/* OrientUniv Branding */}
             <Link href="/" className="flex flex-col items-start">
               <div className="flex items-center gap-2">
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-ubertoua-blue to-primary-700 bg-clip-text text-transparent">
-                  OrientCam
+                  OrientUniv
                 </h1>
                 <span className="hidden sm:inline-block px-2 py-0.5 bg-ubertoua-blue/10 text-ubertoua-blue text-xs font-semibold rounded-full border border-ubertoua-blue/20">
                   UBertoua

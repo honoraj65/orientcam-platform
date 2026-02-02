@@ -3,8 +3,8 @@ import ModernHeader from '@/components/layout/ModernHeader';
 import UBertouaFooter from '@/components/UBertouaFooter';
 
 export const metadata: Metadata = {
-  title: 'Contact - OrientCam',
-  description: 'Contactez l\'équipe OrientCam et l\'Université de Bertoua',
+  title: 'Contact - OrientUniv',
+  description: 'Contactez l\'équipe OrientUniv et l\'Université de Bertoua',
 };
 
 export default function ContactPage() {
@@ -168,7 +168,7 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Support Technique OrientCam */}
+          {/* Support Technique OrientUniv */}
           <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 bg-riasec-enterprising/10 rounded-lg flex items-center justify-center">

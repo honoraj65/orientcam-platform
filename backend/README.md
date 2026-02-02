@@ -1,4 +1,4 @@
-# OrientCam API - Backend
+# OrientUniv API - Backend
 
 API backend pour la plateforme d'orientation académique et professionnelle de l'Université de Bertoua.
 

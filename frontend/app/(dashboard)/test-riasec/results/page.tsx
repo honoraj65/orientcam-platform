@@ -121,19 +121,8 @@ export default function RiasecResultsPage() {
   const handleDownloadPDF = async () => {
     setIsDownloading(true);
     try {
-      const response = await fetch('http://localhost:8001/api/v1/riasec/results/latest/download-pdf', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Échec du téléchargement du PDF');
-      }
-
-      // Récupérer le blob
-      const blob = await response.blob();
+      // Utiliser le client API au lieu de fetch hardcodé
+      const blob = await riasecAPI.downloadPDF();
 
       // Créer un URL pour le blob
       const url = window.URL.createObjectURL(blob);
@@ -212,11 +201,11 @@ export default function RiasecResultsPage() {
               {/* Divider */}
               <div className="hidden sm:block h-12 w-px bg-gradient-to-b from-transparent via-gray-300 to-transparent"></div>
 
-              {/* OrientCam Branding */}
+              {/* OrientUniv Branding */}
               <Link href="/" className="flex flex-col">
                 <div className="flex items-center gap-2">
                   <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-ubertoua-blue to-primary-700 bg-clip-text text-transparent">
-                    OrientCam
+                    OrientUniv
                   </span>
                   <span className="hidden lg:inline-block px-2 py-0.5 bg-ubertoua-blue/10 text-ubertoua-blue text-xs font-semibold rounded-full border border-ubertoua-blue/20">
                     UBertoua

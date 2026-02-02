@@ -4,8 +4,8 @@ import ModernHeader from '@/components/layout/ModernHeader';
 import UBertouaFooter from '@/components/UBertouaFooter';
 
 export const metadata: Metadata = {
-  title: 'Conditions d\'utilisation - OrientCam',
-  description: 'Conditions d\'utilisation de la plateforme OrientCam',
+  title: 'Conditions d\'utilisation - OrientUniv',
+  description: 'Conditions d\'utilisation de la plateforme OrientUniv',
 };
 
 export default function ConditionsPage() {
@@ -44,14 +44,14 @@ export default function ConditionsPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Introduction</h2>
             <div className="space-y-3 text-gray-700">
               <p>
-                Bienvenue sur OrientCam, la plateforme d'orientation académique et professionnelle de l'Université de Bertoua.
+                Bienvenue sur OrientUniv, la plateforme d'orientation académique et professionnelle de l'Université de Bertoua.
               </p>
               <p>
-                En utilisant OrientCam, vous acceptez d'être lié par les présentes conditions d'utilisation.
+                En utilisant OrientUniv, vous acceptez d'être lié par les présentes conditions d'utilisation.
                 Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser la plateforme.
               </p>
               <p>
-                OrientCam est développé et maintenu par TECH MAINT SERVICES (TMS) en collaboration avec l'Université de Bertoua.
+                OrientUniv est développé et maintenu par TECH MAINT SERVICES (TMS) en collaboration avec l'Université de Bertoua.
               </p>
             </div>
           </section>
@@ -60,7 +60,7 @@ export default function ConditionsPage() {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">2. Services Proposés</h2>
             <div className="space-y-3 text-gray-700">
-              <p>OrientCam met à votre disposition les services suivants :</p>
+              <p>OrientUniv met à votre disposition les services suivants :</p>
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li>Test d'orientation RIASEC adapté au contexte camerounais</li>
                 <li>Évaluation de vos intérêts professionnels et académiques</li>
@@ -78,13 +78,13 @@ export default function ConditionsPage() {
             <div className="space-y-3 text-gray-700">
               <h3 className="font-semibold text-gray-900 mt-4">3.1. Création de compte</h3>
               <p>
-                Pour accéder aux services d'OrientCam, vous devez créer un compte en fournissant des informations
+                Pour accéder aux services d'OrientUniv, vous devez créer un compte en fournissant des informations
                 exactes et à jour. Vous êtes responsable de la confidentialité de vos identifiants de connexion.
               </p>
 
               <h3 className="font-semibold text-gray-900 mt-4">3.2. Conditions d'éligibilité</h3>
               <p>
-                OrientCam est destiné principalement aux :
+                OrientUniv est destiné principalement aux :
               </p>
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li>Étudiants de l'enseignement secondaire au Cameroun</li>
@@ -112,7 +112,7 @@ export default function ConditionsPage() {
             <div className="space-y-3 text-gray-700">
               <h3 className="font-semibold text-gray-900 mt-4">4.1. Usages autorisés</h3>
               <p>
-                Vous êtes autorisé à utiliser OrientCam uniquement à des fins d'orientation académique et professionnelle personnelle.
+                Vous êtes autorisé à utiliser OrientUniv uniquement à des fins d'orientation académique et professionnelle personnelle.
               </p>
 
               <h3 className="font-semibold text-gray-900 mt-4">4.2. Usages interdits</h3>
@@ -122,7 +122,7 @@ export default function ConditionsPage() {
                 <li>Tenter d'accéder à des comptes d'autres utilisateurs</li>
                 <li>Diffuser du contenu offensant, discriminatoire ou inapproprié</li>
                 <li>Interférer avec le fonctionnement de la plateforme</li>
-                <li>Copier, reproduire ou revendre le contenu d'OrientCam sans autorisation</li>
+                <li>Copier, reproduire ou revendre le contenu d'OrientUniv sans autorisation</li>
                 <li>Utiliser des robots, scripts ou autres moyens automatisés pour accéder à la plateforme</li>
                 <li>Extraire des données en masse (scraping) de la plateforme</li>
               </ul>
@@ -188,7 +188,7 @@ export default function ConditionsPage() {
 
               <h3 className="font-semibold text-gray-900 mt-4">6.2. Recommandations</h3>
               <p>
-                Les recommandations fournies par OrientCam sont basées sur un algorithme qui analyse :
+                Les recommandations fournies par OrientUniv sont basées sur un algorithme qui analyse :
               </p>
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li>Vos résultats au test RIASEC</li>
@@ -219,7 +219,7 @@ export default function ConditionsPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">7. Propriété Intellectuelle</h2>
             <div className="space-y-3 text-gray-700">
               <p>
-                L'ensemble du contenu d'OrientCam (textes, graphiques, logos, images, logiciels) est la propriété de
+                L'ensemble du contenu d'OrientUniv (textes, graphiques, logos, images, logiciels) est la propriété de
                 l'Université de Bertoua et de TECH MAINT SERVICES (TMS), protégé par les lois sur la propriété intellectuelle.
               </p>
               <p>
@@ -234,7 +234,7 @@ export default function ConditionsPage() {
             <div className="space-y-3 text-gray-700">
               <h3 className="font-semibold text-gray-900 mt-4">8.1. Disponibilité du service</h3>
               <p>
-                Nous nous efforçons d'assurer la disponibilité continue d'OrientCam, mais nous ne garantissons pas
+                Nous nous efforçons d'assurer la disponibilité continue d'OrientUniv, mais nous ne garantissons pas
                 un accès ininterrompu. La plateforme peut être temporairement indisponible pour maintenance ou
                 pour des raisons techniques.
               </p>
@@ -248,7 +248,7 @@ export default function ConditionsPage() {
 
               <h3 className="font-semibold text-gray-900 mt-4">8.3. Décisions d'orientation</h3>
               <p>
-                OrientCam ne peut être tenu responsable des décisions d'orientation prises par les utilisateurs
+                OrientUniv ne peut être tenu responsable des décisions d'orientation prises par les utilisateurs
                 sur la base des recommandations fournies. La décision finale vous appartient.
               </p>
             </div>
@@ -264,7 +264,7 @@ export default function ConditionsPage() {
               </p>
               <p>
                 Nous vous informerons des modifications importantes par email ou par notification sur la plateforme.
-                Votre utilisation continue d'OrientCam après les modifications constitue votre acceptation des nouvelles conditions.
+                Votre utilisation continue d'OrientUniv après les modifications constitue votre acceptation des nouvelles conditions.
               </p>
             </div>
           </section>
@@ -279,7 +279,7 @@ export default function ConditionsPage() {
                 La suppression de votre compte entraîne la suppression définitive de vos données personnelles.
               </p>
 
-              <h3 className="font-semibold text-gray-900 mt-4">10.2. Par OrientCam</h3>
+              <h3 className="font-semibold text-gray-900 mt-4">10.2. Par OrientUniv</h3>
               <p>
                 Nous nous réservons le droit de suspendre ou de résilier votre compte en cas de :
               </p>
@@ -299,7 +299,7 @@ export default function ConditionsPage() {
                 Les présentes conditions d'utilisation sont régies par le droit camerounais.
               </p>
               <p>
-                En cas de litige relatif à l'utilisation d'OrientCam, les parties s'efforceront de trouver
+                En cas de litige relatif à l'utilisation d'OrientUniv, les parties s'efforceront de trouver
                 une solution amiable. À défaut, les tribunaux compétents de Bertoua seront seuls compétents.
               </p>
             </div>
@@ -332,7 +332,7 @@ export default function ConditionsPage() {
           <section className="bg-gradient-to-r from-primary-50 to-riasec-social/10 rounded-lg p-6">
             <h3 className="text-xl font-bold text-gray-900 mb-3">Acceptation des Conditions</h3>
             <p className="text-gray-700">
-              En créant un compte et en utilisant OrientCam, vous reconnaissez avoir lu, compris et accepté
+              En créant un compte et en utilisant OrientUniv, vous reconnaissez avoir lu, compris et accepté
               les présentes conditions d'utilisation dans leur intégralité.
             </p>
           </section>

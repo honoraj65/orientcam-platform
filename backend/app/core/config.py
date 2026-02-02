@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     """Application settings loaded from environment variables"""
 
     # Application
-    APP_NAME: str = "OrientCam API"
+    APP_NAME: str = "OrientUniv API"
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = True
 

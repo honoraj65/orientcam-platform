@@ -1,3 +1,3 @@
 """
-OrientCam API - Academic and Professional Orientation Platform
+OrientUniv API - Academic and Professional Orientation Platform
 """

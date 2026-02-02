@@ -7,7 +7,7 @@ export default function AboutPage() {
       <header className="container-mobile py-6">
         <div className="flex items-center justify-between">
           <Link href="/">
-            <h1 className="text-2xl font-bold text-primary-600">OrientCam</h1>
+            <h1 className="text-2xl font-bold text-primary-600">OrientUniv</h1>
           </Link>
           <div className="flex gap-4">
             <Link href="/login" className="btn btn-outline text-sm">
@@ -25,7 +25,7 @@ export default function AboutPage() {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
-            À Propos d'OrientCam
+            À Propos d'OrientUniv
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Une plateforme d'orientation académique et professionnelle
@@ -37,7 +37,7 @@ export default function AboutPage() {
         <div className="card mb-12 max-w-4xl mx-auto">
           <h3 className="text-2xl font-bold text-gray-900 mb-4">Notre Mission</h3>
           <p className="text-gray-700 text-lg leading-relaxed mb-4">
-            OrientCam a pour mission d'aider les étudiants camerounais à faire des choix
+            OrientUniv a pour mission d'aider les étudiants camerounais à faire des choix
             éclairés concernant leur parcours académique et professionnel. Nous croyons que
             chaque étudiant mérite d'avoir accès à des outils d'orientation de qualité,
             adaptés au contexte local.
@@ -207,7 +207,7 @@ export default function AboutPage() {
         <div className="card mb-16 max-w-4xl mx-auto">
           <h3 className="text-2xl font-bold text-gray-900 mb-4">Université de Bertoua</h3>
           <p className="text-gray-700 mb-4">
-            OrientCam est une initiative de l'Université de Bertoua visant à améliorer
+            OrientUniv est une initiative de l'Université de Bertoua visant à améliorer
             l'orientation académique et professionnelle des étudiants camerounais.
           </p>
           <p className="text-gray-700">
@@ -224,7 +224,7 @@ export default function AboutPage() {
           </h3>
           <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
             Rejoignez des centaines d'étudiants qui ont déjà trouvé leur orientation
-            grâce à OrientCam
+            grâce à OrientUniv
           </p>
           <Link href="/register" className="btn btn-primary text-lg px-8 py-3 inline-block">
             Commencer Gratuitement
@@ -235,7 +235,7 @@ export default function AboutPage() {
       {/* Footer */}
       <footer className="container-mobile py-8 mt-16 border-t border-gray-200">
         <div className="text-center text-gray-600 text-sm">
-          <p>&copy; 2024 OrientCam. Université de Bertoua.</p>
+          <p>&copy; 2024 OrientUniv. Université de Bertoua.</p>
           <p className="mt-2">Plateforme d'orientation académique et professionnelle</p>
           <div className="flex justify-center gap-6 mt-4">
             <Link href="/" className="hover:text-primary-600">Accueil</Link>

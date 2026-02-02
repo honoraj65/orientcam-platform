@@ -21,7 +21,7 @@ def add_page_number(canvas, doc):
     if doc.page > 1:
         canvas.setFont('Helvetica', 9)
         canvas.setFillColor(colors.HexColor('#6b7280'))
-        canvas.drawString(2*cm, A4[1] - 1.5*cm, "Résultats du Test RIASEC - OrientCam")
+        canvas.drawString(2*cm, A4[1] - 1.5*cm, "Résultats du Test RIASEC - OrientUniv")
 
     # Pied de page avec numéro
     canvas.setFont('Helvetica', 9)
@@ -32,8 +32,8 @@ def add_page_number(canvas, doc):
     canvas.setLineWidth(0.5)
     canvas.line(2*cm, 1.8*cm, A4[0] - 2*cm, 1.8*cm)
 
-    # OrientCam à gauche
-    canvas.drawString(2*cm, 1.3*cm, "OrientCam")
+    # OrientUniv à gauche
+    canvas.drawString(2*cm, 1.3*cm, "OrientUniv")
 
     # Numéro de page à droite
     page_num = f"Page {doc.page}"
@@ -349,7 +349,7 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
     # Pied de page final
     elements.append(Spacer(1, 2*cm))
     elements.append(Paragraph(
-        "OrientCam - Plateforme d'Orientation Académique du Cameroun",
+        "OrientUniv - Plateforme d'Orientation Académique du Cameroun",
         ParagraphStyle('Footer', parent=normal_style, fontSize=9, textColor=colors.grey, alignment=TA_CENTER)
     ))
     elements.append(Paragraph(

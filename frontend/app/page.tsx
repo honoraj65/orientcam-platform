@@ -26,11 +26,11 @@ export default function HomePage() {
               {/* Divider */}
               <div className="hidden sm:block h-12 w-px bg-gradient-to-b from-transparent via-gray-300 to-transparent"></div>
 
-              {/* OrientCam Branding */}
+              {/* OrientUniv Branding */}
               <Link href="/" className="flex flex-col">
                 <div className="flex items-center gap-2">
                   <span className="text-2xl font-bold bg-gradient-to-r from-ubertoua-blue to-primary-700 bg-clip-text text-transparent">
-                    OrientCam
+                    OrientUniv
                   </span>
                   <span className="hidden lg:inline-block px-2 py-0.5 bg-ubertoua-blue/10 text-ubertoua-blue text-xs font-semibold rounded-full border border-ubertoua-blue/20">
                     UBertoua
@@ -155,7 +155,7 @@ export default function HomePage() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                Pourquoi choisir OrientCam ?
+                Pourquoi choisir OrientUniv ?
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                 Une approche simple et efficace pour votre orientation
