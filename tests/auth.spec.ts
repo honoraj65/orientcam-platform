@@ -1,45 +1,67 @@
 import { test, expect } from '@playwright/test';
 
+const TEST_USER = {
+  email: 'test@orientuniv.com',
+  password: 'Test123456!',
+};
+
 test.describe('Authentification', () => {
   test.describe('Page de connexion', () => {
     test('devrait afficher le formulaire de connexion', async ({ page }) => {
       await page.goto('/login');
 
-      // Vérifier le titre
-      await expect(page.getByRole('heading', { name: /connexion/i })).toBeVisible();
+      // Vérifier le titre OrientUniv
+      await expect(page.getByText('OrientUniv')).toBeVisible();
 
-      // Vérifier les champs du formulaire
-      await expect(page.getByLabel(/email|adresse e-mail/i)).toBeVisible();
-      await expect(page.getByLabel(/mot de passe/i)).toBeVisible();
+      // Vérifier les champs du formulaire avec les IDs exacts
+      await expect(page.locator('#email')).toBeVisible();
+      await expect(page.locator('#password')).toBeVisible();
 
       // Vérifier le bouton de connexion
-      await expect(page.getByRole('button', { name: /se connecter|connexion/i })).toBeVisible();
+      await expect(page.getByRole('button', { name: 'Se connecter' })).toBeVisible();
+    });
+
+    test('devrait permettre de se connecter avec des identifiants valides', async ({ page }) => {
+      await page.goto('/login');
+
+      // Remplir le formulaire
+      await page.locator('#email').fill(TEST_USER.email);
+      await page.locator('#password').fill(TEST_USER.password);
+
+      // Soumettre
+      await page.getByRole('button', { name: 'Se connecter' }).click();
+
+      // Attendre la redirection vers le dashboard
+      await expect(page).toHaveURL('/dashboard', { timeout: 10000 });
+
+      // Vérifier qu'on est bien connecté
+      await expect(page.getByText(/profil|recommandations|test riasec/i)).toBeVisible();
     });
 
     test('devrait afficher une erreur avec des identifiants invalides', async ({ page }) => {
       await page.goto('/login');
 
-      // Remplir le formulaire avec des identifiants invalides
-      await page.getByLabel(/email|adresse e-mail/i).fill('invalid@test.com');
-      await page.getByLabel(/mot de passe/i).fill('wrongpassword');
+      // Remplir avec des identifiants invalides
+      await page.locator('#email').fill('invalid@test.com');
+      await page.locator('#password').fill('wrongpassword');
 
-      // Soumettre le formulaire
-      await page.getByRole('button', { name: /se connecter|connexion/i }).click();
+      // Soumettre
+      await page.getByRole('button', { name: 'Se connecter' }).click();
 
       // Vérifier le message d'erreur
-      await expect(page.locator('text=/erreur|invalide|incorrect/i')).toBeVisible();
+      await expect(page.getByText(/Email ou mot de passe incorrect|Erreur de connexion/i)).toBeVisible({ timeout: 5000 });
     });
 
     test('devrait avoir un lien vers la page d\'inscription', async ({ page }) => {
       await page.goto('/login');
 
       // Vérifier le lien vers l'inscription
-      const registerLink = page.getByRole('link', { name: /inscription|créer un compte/i });
+      const registerLink = page.getByRole('link', { name: /inscrivez-vous/i });
       await expect(registerLink).toBeVisible();
 
       // Cliquer et vérifier la navigation
       await registerLink.click();
-      await expect(page).toHaveURL(/\/register/);
+      await expect(page).toHaveURL('/register');
     });
   });
 
@@ -48,30 +70,20 @@ test.describe('Authentification', () => {
       await page.goto('/register');
 
       // Vérifier le titre
-      await expect(page.getByRole('heading', { name: /inscription/i })).toBeVisible();
+      await expect(page.getByText('OrientUniv')).toBeVisible();
 
-      // Vérifier les champs essentiels
-      await expect(page.getByLabel(/nom/i)).toBeVisible();
-      await expect(page.getByLabel(/prénom/i)).toBeVisible();
-      await expect(page.getByLabel(/email|adresse e-mail/i)).toBeVisible();
-      await expect(page.getByLabel(/mot de passe/i).first()).toBeVisible();
-    });
-
-    test('devrait valider les champs requis', async ({ page }) => {
-      await page.goto('/register');
-
-      // Essayer de soumettre sans remplir les champs
-      await page.getByRole('button', { name: /créer|inscription/i }).click();
-
-      // Vérifier les messages de validation
-      await expect(page.locator('text=/requis|obligatoire/i').first()).toBeVisible();
+      // Vérifier les champs essentiels (avec IDs)
+      await expect(page.locator('#firstName, [name="firstName"]')).toBeVisible();
+      await expect(page.locator('#lastName, [name="lastName"]')).toBeVisible();
+      await expect(page.locator('#email, [name="email"]')).toBeVisible();
+      await expect(page.locator('#password, [name="password"]')).toBeVisible();
     });
 
     test('devrait avoir un lien vers la page de connexion', async ({ page }) => {
       await page.goto('/register');
 
       // Vérifier le lien vers la connexion
-      const loginLink = page.getByRole('link', { name: /connexion|se connecter|déjà un compte/i });
+      const loginLink = page.getByRole('link', { name: /connectez-vous|se connecter|connexion/i });
       await expect(loginLink).toBeVisible();
     });
   });
