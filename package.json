@@ -1,0 +1,31 @@
+{
+  "name": "orientuniv-e2e-tests",
+  "version": "1.0.0",
+  "description": "Tests E2E Playwright pour OrientUniv",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:chromium": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "test:mobile": "playwright test --project='Mobile Chrome' --project='Mobile Safari'",
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/honoraj65/orientcam-platform.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/honoraj65/orientcam-platform/issues"
+  },
+  "homepage": "https://github.com/honoraj65/orientcam-platform#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.58.1"
+  }
+}

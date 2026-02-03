@@ -7,6 +7,8 @@
 !backend/**
 !frontend/
 !frontend/**
+!tests/
+!tests/**
 
 # Project files
 !docker-compose.yml
@@ -16,6 +18,8 @@
 !restart-orientcam.bat
 !.gitignore
 !README.md
+!package.json
+!playwright.config.ts
 
 # Python
 backend/**/__pycache__/
@@ -58,3 +62,8 @@ frontend/**/.vercel
 # OS
 **/.DS_Store
 **/Thumbs.db
+
+# Playwright E2E tests
+playwright-report/
+test-results/
+*.trace.zip
