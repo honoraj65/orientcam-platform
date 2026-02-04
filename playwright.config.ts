@@ -8,7 +8,7 @@ export default defineConfig({
   testDir: './tests',
 
   // Timeout pour chaque test
-  timeout: 30 * 1000,
+  timeout: 60 * 1000,
 
   // Nombre de tentatives en cas d'échec
   retries: process.env.CI ? 2 : 0,

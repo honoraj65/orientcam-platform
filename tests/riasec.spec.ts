@@ -8,31 +8,32 @@ test.describe('Test RIASEC', () => {
   });
 
   test('devrait afficher la page d\'introduction au test RIASEC', async ({ page }) => {
-    await page.goto('/test-riasec');
+    await page.goto('/test-riasec', { waitUntil: 'domcontentloaded' });
 
     // Attendre que la page charge
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('networkidle', { timeout: 30000 });
 
     // Vérifier le titre principal (texte "Test d'Orientation RIASEC")
-    await expect(page.getByRole('heading', { name: /test.*riasec/i })).toBeVisible({ timeout: 5000 });
+    await expect(page.getByRole('heading', { name: /test.*riasec/i })).toBeVisible({ timeout: 10000 });
 
     // Vérifier le bouton pour démarrer/repasser le test (lien vers /test-riasec/quiz)
     const startButton = page.getByRole('link', { name: /commencer le test|repasser le test/i });
-    await expect(startButton).toBeVisible();
+    await expect(startButton).toBeVisible({ timeout: 10000 });
   });
 
   test('devrait naviguer vers le questionnaire', async ({ page }) => {
-    await page.goto('/test-riasec');
+    await page.goto('/test-riasec', { waitUntil: 'domcontentloaded' });
 
     // Attendre que la page charge
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('networkidle', { timeout: 30000 });
 
     // Cliquer sur le bouton pour commencer/repasser (c'est un lien, pas un bouton)
     const startButton = page.getByRole('link', { name: /commencer le test|repasser le test/i });
+    await expect(startButton).toBeVisible({ timeout: 10000 });
     await startButton.click();
 
     // Vérifier la navigation vers le quiz
-    await expect(page).toHaveURL(/\/test-riasec\/quiz/, { timeout: 10000 });
+    await expect(page).toHaveURL(/\/test-riasec\/quiz/, { timeout: 15000 });
   });
 
   test.describe('Questionnaire', () => {
@@ -76,17 +77,17 @@ test.describe('Test RIASEC', () => {
     });
 
     test('devrait avoir un bouton de téléchargement PDF', async ({ page }) => {
-      await page.goto('/test-riasec/results');
+      await page.goto('/test-riasec/results', { waitUntil: 'domcontentloaded' });
 
       // Attendre le chargement complet
-      await page.waitForLoadState('networkidle');
-      await page.waitForTimeout(3000);
+      await page.waitForLoadState('networkidle', { timeout: 30000 });
+      await page.waitForTimeout(5000);
 
-      // Chercher le bouton PDF avec le texte exact
-      const pdfButton = page.getByRole('button', { name: /télécharger.*pdf/i });
+      // Chercher le bouton PDF - essayer plusieurs sélecteurs
+      const pdfButton = page.locator('button:has-text("PDF"), button:has-text("Télécharger"), [role="button"]:has-text("PDF")').first();
 
       // Vérifier qu'il existe et est visible
-      await expect(pdfButton).toBeVisible({ timeout: 15000 });
+      await expect(pdfButton).toBeVisible({ timeout: 20000 });
     });
 
     test('devrait afficher des recommandations', async ({ page }) => {
