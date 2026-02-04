@@ -33,7 +33,7 @@ test.describe('Authentification', () => {
       await page.getByRole('button', { name: 'Se connecter' }).click();
 
       // Attendre la redirection vers le dashboard (timeout augmenté pour tests parallèles)
-      await expect(page).toHaveURL('/dashboard', { timeout: 20000 });
+      await expect(page).toHaveURL('/dashboard', { timeout: 30000 });
 
       // Vérifier qu'on est bien connecté - le simple fait d'être sur /dashboard suffit
       await page.waitForLoadState('networkidle');

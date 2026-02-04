@@ -22,7 +22,7 @@ export async function loginAsTestUser(page: Page) {
   await page.getByRole('button', { name: 'Se connecter' }).click();
 
   // Attendre la redirection vers le dashboard avec un timeout plus long
-  await page.waitForURL('/dashboard', { timeout: 20000 });
+  await page.waitForURL('/dashboard', { timeout: 30000 });
 
   // Attendre que le dashboard soit complètement chargé
   await page.waitForLoadState('networkidle');

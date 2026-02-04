@@ -13,8 +13,8 @@ export default defineConfig({
   // Nombre de tentatives en cas d'échec
   retries: process.env.CI ? 2 : 0,
 
-  // Nombre de workers en parallèle
-  workers: process.env.CI ? 1 : undefined,
+  // Nombre de workers en parallèle (réduit à 2 pour éviter timeouts auth)
+  workers: process.env.CI ? 1 : 2,
 
   // Reporter pour les résultats
   reporter: [
