@@ -23,6 +23,8 @@ test.describe('Test RIASEC', () => {
     const hasButton = await page.getByRole('link', { name: /commencer|repasser|d\u00e9marrer|lancer/i }).count();
 
     // Au moins l'un des deux doit être présent
+    // Vérifier qu'on est sur la bonne URL
+    await expect(page).toHaveURL(/\/test-riasec/);
     expect(hasHeading + hasButton).toBeGreaterThan(0);
   });
 
