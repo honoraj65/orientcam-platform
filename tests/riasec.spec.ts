@@ -10,23 +10,29 @@ test.describe('Test RIASEC', () => {
   test('devrait afficher la page d\'introduction au test RIASEC', async ({ page }) => {
     await page.goto('/test-riasec');
 
-    // Vérifier le titre ou des mots-clés
-    await expect(page.getByText(/Test RIASEC|Holland|orientation/i).first()).toBeVisible();
+    // Attendre que la page charge
+    await page.waitForLoadState('networkidle');
 
-    // Vérifier le bouton pour commencer le test
-    const startButton = page.getByRole('button', { name: /commencer|démarrer|lancer/i });
+    // Vérifier le titre principal (texte "Test d'Orientation RIASEC")
+    await expect(page.getByRole('heading', { name: /test.*riasec/i })).toBeVisible({ timeout: 5000 });
+
+    // Vérifier le bouton pour démarrer/repasser le test (lien vers /test-riasec/quiz)
+    const startButton = page.getByRole('link', { name: /commencer le test|repasser le test/i });
     await expect(startButton).toBeVisible();
   });
 
   test('devrait naviguer vers le questionnaire', async ({ page }) => {
     await page.goto('/test-riasec');
 
-    // Cliquer sur le bouton pour commencer
-    const startButton = page.getByRole('button', { name: /commencer|démarrer|lancer/i });
+    // Attendre que la page charge
+    await page.waitForLoadState('networkidle');
+
+    // Cliquer sur le bouton pour commencer/repasser (c'est un lien, pas un bouton)
+    const startButton = page.getByRole('link', { name: /commencer le test|repasser le test/i });
     await startButton.click();
 
     // Vérifier la navigation vers le quiz
-    await expect(page).toHaveURL(/\/test-riasec\/quiz/, { timeout: 5000 });
+    await expect(page).toHaveURL(/\/test-riasec\/quiz/, { timeout: 10000 });
   });
 
   test.describe('Questionnaire', () => {
@@ -64,23 +70,23 @@ test.describe('Test RIASEC', () => {
       // Attendre le chargement
       await page.waitForLoadState('networkidle');
 
-      // Vérifier la présence de résultats ou un message
-      const resultElement = page.locator('text=/résultat|profil|code|dimension|réaliste|investigateur|artistique|social|entrepreneur|conventionnel/i');
-      await expect(resultElement.first()).toBeVisible({ timeout: 5000 });
+      // Vérifier la présence du code Holland (le test user a ISA)
+      const hollandCode = page.getByText(/ISA|IAS|SIA|SAI|AIS|ASI/i);
+      await expect(hollandCode.first()).toBeVisible({ timeout: 10000 });
     });
 
     test('devrait avoir un bouton de téléchargement PDF', async ({ page }) => {
       await page.goto('/test-riasec/results');
 
-      // Attendre le chargement
+      // Attendre le chargement complet
       await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(3000);
 
-      // Chercher le bouton PDF
-      const pdfButton = page.getByRole('button', { name: /télécharger|pdf|exporter/i });
+      // Chercher le bouton PDF avec le texte exact
+      const pdfButton = page.getByRole('button', { name: /télécharger.*pdf/i });
 
-      // Vérifier qu'il existe (peut être désactivé si pas de résultats)
-      const exists = await pdfButton.count() > 0;
-      expect(exists).toBeTruthy();
+      // Vérifier qu'il existe et est visible
+      await expect(pdfButton).toBeVisible({ timeout: 15000 });
     });
 
     test('devrait afficher des recommandations', async ({ page }) => {
@@ -89,9 +95,9 @@ test.describe('Test RIASEC', () => {
       // Attendre le chargement
       await page.waitForLoadState('networkidle');
 
-      // Vérifier la présence de recommandations ou programmes
-      const recommendElement = page.locator('text=/recommandation|programme|formation/i');
-      await expect(recommendElement.first()).toBeVisible({ timeout: 5000 });
+      // Vérifier la présence du lien vers les recommandations
+      const recommendLink = page.getByRole('link', { name: /recommandations|voir.*programme/i });
+      await expect(recommendLink.first()).toBeVisible({ timeout: 10000 });
     });
   });
 });

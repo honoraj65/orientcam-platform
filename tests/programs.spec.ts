@@ -1,14 +1,23 @@
 import { test, expect } from '@playwright/test';
+import { loginAsTestUser } from './helpers/auth-helper';
 
 test.describe('Page des Programmes', () => {
+  // Se connecter avant chaque test
+  test.beforeEach(async ({ page }) => {
+    await loginAsTestUser(page);
+  });
+
   test('devrait afficher la liste des programmes', async ({ page }) => {
     await page.goto('/programs');
 
     // Vérifier le titre de la page
     await expect(page.getByRole('heading', { name: /programmes|formations/i })).toBeVisible();
 
-    // Vérifier qu'au moins un programme est affiché
-    const programCards = page.locator('[data-testid="program-card"], article, .program');
+    // Attendre que la page charge
+    await page.waitForLoadState('networkidle');
+
+    // Vérifier qu'au moins un programme est affiché (les cartes sont des liens avec border border-gray-300)
+    const programCards = page.locator('a.group.border.border-gray-300');
     const count = await programCards.count();
     expect(count).toBeGreaterThan(0);
   });
@@ -93,8 +102,12 @@ test.describe('Page des Programmes', () => {
     test('devrait afficher les détails d\'un programme', async ({ page }) => {
       await page.goto('/programs');
 
-      // Cliquer sur le premier programme
-      const firstProgram = page.locator('[data-testid="program-card"], article, .program').first();
+      // Attendre que les programmes chargent
+      await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(1000);
+
+      // Cliquer sur le premier programme (carte de lien)
+      const firstProgram = page.locator('a.group.border.border-gray-300').first();
       await firstProgram.click();
 
       // Vérifier la navigation vers la page de détail
@@ -120,11 +133,14 @@ test.describe('Page des Programmes', () => {
     await page.setViewportSize({ width: 375, height: 667 });
     await page.goto('/programs');
 
+    // Attendre que la page charge
+    await page.waitForLoadState('networkidle');
+
     // Vérifier que le contenu s'affiche correctement
     await expect(page.locator('body')).toBeVisible();
 
-    // Vérifier que les programmes sont visibles
-    const programCards = page.locator('[data-testid="program-card"], article, .program');
+    // Vérifier que les programmes sont visibles (utiliser le bon sélecteur)
+    const programCards = page.locator('a.group.border.border-gray-300');
     const count = await programCards.count();
     expect(count).toBeGreaterThan(0);
   });

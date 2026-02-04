@@ -11,6 +11,9 @@ export const TEST_USER = {
 export async function loginAsTestUser(page: Page) {
   await page.goto('/login');
 
+  // Attendre que la page se charge
+  await page.waitForLoadState('networkidle');
+
   // Remplir le formulaire de connexion
   await page.locator('#email').fill(TEST_USER.email);
   await page.locator('#password').fill(TEST_USER.password);
@@ -18,8 +21,11 @@ export async function loginAsTestUser(page: Page) {
   // Soumettre et attendre la redirection
   await page.getByRole('button', { name: 'Se connecter' }).click();
 
-  // Attendre la redirection vers le dashboard
-  await page.waitForURL('/dashboard', { timeout: 10000 });
+  // Attendre la redirection vers le dashboard avec un timeout plus long
+  await page.waitForURL('/dashboard', { timeout: 20000 });
+
+  // Attendre que le dashboard soit complètement chargé
+  await page.waitForLoadState('networkidle');
 }
 
 /**

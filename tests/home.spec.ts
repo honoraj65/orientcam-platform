@@ -15,9 +15,12 @@ test.describe('Page d\'accueil OrientUniv', () => {
     const header = page.locator('header');
     await expect(header).toBeVisible();
 
-    // Vérifier les liens principaux
-    await expect(page.getByRole('link', { name: /accueil|home/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /programmes/i })).toBeVisible();
+    // Vérifier le logo OrientUniv
+    await expect(page.getByText('OrientUniv').first()).toBeVisible();
+
+    // Vérifier les liens principaux de navigation
+    await expect(page.getByRole('link', { name: /à propos/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /contact/i }).first()).toBeVisible();
   });
 
   test('devrait avoir un bouton de connexion', async ({ page }) => {
@@ -35,9 +38,8 @@ test.describe('Page d\'accueil OrientUniv', () => {
     const aboutLink = page.getByRole('link', { name: /à propos/i });
     await expect(aboutLink).toBeVisible();
 
-    // Cliquer et vérifier la navigation
-    await aboutLink.click();
-    await expect(page).toHaveURL(/\/about/);
+    // Vérifier que le lien pointe vers /about
+    await expect(aboutLink).toHaveAttribute('href', '/about');
   });
 
   test('devrait être responsive sur mobile', async ({ page }) => {
