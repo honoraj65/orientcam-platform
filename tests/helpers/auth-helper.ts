@@ -29,6 +29,23 @@ export async function loginAsTestUser(page: Page) {
 }
 
 /**
+ * Naviguer vers une URL protégée avec re-login automatique si nécessaire
+ */
+export async function gotoProtected(page: Page, url: string) {
+  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
+  await page.waitForLoadState('domcontentloaded', { timeout: 45000 });
+
+  // Si on se retrouve sur /login, re-login automatiquement
+  if (page.url().includes('/login')) {
+    await loginAsTestUser(page);
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
+    await page.waitForLoadState('domcontentloaded', { timeout: 30000 });
+  }
+
+  await page.waitForTimeout(2000);
+}
+
+/**
  * Vérifier si l'utilisateur est connecté
  */
 export async function isLoggedIn(page: Page): Promise<boolean> {

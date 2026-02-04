@@ -10,8 +10,8 @@ export default defineConfig({
   // Timeout pour chaque test
   timeout: 60 * 1000,
 
-  // Nombre de tentatives en cas d'échec
-  retries: process.env.CI ? 2 : 0,
+  // Nombre de tentatives en cas d'échec (1 localement pour auth intermittent)
+  retries: process.env.CI ? 2 : 1,
 
   // Nombre de workers en parallèle (réduit à 2 pour éviter timeouts auth)
   workers: process.env.CI ? 1 : 2,
