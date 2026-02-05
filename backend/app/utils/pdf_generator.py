@@ -108,7 +108,7 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
     elements.append(Spacer(1, 3*cm))
 
     # Titre principal
-    elements.append(Paragraph("ORIENTCAM", ParagraphStyle(
+    elements.append(Paragraph("ORIENTUNIV", ParagraphStyle(
         'MainTitle',
         parent=title_style,
         fontSize=32,
