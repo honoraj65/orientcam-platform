@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: orientuniv-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 0
+    rootDir: backend
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        value: https://orientuniv.cm,https://www.orientuniv.cm,https://frontend-honoraj65s-projects.vercel.app
+      - key: DEBUG
+        value: "False"
+      - key: SUPABASE_URL
+        value: https://wicratcfgcokppzpsvzf.supabase.co
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false

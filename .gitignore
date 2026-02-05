@@ -12,6 +12,7 @@
 
 # Project files
 !docker-compose.yml
+!render.yaml
 !start-app.bat
 !start-orientcam.bat
 !stop-orientcam.bat
