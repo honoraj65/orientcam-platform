@@ -25,7 +25,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copier le code de l'application
 COPY . .
-COPY .env.production .env
 
 # Créer un utilisateur non-root
 RUN useradd -m -u 1000 appuser && \
