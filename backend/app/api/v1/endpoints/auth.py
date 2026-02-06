@@ -68,13 +68,13 @@ async def register(user_data: UserRegister, db: Session = Depends(get_db)):
 
     # Generate tokens
     access_token = create_access_token(
-        user_id=user.id,
+        user_id=str(user.id),
         email=user.email,
         role=user.role
     )
 
     refresh_token = create_refresh_token(
-        user_id=user.id,
+        user_id=str(user.id),
         email=user.email,
         role=user.role
     )
@@ -143,13 +143,13 @@ async def login(credentials: UserLogin, db: Session = Depends(get_db)):
 
     # Generate tokens
     access_token = create_access_token(
-        user_id=user.id,
+        user_id=str(user.id),
         email=user.email,
         role=user.role
     )
 
     refresh_token = create_refresh_token(
-        user_id=user.id,
+        user_id=str(user.id),
         email=user.email,
         role=user.role
     )
@@ -225,13 +225,13 @@ async def refresh_token(token_data: RefreshTokenRequest, db: Session = Depends(g
 
     # Generate new tokens
     new_access_token = create_access_token(
-        user_id=user.id,
+        user_id=str(user.id),
         email=user.email,
         role=user.role
     )
 
     new_refresh_token = create_refresh_token(
-        user_id=user.id,
+        user_id=str(user.id),
         email=user.email,
         role=user.role
     )
