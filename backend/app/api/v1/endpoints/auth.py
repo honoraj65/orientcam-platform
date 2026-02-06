@@ -87,7 +87,7 @@ async def register(user_data: UserRegister, db: Session = Depends(get_db)):
         refresh_token=refresh_token,
         expires_in=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         user=UserInfo(
-            id=user.id,
+            id=str(user.id),
             email=user.email,
             role=user.role,
             first_name=student_profile.first_name,
@@ -162,7 +162,7 @@ async def login(credentials: UserLogin, db: Session = Depends(get_db)):
         refresh_token=refresh_token,
         expires_in=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         user=UserInfo(
-            id=user.id,
+            id=str(user.id),
             email=user.email,
             role=user.role,
             first_name=student_profile.first_name if student_profile else None,
@@ -244,7 +244,7 @@ async def refresh_token(token_data: RefreshTokenRequest, db: Session = Depends(g
         refresh_token=new_refresh_token,
         expires_in=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         user=UserInfo(
-            id=user.id,
+            id=str(user.id),
             email=user.email,
             role=user.role,
             first_name=student_profile.first_name if student_profile else None,
@@ -299,7 +299,7 @@ async def get_current_user_info(
 
     # Build UserInfo response with student_profile
     return UserInfo(
-        id=current_user.id,
+        id=str(current_user.id),
         email=current_user.email,
         role=current_user.role,
         first_name=student_profile.first_name if student_profile else None,
