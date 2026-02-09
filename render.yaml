@@ -3,7 +3,7 @@ services:
     name: orientuniv-api
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 0
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     rootDir: backend
     envVars:
       - key: DATABASE_URL
@@ -11,7 +11,7 @@ services:
       - key: SECRET_KEY
         sync: false
       - key: CORS_ORIGINS
-        value: https://orientuniv.cm,https://www.orientuniv.cm,https://frontend-honoraj65s-projects.vercel.app
+        value: https://orientuniv.cm,https://www.orientuniv.cm,https://frontend-honoraj65s-projects.vercel.app,https://orientcam-platform.vercel.app
       - key: DEBUG
         value: "False"
       - key: SUPABASE_URL
