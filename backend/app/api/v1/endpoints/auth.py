@@ -297,6 +297,10 @@ async def get_current_user_info(
                 db.refresh(student_profile)
         except Exception as e:
             print(f"[auth/me] Warning: could not recalculate completion: {e}", flush=True)
+            try:
+                db.rollback()
+            except Exception:
+                pass
 
     # Convert ORM object to Pydantic schema explicitly (required for Pydantic v2)
     profile_data = None
