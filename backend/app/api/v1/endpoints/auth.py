@@ -280,8 +280,12 @@ async def get_current_user_info(
     Requires valid access token in Authorization header
     """
 
-    # Get student profile with eager loading
-    student_profile = db.query(StudentProfile).filter(StudentProfile.user_id == current_user.id).first()
+    # Get student profile
+    student_profile = None
+    try:
+        student_profile = db.query(StudentProfile).filter(StudentProfile.user_id == current_user.id).first()
+    except Exception as e:
+        print(f"[auth/me] Warning: could not query student_profile: {e}", flush=True)
 
     # Recalculate completion percentage if student profile exists
     if student_profile:
@@ -295,16 +299,35 @@ async def get_current_user_info(
             print(f"[auth/me] Warning: could not recalculate completion: {e}", flush=True)
 
     # Convert ORM object to Pydantic schema explicitly (required for Pydantic v2)
-    profile_data = StudentProfileResponse.model_validate(student_profile) if student_profile else None
+    profile_data = None
+    if student_profile:
+        try:
+            profile_data = StudentProfileResponse.model_validate(student_profile, from_attributes=True)
+        except Exception as e:
+            print(f"[auth/me] Warning: could not serialize student_profile: {e}", flush=True)
 
     # Build UserInfo response
-    return UserInfo(
-        id=str(current_user.id),
-        email=current_user.email,
-        role=current_user.role,
-        first_name=student_profile.first_name if student_profile else None,
-        last_name=student_profile.last_name if student_profile else None,
-        is_verified=current_user.is_verified,
-        student_profile=profile_data,
-        created_at=current_user.created_at.isoformat() if current_user.created_at else None
-    )
+    try:
+        return UserInfo(
+            id=str(current_user.id),
+            email=current_user.email,
+            role=current_user.role,
+            first_name=student_profile.first_name if student_profile else None,
+            last_name=student_profile.last_name if student_profile else None,
+            is_verified=current_user.is_verified,
+            student_profile=profile_data,
+            created_at=current_user.created_at.isoformat() if current_user.created_at else None
+        )
+    except Exception as e:
+        print(f"[auth/me] Error building UserInfo: {e}", flush=True)
+        # Fallback: return minimal user info
+        return UserInfo(
+            id=str(current_user.id),
+            email=current_user.email,
+            role=current_user.role,
+            first_name=None,
+            last_name=None,
+            is_verified=current_user.is_verified,
+            student_profile=None,
+            created_at=None
+        )
