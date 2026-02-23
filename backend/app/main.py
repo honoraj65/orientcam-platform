@@ -77,6 +77,16 @@ async def log_requests(request: Request, call_next):
     return response
 
 
+# Create all database tables at startup (safe: only creates missing tables)
+@app.on_event("startup")
+async def create_tables():
+    try:
+        Base.metadata.create_all(bind=engine)
+        print("[STARTUP] Database tables created/verified successfully", flush=True)
+    except Exception as e:
+        print(f"[STARTUP] Warning: could not create tables: {e}", flush=True)
+
+
 # Include routers
 app.include_router(auth.router, prefix="/api/v1")
 app.include_router(student.router, prefix="/api/v1")

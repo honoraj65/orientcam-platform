@@ -284,18 +284,14 @@ async def get_current_user_info(
 
     # Recalculate completion percentage if student profile exists
     if student_profile:
-        print(f"\n>>> GET /auth/me called for user {current_user.id}")
-        print(f">>> Current stored percentage: {student_profile.completion_percentage}%")
-        new_percentage = calculate_completion_percentage(student_profile, db)
-        print(f">>> Calculated new percentage: {new_percentage}%")
-        if student_profile.completion_percentage != new_percentage:
-            print(f">>> Updating percentage from {student_profile.completion_percentage}% to {new_percentage}%")
-            student_profile.completion_percentage = new_percentage
-            db.commit()
-            db.refresh(student_profile)
-            print(f">>> Database updated successfully")
-        else:
-            print(f">>> No update needed, percentage unchanged")
+        try:
+            new_percentage = calculate_completion_percentage(student_profile, db)
+            if student_profile.completion_percentage != new_percentage:
+                student_profile.completion_percentage = new_percentage
+                db.commit()
+                db.refresh(student_profile)
+        except Exception as e:
+            print(f"[auth/me] Warning: could not recalculate completion: {e}", flush=True)
 
     # Build UserInfo response with student_profile
     return UserInfo(
