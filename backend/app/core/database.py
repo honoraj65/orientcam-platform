@@ -23,13 +23,26 @@ def create_db_engine():
     port = parsed.port or 5432
     dbname = parsed.path.lstrip("/")
 
-    connect_args = {"sslmode": "require"}
+    print(f"[DB] Connecting to {host}:{port} as {username}", flush=True)
+
+    import psycopg2
+
+    def creator():
+        return psycopg2.connect(
+            host=host,
+            port=port,
+            user=username,
+            password=password,
+            dbname=dbname,
+            sslmode="require",
+            connect_timeout=10,
+        )
 
     return create_engine(
-        url,
-        pool_pre_ping=True,
+        "postgresql+psycopg2://",
+        creator=creator,
         poolclass=NullPool,
-        connect_args=connect_args,
+        pool_pre_ping=True,
     )
 
 engine = create_db_engine()
