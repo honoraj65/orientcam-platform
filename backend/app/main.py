@@ -23,7 +23,12 @@ logger = logging.getLogger(__name__)
 
 # Rate limiter
 limiter = Limiter(key_func=get_remote_address)
-# Force redeploy 2026-02-09
+
+# Log DATABASE_URL host for diagnostics (without password)
+import re as _re
+_db_url = settings.DATABASE_URL
+_db_host = _re.search(r'@([^/]+)', _db_url)
+print(f"[DIAG] DATABASE_URL host: {_db_host.group(1) if _db_host else 'unknown'}", flush=True)
 
 # Create FastAPI app
 app = FastAPI(
