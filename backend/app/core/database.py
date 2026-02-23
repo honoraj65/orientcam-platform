@@ -5,28 +5,34 @@ from typing import Generator
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.pool import NullPool
+from urllib.parse import urlparse, unquote
 from app.core.config import settings
 
-# Create engine with Supabase pooler support
-# Use NullPool for Supabase transaction pooler (port 6543)
-from sqlalchemy.pool import NullPool
+# Parse DATABASE_URL and build engine with explicit parameters
+# This handles usernames with dots (Supabase pooler format)
+def create_db_engine():
+    url = settings.DATABASE_URL
+    if url.startswith("sqlite"):
+        return create_engine(url, connect_args={"check_same_thread": False})
 
-connect_args = {}
-poolclass = None
+    parsed = urlparse(url)
+    username = unquote(parsed.username)
+    password = unquote(parsed.password)
+    host = parsed.hostname
+    port = parsed.port or 5432
+    dbname = parsed.path.lstrip("/")
 
-if settings.DATABASE_URL.startswith("sqlite"):
-    connect_args = {"check_same_thread": False}
-elif ":6543/" in settings.DATABASE_URL:
-    # Supabase transaction pooler - use NullPool and disable prepared statements
-    poolclass = NullPool
-    connect_args = {"prepare_threshold": None}
+    connect_args = {"sslmode": "require"}
 
-engine = create_engine(
-    settings.DATABASE_URL,
-    pool_pre_ping=True,
-    poolclass=poolclass,
-    connect_args=connect_args,
-)
+    return create_engine(
+        url,
+        pool_pre_ping=True,
+        poolclass=NullPool,
+        connect_args=connect_args,
+    )
+
+engine = create_db_engine()
 
 # Create session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
