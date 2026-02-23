@@ -18,6 +18,7 @@ from app.schemas.auth import (
     UserRegister, UserLogin, TokenResponse, UserInfo,
     RefreshTokenRequest, MessageResponse
 )
+from app.schemas.student import StudentProfileResponse
 from app.api.v1.endpoints.student import calculate_completion_percentage
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
@@ -293,7 +294,10 @@ async def get_current_user_info(
         except Exception as e:
             print(f"[auth/me] Warning: could not recalculate completion: {e}", flush=True)
 
-    # Build UserInfo response with student_profile
+    # Convert ORM object to Pydantic schema explicitly (required for Pydantic v2)
+    profile_data = StudentProfileResponse.model_validate(student_profile) if student_profile else None
+
+    # Build UserInfo response
     return UserInfo(
         id=str(current_user.id),
         email=current_user.email,
@@ -301,6 +305,6 @@ async def get_current_user_info(
         first_name=student_profile.first_name if student_profile else None,
         last_name=student_profile.last_name if student_profile else None,
         is_verified=current_user.is_verified,
-        student_profile=student_profile,
+        student_profile=profile_data,
         created_at=current_user.created_at.isoformat() if current_user.created_at else None
     )
