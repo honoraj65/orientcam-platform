@@ -280,35 +280,58 @@ async def get_current_user_info(
     Requires valid access token in Authorization header
     """
 
-    # Get student profile
-    student_profile = None
-    try:
-        student_profile = db.query(StudentProfile).filter(StudentProfile.user_id == current_user.id).first()
-    except Exception as e:
-        print(f"[auth/me] Warning: could not query student_profile: {e}", flush=True)
-
-    # Recalculate completion percentage if student profile exists
-    if student_profile:
-        try:
-            new_percentage = calculate_completion_percentage(student_profile, db)
-            if student_profile.completion_percentage != new_percentage:
-                student_profile.completion_percentage = new_percentage
-                db.commit()
-                db.refresh(student_profile)
-        except Exception as e:
-            print(f"[auth/me] Warning: could not recalculate completion: {e}", flush=True)
-            try:
-                db.rollback()
-            except Exception:
-                pass
-
-    # Convert ORM object to Pydantic schema explicitly (required for Pydantic v2)
+    # Get student profile and immediately extract data to avoid lazy loading issues
     profile_data = None
-    if student_profile:
-        try:
-            profile_data = StudentProfileResponse.model_validate(student_profile, from_attributes=True)
-        except Exception as e:
-            print(f"[auth/me] Warning: could not serialize student_profile: {e}", flush=True)
+    first_name = None
+    last_name = None
+    try:
+        sp = db.query(StudentProfile).filter(StudentProfile.user_id == current_user.id).first()
+        if sp:
+            # Extract all column values immediately while session is clean
+            first_name = sp.first_name
+            last_name = sp.last_name
+            completion = sp.completion_percentage or 0
+
+            # Recalculate completion percentage
+            try:
+                new_percentage = calculate_completion_percentage(sp, db)
+                if sp.completion_percentage != new_percentage:
+                    sp.completion_percentage = new_percentage
+                    db.commit()
+                completion = sp.completion_percentage or 0
+            except Exception as e:
+                print(f"[auth/me] Warning: could not recalculate completion: {e}", flush=True)
+                try:
+                    db.rollback()
+                except Exception:
+                    pass
+
+            # Build profile response from individual fields (avoids ORM lazy loading)
+            profile_data = StudentProfileResponse(
+                id=str(sp.id),
+                user_id=str(sp.user_id),
+                user_type=sp.user_type,
+                university_establishment=sp.university_establishment,
+                university_department=sp.university_department,
+                university_level=sp.university_level,
+                first_name=sp.first_name,
+                last_name=sp.last_name,
+                phone=sp.phone,
+                gender=sp.gender,
+                date_of_birth=sp.date_of_birth,
+                city=sp.city,
+                region=sp.region,
+                current_education_level=sp.current_education_level,
+                bac_series=sp.bac_series,
+                bac_year=sp.bac_year,
+                bac_grade=sp.bac_grade,
+                max_annual_budget=sp.max_annual_budget,
+                financial_situation=sp.financial_situation,
+                financial_aid_eligible=sp.financial_aid_eligible,
+                completion_percentage=completion,
+            )
+    except Exception as e:
+        print(f"[auth/me] Warning: could not build student profile: {e}", flush=True)
 
     # Build UserInfo response
     try:
