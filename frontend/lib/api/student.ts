@@ -119,20 +119,8 @@ export const studentAPI = {
   uploadAvatar: async (file: File): Promise<{ avatar_url: string }> => {
     const formData = new FormData();
     formData.append('file', file);
-    const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || '';
-    const response = await fetch(`${backendUrl}/api/v1/student/profile/avatar`, {
-      method: 'POST',
-      headers: {
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-      },
-      body: formData,
-    });
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({ detail: 'Erreur upload' }));
-      throw new Error(error.detail || 'Erreur upload');
-    }
-    return response.json();
+    const response = await apiClient.post('/api/v1/student/profile/avatar', formData);
+    return response.data;
   },
 
   // Update profile
