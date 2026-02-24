@@ -119,7 +119,9 @@ export const studentAPI = {
   uploadAvatar: async (file: File): Promise<{ avatar_url: string }> => {
     const formData = new FormData();
     formData.append('file', file);
-    const response = await apiClient.post('/api/v1/student/profile/avatar', formData);
+    const response = await apiClient.post('/api/v1/student/profile/avatar', formData, {
+      headers: { 'Content-Type': undefined as unknown as string },
+    });
     return response.data;
   },
 
