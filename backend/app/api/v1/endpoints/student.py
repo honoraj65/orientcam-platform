@@ -176,6 +176,9 @@ async def upload_avatar(
     if len(content) > 2 * 1024 * 1024:
         raise HTTPException(status_code=400, detail="L'image ne doit pas dépasser 2MB")
 
+    print(f"[avatar] SUPABASE_URL set: {bool(settings.SUPABASE_URL)}", flush=True)
+    print(f"[avatar] SERVICE_KEY starts with: {settings.SUPABASE_SERVICE_ROLE_KEY[:20] if settings.SUPABASE_SERVICE_ROLE_KEY else 'EMPTY'}", flush=True)
+
     if not settings.SUPABASE_URL or not settings.SUPABASE_SERVICE_ROLE_KEY:
         raise HTTPException(status_code=503, detail="Service de stockage non configuré")
 
@@ -185,6 +188,8 @@ async def upload_avatar(
         ext = "jpg"
     path = f"profile-photos/{current_user.id}.{ext}"
     upload_url = f"{settings.SUPABASE_URL}/storage/v1/object/avatars/{path}"
+    print(f"[avatar] Uploading to: {upload_url}", flush=True)
+    print(f"[avatar] File size: {len(content)} bytes, type: {file.content_type}", flush=True)
 
     try:
         async with httpx.AsyncClient(timeout=15) as client:
@@ -197,18 +202,22 @@ async def upload_avatar(
                     "x-upsert": "true",
                 },
             )
+        print(f"[avatar] Supabase response: {resp.status_code} - {resp.text[:200]}", flush=True)
         if resp.status_code not in (200, 201):
             raise HTTPException(status_code=500, detail=f"Erreur upload: {resp.text}")
     except httpx.RequestError as e:
+        print(f"[avatar] Network error: {e}", flush=True)
         raise HTTPException(status_code=500, detail=f"Erreur réseau: {str(e)}")
 
     avatar_url = f"{settings.SUPABASE_URL}/storage/v1/object/public/avatars/{path}"
 
     # Save URL in DB
     profile = db.query(StudentProfile).filter(StudentProfile.user_id == current_user.id).first()
+    print(f"[avatar] Profile found: {profile is not None}", flush=True)
     if profile:
         profile.avatar_url = avatar_url
         db.commit()
+        print(f"[avatar] avatar_url saved to DB: {avatar_url}", flush=True)
 
     return {"avatar_url": avatar_url}
 
