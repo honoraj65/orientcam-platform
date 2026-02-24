@@ -3,9 +3,11 @@ Student profile endpoints
 """
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from datetime import datetime
 import httpx
+import base64
 
 from app.core.database import get_db
 from app.core.deps import get_current_student
@@ -218,6 +220,68 @@ async def upload_avatar(
         profile.avatar_url = avatar_url
         db.commit()
         print(f"[avatar] avatar_url saved to DB: {avatar_url}", flush=True)
+
+    return {"avatar_url": avatar_url}
+
+
+class AvatarBase64Request(BaseModel):
+    image_data: str  # base64 encoded image
+    file_name: str = "photo.jpg"
+    content_type: str = "image/jpeg"
+
+
+@router.post("/profile/avatar-base64")
+async def upload_avatar_base64(
+    payload: AvatarBase64Request,
+    current_user: User = Depends(get_current_student),
+    db: Session = Depends(get_db)
+):
+    """Upload avatar via base64 JSON (bypasses multipart issues)"""
+
+    # Decode base64
+    try:
+        # Remove data URL prefix if present (e.g. "data:image/jpeg;base64,...")
+        image_b64 = payload.image_data
+        if "," in image_b64:
+            image_b64 = image_b64.split(",", 1)[1]
+        content = base64.b64decode(image_b64)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Image base64 invalide")
+
+    if len(content) > 2 * 1024 * 1024:
+        raise HTTPException(status_code=400, detail="L'image ne doit pas dépasser 2MB")
+
+    if not settings.SUPABASE_URL or not settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=503, detail="Service de stockage non configuré")
+
+    ext = payload.file_name.rsplit(".", 1)[-1].lower() if "." in payload.file_name else "jpg"
+    if ext not in ("jpg", "jpeg", "png", "webp", "gif"):
+        ext = "jpg"
+    path = f"profile-photos/{current_user.id}.{ext}"
+    upload_url = f"{settings.SUPABASE_URL}/storage/v1/object/avatars/{path}"
+
+    try:
+        async with httpx.AsyncClient(timeout=15) as client:
+            resp = await client.put(
+                upload_url,
+                content=content,
+                headers={
+                    "Authorization": f"Bearer {settings.SUPABASE_SERVICE_ROLE_KEY}",
+                    "Content-Type": payload.content_type,
+                    "x-upsert": "true",
+                },
+            )
+        if resp.status_code not in (200, 201):
+            raise HTTPException(status_code=500, detail=f"Erreur upload: {resp.text}")
+    except httpx.RequestError as e:
+        raise HTTPException(status_code=500, detail=f"Erreur réseau: {str(e)}")
+
+    avatar_url = f"{settings.SUPABASE_URL}/storage/v1/object/public/avatars/{path}"
+
+    profile = db.query(StudentProfile).filter(StudentProfile.user_id == current_user.id).first()
+    if profile:
+        profile.avatar_url = avatar_url
+        db.commit()
 
     return {"avatar_url": avatar_url}
 

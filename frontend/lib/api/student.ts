@@ -115,23 +115,20 @@ export const studentAPI = {
     return response.data;
   },
 
-  // Upload avatar - uses Next.js Route Handler to proxy multipart to backend
+  // Upload avatar as base64 JSON (bypasses multipart proxy issues on Vercel)
   uploadAvatar: async (file: File): Promise<{ avatar_url: string }> => {
-    const formData = new FormData();
-    formData.append('file', file);
-    const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
-    const response = await fetch('/api/v1/student/profile/avatar', {
-      method: 'POST',
-      headers: {
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-      },
-      body: formData,
+    const base64 = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
     });
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({ detail: 'Erreur upload' }));
-      throw new Error(error.detail || 'Erreur upload');
-    }
-    return response.json();
+    const response = await apiClient.post('/api/v1/student/profile/avatar-base64', {
+      image_data: base64,
+      file_name: file.name || 'photo.jpg',
+      content_type: file.type || 'image/jpeg',
+    });
+    return response.data;
   },
 
   // Update profile
