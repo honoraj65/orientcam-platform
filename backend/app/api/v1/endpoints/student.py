@@ -115,21 +115,45 @@ async def get_profile(
             detail="Profile not found"
         )
 
-    # Always recalculate completion percentage on GET to ensure it's up to date
-    print(f"\n>>> GET /profile called for user {current_user.id}")
-    print(f">>> Current stored percentage: {profile.completion_percentage}%")
-    new_percentage = calculate_completion_percentage(profile, db)
-    print(f">>> Calculated new percentage: {new_percentage}%")
-    if profile.completion_percentage != new_percentage:
-        print(f">>> Updating percentage from {profile.completion_percentage}% to {new_percentage}%")
-        profile.completion_percentage = new_percentage
-        db.commit()
-        db.refresh(profile)
-        print(f">>> Database updated successfully")
-    else:
-        print(f">>> No update needed, percentage unchanged")
+    # Recalculate completion percentage
+    completion = profile.completion_percentage or 0
+    try:
+        new_percentage = calculate_completion_percentage(profile, db)
+        if profile.completion_percentage != new_percentage:
+            profile.completion_percentage = new_percentage
+            db.commit()
+        completion = profile.completion_percentage or 0
+    except Exception as e:
+        print(f"[student/profile] Warning: could not recalculate completion: {e}", flush=True)
+        try:
+            db.rollback()
+        except Exception:
+            pass
 
-    return profile
+    # Build response from individual fields (avoids ORM lazy loading issues with Pydantic v2)
+    return StudentProfileResponse(
+        id=str(profile.id),
+        user_id=str(profile.user_id),
+        user_type=profile.user_type,
+        university_establishment=profile.university_establishment,
+        university_department=profile.university_department,
+        university_level=profile.university_level,
+        first_name=profile.first_name,
+        last_name=profile.last_name,
+        phone=profile.phone,
+        gender=profile.gender,
+        date_of_birth=profile.date_of_birth,
+        city=profile.city,
+        region=profile.region,
+        current_education_level=profile.current_education_level,
+        bac_series=profile.bac_series,
+        bac_year=profile.bac_year,
+        bac_grade=profile.bac_grade,
+        max_annual_budget=profile.max_annual_budget,
+        financial_situation=profile.financial_situation,
+        financial_aid_eligible=profile.financial_aid_eligible,
+        completion_percentage=completion,
+    )
 
 
 @router.put("/profile", response_model=StudentProfileResponse)
@@ -166,7 +190,42 @@ async def update_profile(
     db.commit()
     db.refresh(profile)
 
-    return profile
+    completion = profile.completion_percentage or 0
+    try:
+        completion = calculate_completion_percentage(profile, db)
+        if profile.completion_percentage != completion:
+            profile.completion_percentage = completion
+            db.commit()
+    except Exception as e:
+        print(f"[student/profile PUT] Warning: could not recalculate completion: {e}", flush=True)
+        try:
+            db.rollback()
+        except Exception:
+            pass
+
+    return StudentProfileResponse(
+        id=str(profile.id),
+        user_id=str(profile.user_id),
+        user_type=profile.user_type,
+        university_establishment=profile.university_establishment,
+        university_department=profile.university_department,
+        university_level=profile.university_level,
+        first_name=profile.first_name,
+        last_name=profile.last_name,
+        phone=profile.phone,
+        gender=profile.gender,
+        date_of_birth=profile.date_of_birth,
+        city=profile.city,
+        region=profile.region,
+        current_education_level=profile.current_education_level,
+        bac_series=profile.bac_series,
+        bac_year=profile.bac_year,
+        bac_grade=profile.bac_grade,
+        max_annual_budget=profile.max_annual_budget,
+        financial_situation=profile.financial_situation,
+        financial_aid_eligible=profile.financial_aid_eligible,
+        completion_percentage=completion,
+    )
 
 
 # Academic Grades Endpoints
