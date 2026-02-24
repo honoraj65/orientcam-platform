@@ -26,6 +26,7 @@ export interface StudentProfile {
   financial_situation?: string;
   financial_aid_eligible?: number;
   completion_percentage: number;
+  avatar_url?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -111,6 +112,16 @@ export const studentAPI = {
   // Get current user's profile
   getProfile: async (): Promise<StudentProfile> => {
     const response = await apiClient.get('/api/v1/student/profile');
+    return response.data;
+  },
+
+  // Upload avatar
+  uploadAvatar: async (file: File): Promise<{ avatar_url: string }> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await apiClient.post('/api/v1/student/profile/avatar', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
     return response.data;
   },
 

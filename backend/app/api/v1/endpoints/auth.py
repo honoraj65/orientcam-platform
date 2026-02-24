@@ -329,6 +329,7 @@ async def get_current_user_info(
                 financial_situation=sp.financial_situation,
                 financial_aid_eligible=sp.financial_aid_eligible,
                 completion_percentage=completion,
+                avatar_url=sp.avatar_url,
             )
     except Exception as e:
         print(f"[auth/me] Warning: could not build student profile: {e}", flush=True)

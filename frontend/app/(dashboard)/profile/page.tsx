@@ -208,10 +208,12 @@ export default function ProfilePage() {
         // Update completion percentage from API
         setCompletionPercentage(profile.completion_percentage || 10);
 
-        // Load saved avatar from localStorage
-        const savedAvatar = localStorage.getItem(`avatar_${user.id}`);
-        if (savedAvatar) {
-          setAvatarPreview(savedAvatar);
+        // Load avatar: server URL first, then localStorage fallback
+        if (profile.avatar_url) {
+          setAvatarPreview(profile.avatar_url);
+        } else {
+          const savedAvatar = localStorage.getItem(`avatar_${user.id}`);
+          if (savedAvatar) setAvatarPreview(savedAvatar);
         }
 
         setIsLoading(false);
@@ -369,39 +371,38 @@ export default function ProfilePage() {
     fileInputRef.current?.click();
   };
 
-  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
     if (!file.type.startsWith('image/')) {
       setError('Veuillez sélectionner une image');
       return;
     }
 
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      setError('L\'image ne doit pas dépasser 5MB');
+    if (file.size > 2 * 1024 * 1024) {
+      setError("L'image ne doit pas dépasser 2MB");
       return;
     }
 
-    // Create preview
+    // Show local preview immediately
     const reader = new FileReader();
-    reader.onloadend = () => {
-      const avatarData = reader.result as string;
-      setAvatarPreview(avatarData);
-
-      // Save to localStorage
-      if (user?.id) {
-        localStorage.setItem(`avatar_${user.id}`, avatarData);
-      }
-
-      setSuccess('Photo de profil mise à jour avec succès !');
-
-      // Clear success message after 3 seconds
-      setTimeout(() => setSuccess(null), 3000);
-    };
+    reader.onloadend = () => setAvatarPreview(reader.result as string);
     reader.readAsDataURL(file);
+
+    // Upload to server
+    try {
+      const result = await studentAPI.uploadAvatar(file);
+      setAvatarPreview(result.avatar_url);
+      // Keep localStorage as cache for faster subsequent loads
+      if (user?.id) {
+        localStorage.setItem(`avatar_${user.id}`, result.avatar_url);
+      }
+      setSuccess('Photo de profil mise à jour avec succès !');
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err: any) {
+      setError("Erreur lors de l'upload de la photo. Réessayez.");
+    }
   };
 
   // ========================================

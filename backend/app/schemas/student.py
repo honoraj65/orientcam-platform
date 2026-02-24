@@ -135,6 +135,7 @@ class StudentProfileResponse(BaseModel):
     financial_situation: Optional[str] = None
     financial_aid_eligible: Optional[int] = None
     completion_percentage: int
+    avatar_url: Optional[str] = None
 
     class Config:
         from_attributes = True

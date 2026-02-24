@@ -47,6 +47,9 @@ class StudentProfile(Base):
     # Profile completion
     completion_percentage = Column(Integer, default=0)
 
+    # Avatar
+    avatar_url = Column(String(500), nullable=True)
+
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 

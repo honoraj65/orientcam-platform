@@ -2,12 +2,14 @@
 Student profile endpoints
 """
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from sqlalchemy.orm import Session
 from datetime import datetime
+import httpx
 
 from app.core.database import get_db
 from app.core.deps import get_current_student
+from app.core.config import settings
 from app.models.user import User
 from app.models.student_profile import StudentProfile
 from app.models.academic_grade import AcademicGrade
@@ -153,7 +155,62 @@ async def get_profile(
         financial_situation=profile.financial_situation,
         financial_aid_eligible=profile.financial_aid_eligible,
         completion_percentage=completion,
+        avatar_url=profile.avatar_url,
     )
+
+
+@router.post("/profile/avatar")
+async def upload_avatar(
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_student),
+    db: Session = Depends(get_db)
+):
+    """Upload or replace profile avatar (stored in Supabase Storage)"""
+
+    # Validate file type
+    if not file.content_type or not file.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="Le fichier doit être une image")
+
+    # Validate file size (max 2MB)
+    content = await file.read()
+    if len(content) > 2 * 1024 * 1024:
+        raise HTTPException(status_code=400, detail="L'image ne doit pas dépasser 2MB")
+
+    if not settings.SUPABASE_URL or not settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=503, detail="Service de stockage non configuré")
+
+    # Upload to Supabase Storage
+    ext = (file.filename or "photo.jpg").rsplit(".", 1)[-1].lower()
+    if ext not in ("jpg", "jpeg", "png", "webp", "gif"):
+        ext = "jpg"
+    path = f"profile-photos/{current_user.id}.{ext}"
+    upload_url = f"{settings.SUPABASE_URL}/storage/v1/object/avatars/{path}"
+
+    try:
+        async with httpx.AsyncClient(timeout=15) as client:
+            resp = await client.put(
+                upload_url,
+                content=content,
+                headers={
+                    "Authorization": f"Bearer {settings.SUPABASE_SERVICE_ROLE_KEY}",
+                    "Content-Type": file.content_type,
+                    "x-upsert": "true",
+                },
+            )
+        if resp.status_code not in (200, 201):
+            raise HTTPException(status_code=500, detail=f"Erreur upload: {resp.text}")
+    except httpx.RequestError as e:
+        raise HTTPException(status_code=500, detail=f"Erreur réseau: {str(e)}")
+
+    avatar_url = f"{settings.SUPABASE_URL}/storage/v1/object/public/avatars/{path}"
+
+    # Save URL in DB
+    profile = db.query(StudentProfile).filter(StudentProfile.user_id == current_user.id).first()
+    if profile:
+        profile.avatar_url = avatar_url
+        db.commit()
+
+    return {"avatar_url": avatar_url}
 
 
 @router.put("/profile", response_model=StudentProfileResponse)
@@ -225,6 +282,7 @@ async def update_profile(
         financial_situation=profile.financial_situation,
         financial_aid_eligible=profile.financial_aid_eligible,
         completion_percentage=completion,
+        avatar_url=profile.avatar_url,
     )
 
 
