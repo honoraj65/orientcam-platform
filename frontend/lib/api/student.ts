@@ -1,3 +1,4 @@
+import axios from 'axios';
 import apiClient from './client';
 
 // ============================================================================
@@ -119,8 +120,13 @@ export const studentAPI = {
   uploadAvatar: async (file: File): Promise<{ avatar_url: string }> => {
     const formData = new FormData();
     formData.append('file', file);
-    const response = await apiClient.post('/api/v1/student/profile/avatar', formData, {
-      headers: { 'Content-Type': undefined as unknown as string },
+    // Use separate axios instance to avoid default Content-Type: application/json
+    const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
+    const response = await axios.post('/api/v1/student/profile/avatar', formData, {
+      headers: {
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+      },
+      timeout: 30000,
     });
     return response.data;
   },
