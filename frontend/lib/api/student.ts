@@ -1,4 +1,3 @@
-import axios from 'axios';
 import apiClient from './client';
 
 // ============================================================================
@@ -116,19 +115,23 @@ export const studentAPI = {
     return response.data;
   },
 
-  // Upload avatar
+  // Upload avatar - uses Next.js Route Handler to proxy multipart to backend
   uploadAvatar: async (file: File): Promise<{ avatar_url: string }> => {
     const formData = new FormData();
     formData.append('file', file);
-    // Use separate axios instance to avoid default Content-Type: application/json
     const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
-    const response = await axios.post('/api/v1/student/profile/avatar', formData, {
+    const response = await fetch('/api/v1/student/profile/avatar', {
+      method: 'POST',
       headers: {
         ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
       },
-      timeout: 30000,
+      body: formData,
     });
-    return response.data;
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ detail: 'Erreur upload' }));
+      throw new Error(error.detail || 'Erreur upload');
+    }
+    return response.json();
   },
 
   // Update profile
