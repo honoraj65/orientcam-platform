@@ -391,19 +391,16 @@ export default function ProfilePage() {
     reader.readAsDataURL(file);
 
     // Upload to server
-    setSuccess('Upload en cours...');
     try {
       const result = await studentAPI.uploadAvatar(file);
       setAvatarPreview(result.avatar_url);
-      // Keep localStorage as cache for faster subsequent loads
       if (user?.id) {
         localStorage.setItem(`avatar_${user.id}`, result.avatar_url);
       }
-      setSuccess('OK! URL: ' + (result?.avatar_url || 'VIDE'));
-      setTimeout(() => setSuccess(null), 30000);
+      setSuccess('Photo de profil mise a jour avec succes !');
+      setTimeout(() => setSuccess(null), 3000);
     } catch (err: any) {
-      const msg = err?.response?.data?.detail || err?.message || String(err);
-      setError('Erreur upload: ' + msg);
+      setError("Erreur lors de l'upload de la photo. Reessayez.");
     }
   };
 

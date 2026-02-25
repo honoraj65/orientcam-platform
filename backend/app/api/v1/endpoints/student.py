@@ -36,8 +36,6 @@ def calculate_completion_percentage(profile: StudentProfile, db: Session) -> int
     - Professional values: 25%
     """
     percentage = 0
-    print(f"\n=== DEBUG: Calculating completion for profile {profile.id} ===")
-    print(f"User type: {profile.user_type}")
 
     # Basic info (25%)
     basic_fields = [
@@ -47,11 +45,9 @@ def calculate_completion_percentage(profile: StudentProfile, db: Session) -> int
     basic_completed = sum(1 for field in basic_fields if field)
     basic_percentage = (basic_completed / len(basic_fields)) * 25
     percentage += basic_percentage
-    print(f"Basic info: {basic_completed}/{len(basic_fields)} fields = {basic_percentage:.1f}%")
 
     # User type specific fields (25%)
     if profile.user_type == 'university_student':
-        # University students: establishment, department, level are REQUIRED
         university_fields = [
             profile.university_establishment,
             profile.university_department,
@@ -59,21 +55,13 @@ def calculate_completion_percentage(profile: StudentProfile, db: Session) -> int
         ]
         type_completed = sum(1 for field in university_fields if field and field.strip())
         type_percentage = (type_completed / len(university_fields)) * 25
-        print(f"University fields: {type_completed}/{len(university_fields)} fields = {type_percentage:.1f}%")
-        print(f"  - establishment: {profile.university_establishment}")
-        print(f"  - department: {profile.university_department}")
-        print(f"  - level: {profile.university_level}")
     else:  # new_bachelor
-        # New bachelors: bac_series and current_education_level are REQUIRED
         bachelor_fields = [
             profile.bac_series,
             profile.current_education_level
         ]
         type_completed = sum(1 for field in bachelor_fields if field and field.strip())
         type_percentage = (type_completed / len(bachelor_fields)) * 25
-        print(f"Bachelor fields: {type_completed}/{len(bachelor_fields)} fields = {type_percentage:.1f}%")
-        print(f"  - bac_series: {profile.bac_series}")
-        print(f"  - current_education_level: {profile.current_education_level}")
     percentage += type_percentage
 
     # Academic grades (25%)
@@ -82,7 +70,6 @@ def calculate_completion_percentage(profile: StudentProfile, db: Session) -> int
     ).count()
     grades_percentage = 25 if grades_count >= 1 else 0
     percentage += grades_percentage
-    print(f"Academic grades: {grades_count} grades = {grades_percentage}%")
 
     # Professional values (25%)
     values = db.query(ProfessionalValue).filter(
@@ -90,13 +77,8 @@ def calculate_completion_percentage(profile: StudentProfile, db: Session) -> int
     ).first()
     values_percentage = 25 if values else 0
     percentage += values_percentage
-    print(f"Professional values: {'exists' if values else 'none'} = {values_percentage}%")
 
-    final_percentage = int(percentage)
-    print(f"TOTAL: {final_percentage}%")
-    print(f"=== END DEBUG ===\n")
-
-    return final_percentage
+    return int(percentage)
 
 
 @router.get("/profile", response_model=StudentProfileResponse)
@@ -178,20 +160,14 @@ async def upload_avatar(
     if len(content) > 2 * 1024 * 1024:
         raise HTTPException(status_code=400, detail="L'image ne doit pas dépasser 2MB")
 
-    print(f"[avatar] SUPABASE_URL set: {bool(settings.SUPABASE_URL)}", flush=True)
-    print(f"[avatar] SERVICE_KEY starts with: {settings.SUPABASE_SERVICE_ROLE_KEY[:20] if settings.SUPABASE_SERVICE_ROLE_KEY else 'EMPTY'}", flush=True)
-
     if not settings.SUPABASE_URL or not settings.SUPABASE_SERVICE_ROLE_KEY:
         raise HTTPException(status_code=503, detail="Service de stockage non configuré")
 
-    # Upload to Supabase Storage
     ext = (file.filename or "photo.jpg").rsplit(".", 1)[-1].lower()
     if ext not in ("jpg", "jpeg", "png", "webp", "gif"):
         ext = "jpg"
     path = f"profile-photos/{current_user.id}.{ext}"
     upload_url = f"{settings.SUPABASE_URL}/storage/v1/object/avatars/{path}"
-    print(f"[avatar] Uploading to: {upload_url}", flush=True)
-    print(f"[avatar] File size: {len(content)} bytes, type: {file.content_type}", flush=True)
 
     try:
         async with httpx.AsyncClient(timeout=15) as client:
@@ -204,22 +180,17 @@ async def upload_avatar(
                     "x-upsert": "true",
                 },
             )
-        print(f"[avatar] Supabase response: {resp.status_code} - {resp.text[:200]}", flush=True)
         if resp.status_code not in (200, 201):
             raise HTTPException(status_code=500, detail=f"Erreur upload: {resp.text}")
     except httpx.RequestError as e:
-        print(f"[avatar] Network error: {e}", flush=True)
         raise HTTPException(status_code=500, detail=f"Erreur réseau: {str(e)}")
 
     avatar_url = f"{settings.SUPABASE_URL}/storage/v1/object/public/avatars/{path}"
 
-    # Save URL in DB
     profile = db.query(StudentProfile).filter(StudentProfile.user_id == current_user.id).first()
-    print(f"[avatar] Profile found: {profile is not None}", flush=True)
     if profile:
         profile.avatar_url = avatar_url
         db.commit()
-        print(f"[avatar] avatar_url saved to DB: {avatar_url}", flush=True)
 
     return {"avatar_url": avatar_url}
 
