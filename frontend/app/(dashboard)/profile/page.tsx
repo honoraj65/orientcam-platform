@@ -391,6 +391,7 @@ export default function ProfilePage() {
     reader.readAsDataURL(file);
 
     // Upload to server
+    setSuccess('Upload en cours...');
     try {
       const result = await studentAPI.uploadAvatar(file);
       setAvatarPreview(result.avatar_url);
@@ -398,10 +399,11 @@ export default function ProfilePage() {
       if (user?.id) {
         localStorage.setItem(`avatar_${user.id}`, result.avatar_url);
       }
-      setSuccess('Photo de profil mise à jour avec succès !');
-      setTimeout(() => setSuccess(null), 3000);
+      setSuccess('Photo de profil mise a jour avec succes !');
+      setTimeout(() => setSuccess(null), 5000);
     } catch (err: any) {
-      setError("Erreur lors de l'upload de la photo. Réessayez.");
+      const msg = err?.response?.data?.detail || err?.message || String(err);
+      setError('Erreur upload: ' + msg);
     }
   };
 
