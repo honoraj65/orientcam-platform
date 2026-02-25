@@ -399,8 +399,8 @@ export default function ProfilePage() {
       if (user?.id) {
         localStorage.setItem(`avatar_${user.id}`, result.avatar_url);
       }
-      setSuccess('Photo de profil mise a jour avec succes !');
-      setTimeout(() => setSuccess(null), 5000);
+      setSuccess('OK! URL: ' + (result?.avatar_url || 'VIDE'));
+      setTimeout(() => setSuccess(null), 30000);
     } catch (err: any) {
       const msg = err?.response?.data?.detail || err?.message || String(err);
       setError('Erreur upload: ' + msg);
