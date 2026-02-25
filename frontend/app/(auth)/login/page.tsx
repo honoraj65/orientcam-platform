@@ -38,7 +38,8 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      const response = await authAPI.login(data);
+      const cleanedData = { email: data.email.trim(), password: data.password };
+      const response = await authAPI.login(cleanedData);
 
       // Store tokens
       localStorage.setItem('access_token', response.access_token);
@@ -113,7 +114,7 @@ export default function LoginPage() {
 
         {/* Login Card */}
         <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={(e) => { e.preventDefault(); e.stopPropagation(); handleSubmit(onSubmit)(e); }} className="space-y-6">
             {/* Error Alert */}
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
