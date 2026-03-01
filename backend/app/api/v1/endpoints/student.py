@@ -26,6 +26,39 @@ from app.schemas.auth import MessageResponse
 router = APIRouter(prefix="/student", tags=["Student Profile"])
 
 
+def _grade_to_response(g: AcademicGrade) -> GradeResponse:
+    """Convert ORM grade to response (handles UUID -> str conversion)"""
+    return GradeResponse(
+        id=str(g.id),
+        student_id=str(g.student_id),
+        subject=g.subject,
+        grade=float(g.grade),
+        coefficient=g.coefficient,
+        academic_year=g.academic_year,
+        term=g.term,
+        created_at=g.created_at,
+        updated_at=g.updated_at,
+    )
+
+
+def _values_to_response(v: ProfessionalValue) -> ValuesResponse:
+    """Convert ORM values to response (handles UUID -> str conversion)"""
+    return ValuesResponse(
+        id=str(v.id),
+        student_id=str(v.student_id),
+        autonomy=v.autonomy,
+        creativity=v.creativity,
+        helping_others=v.helping_others,
+        job_security=v.job_security,
+        salary=v.salary,
+        work_life_balance=v.work_life_balance,
+        prestige=v.prestige,
+        variety=v.variety,
+        created_at=v.created_at,
+        updated_at=v.updated_at,
+    )
+
+
 def calculate_completion_percentage(profile: StudentProfile, db: Session) -> int:
     """Calculate profile completion percentage based on user type
 
@@ -363,7 +396,7 @@ async def get_grades(
     ).all()
 
     print(f"[grades GET] Found {len(grades)} grades", flush=True)
-    return grades
+    return [_grade_to_response(g) for g in grades]
 
 
 @router.post("/grades", response_model=GradeResponse, status_code=status.HTTP_201_CREATED)
@@ -405,7 +438,7 @@ async def create_grade(
     db.commit()
     db.refresh(grade)
 
-    return grade
+    return _grade_to_response(grade)
 
 
 @router.put("/grades/{grade_id}", response_model=GradeResponse)
@@ -452,7 +485,7 @@ async def update_grade(
     db.commit()
     db.refresh(grade)
 
-    return grade
+    return _grade_to_response(grade)
 
 
 @router.delete("/grades/{grade_id}", response_model=MessageResponse)
@@ -524,7 +557,7 @@ async def get_values(
             detail="Professional values not found. Please create them first."
         )
 
-    return values
+    return _values_to_response(values)
 
 
 @router.post("/values", response_model=ValuesResponse, status_code=status.HTTP_201_CREATED)
@@ -586,7 +619,7 @@ async def create_values(
 
     # Note: Profile completion percentage will be recalculated on next GET /profile
 
-    return values
+    return _values_to_response(values)
 
 
 @router.put("/values", response_model=ValuesResponse)
@@ -633,7 +666,7 @@ async def update_values(
 
     # Note: Profile completion percentage will be recalculated on next GET /profile
 
-    return values
+    return _values_to_response(values)
 
 
 @router.delete("/values", response_model=MessageResponse)
