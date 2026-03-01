@@ -3,7 +3,7 @@ Academic grade model
 """
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, String, Integer, DateTime, CheckConstraint, ForeignKey
+from sqlalchemy import Column, String, Integer, Float, DateTime, CheckConstraint, ForeignKey
 from sqlalchemy.orm import relationship
 from app.core.database import Base
 
@@ -16,7 +16,7 @@ class AcademicGrade(Base):
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     student_id = Column(String(36), ForeignKey("student_profiles.id", ondelete="CASCADE"), nullable=False, index=True)
     subject = Column(String(100), nullable=False)
-    grade = Column(Integer, nullable=False)
+    grade = Column(Float, nullable=False)
     coefficient = Column(Integer, nullable=False, default=1)
     academic_year = Column(String(9), nullable=False)
     term = Column(String(20), nullable=False)

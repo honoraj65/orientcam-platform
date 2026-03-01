@@ -342,16 +342,19 @@ async def get_grades(
 
     Returns list of grades sorted by academic year and term
     """
+    print(f"[grades GET] user_id={current_user.id}", flush=True)
     profile = db.query(StudentProfile).filter(
         StudentProfile.user_id == current_user.id
     ).first()
 
     if not profile:
+        print(f"[grades GET] Profile not found for user {current_user.id}", flush=True)
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Profile not found"
         )
 
+    print(f"[grades GET] profile_id={profile.id}", flush=True)
     grades = db.query(AcademicGrade).filter(
         AcademicGrade.student_id == profile.id
     ).order_by(
@@ -359,6 +362,7 @@ async def get_grades(
         AcademicGrade.term
     ).all()
 
+    print(f"[grades GET] Found {len(grades)} grades", flush=True)
     return grades
 
 

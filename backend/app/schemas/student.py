@@ -144,7 +144,7 @@ class StudentProfileResponse(BaseModel):
 class GradeCreate(BaseModel):
     """Schema for creating an academic grade"""
     subject: str = Field(..., min_length=2, max_length=100)
-    grade: int = Field(..., ge=0, le=20)
+    grade: float = Field(..., ge=0, le=20)
     coefficient: int = Field(1, ge=1, le=10)
     academic_year: str = Field(..., pattern=r"^\d{4}-\d{4}$")
     term: str = Field(..., max_length=20)
@@ -179,7 +179,7 @@ class GradeCreate(BaseModel):
 class GradeUpdate(BaseModel):
     """Schema for updating an academic grade"""
     subject: Optional[str] = Field(None, min_length=2, max_length=100)
-    grade: Optional[int] = Field(None, ge=0, le=20)
+    grade: Optional[float] = Field(None, ge=0, le=20)
     coefficient: Optional[int] = Field(None, ge=1, le=10)
     academic_year: Optional[str] = Field(None, pattern=r"^\d{4}-\d{4}$")
     term: Optional[str] = Field(None, max_length=20)
@@ -190,7 +190,7 @@ class GradeResponse(BaseModel):
     id: str
     student_id: str
     subject: str
-    grade: int
+    grade: float
     coefficient: int
     academic_year: str
     term: str
