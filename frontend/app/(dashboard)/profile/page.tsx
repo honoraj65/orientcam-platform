@@ -435,7 +435,7 @@ export default function ProfilePage() {
           {/* Left Sidebar - Profile Overview */}
           <aside className="lg:w-64 mb-8 lg:mb-0 flex-shrink-0">
             {/* Profile Card */}
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 sticky top-24">
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 lg:sticky lg:top-24">
               {/* Avatar */}
               <div className="flex flex-col items-center mb-6">
                 <div className="relative group">
