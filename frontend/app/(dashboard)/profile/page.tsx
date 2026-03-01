@@ -618,7 +618,7 @@ export default function ProfilePage() {
               </svg>
               Type de profil
             </h3>
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-gray-800 mb-4">
               Sélectionnez votre situation actuelle pour une orientation personnalisée
             </p>
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4">
@@ -685,14 +685,14 @@ export default function ProfilePage() {
                 </svg>
                 Informations Universitaires
               </h3>
-              <p className="text-sm text-gray-600 mb-6">
+              <p className="text-sm text-gray-800 mb-6">
                 Sélectionnez votre établissement, département et niveau actuel
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Establishment */}
                 <div>
-                  <label htmlFor="university_establishment" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="university_establishment" className="block text-sm font-medium text-gray-900 mb-2">
                     Établissement <span className="text-red-500">*</span>
                   </label>
                   <select
@@ -726,7 +726,7 @@ export default function ProfilePage() {
 
                 {/* Department */}
                 <div>
-                  <label htmlFor="university_department" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="university_department" className="block text-sm font-medium text-gray-900 mb-2">
                     Département/Filière <span className="text-red-500">*</span>
                   </label>
                   <select
@@ -764,7 +764,7 @@ export default function ProfilePage() {
 
                 {/* Level */}
                 <div>
-                  <label htmlFor="university_level" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="university_level" className="block text-sm font-medium text-gray-900 mb-2">
                     Niveau <span className="text-red-500">*</span>
                   </label>
                   <select
@@ -808,7 +808,7 @@ export default function ProfilePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* First Name */}
               <div>
-                <label htmlFor="first_name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="first_name" className="block text-sm font-medium text-gray-900 mb-2">
                   Prénom <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -825,7 +825,7 @@ export default function ProfilePage() {
 
               {/* Last Name */}
               <div>
-                <label htmlFor="last_name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="last_name" className="block text-sm font-medium text-gray-900 mb-2">
                   Nom <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -842,7 +842,7 @@ export default function ProfilePage() {
 
               {/* Gender */}
               <div>
-                <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="gender" className="block text-sm font-medium text-gray-900 mb-2">
                   Genre
                 </label>
                 <select {...register('gender')} id="gender" className="input" disabled={isSaving}>
@@ -855,7 +855,7 @@ export default function ProfilePage() {
 
               {/* Date of Birth */}
               <div>
-                <label htmlFor="date_of_birth" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="date_of_birth" className="block text-sm font-medium text-gray-900 mb-2">
                   Date de naissance
                 </label>
                 <input
@@ -869,7 +869,7 @@ export default function ProfilePage() {
 
               {/* Phone */}
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-900 mb-2">
                   Téléphone
                 </label>
                 <input
@@ -887,7 +887,7 @@ export default function ProfilePage() {
 
               {/* City */}
               <div>
-                <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="city" className="block text-sm font-medium text-gray-900 mb-2">
                   Ville de résidence
                 </label>
                 <select {...register('city')} id="city" className="input" disabled={isSaving}>
@@ -914,7 +914,7 @@ export default function ProfilePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Current Level */}
               <div>
-                <label htmlFor="current_education_level" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="current_education_level" className="block text-sm font-medium text-gray-900 mb-2">
                   {selectedUserType === 'new_bachelor' ? 'Niveau avant le Bac' : 'Niveau d\'études actuel'} {selectedUserType === 'new_bachelor' && <span className="text-red-500">*</span>}
                 </label>
                 <select
@@ -955,7 +955,7 @@ export default function ProfilePage() {
 
               {/* BAC Grade */}
               <div>
-                <label htmlFor="bac_grade" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="bac_grade" className="block text-sm font-medium text-gray-900 mb-2">
                   Note du Baccalauréat (/20)
                 </label>
                 <input
@@ -976,7 +976,7 @@ export default function ProfilePage() {
 
               {/* BAC Series */}
               <div>
-                <label htmlFor="bac_series" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="bac_series" className="block text-sm font-medium text-gray-900 mb-2">
                   Série du Baccalauréat {selectedUserType === 'new_bachelor' && <span className="text-red-500">*</span>}
                 </label>
                 <select
@@ -1006,7 +1006,7 @@ export default function ProfilePage() {
 
               {/* BAC Year */}
               <div>
-                <label htmlFor="bac_year" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="bac_year" className="block text-sm font-medium text-gray-900 mb-2">
                   Année d'obtention du Bac
                 </label>
                 <input
@@ -1036,7 +1036,7 @@ export default function ProfilePage() {
             </h3>
 
             <div>
-              <label htmlFor="financial_situation" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="financial_situation" className="block text-sm font-medium text-gray-900 mb-2">
                 Capacité financière (optionnel)
               </label>
               <select
