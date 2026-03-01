@@ -295,7 +295,8 @@ export default function GradesPage() {
         setIsLoading(false);
       } catch (err: any) {
         console.error('Failed to load data:', err);
-        setError('Impossible de charger les données');
+        const detail = err.response?.data?.detail || err.message || 'Erreur inconnue';
+        setError(`Impossible de charger les données: ${detail}`);
         setIsLoading(false);
       }
     };
