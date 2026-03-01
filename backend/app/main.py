@@ -86,6 +86,29 @@ async def create_tables():
     except Exception as e:
         print(f"[STARTUP] Warning: could not create tables: {e}", flush=True)
 
+    # Run pending migrations
+    try:
+        from sqlalchemy import text
+        with engine.connect() as conn:
+            # Check if grade column is still integer
+            result = conn.execute(text(
+                "SELECT data_type FROM information_schema.columns "
+                "WHERE table_name = 'academic_grades' AND column_name = 'grade'"
+            ))
+            row = result.fetchone()
+            if row and row[0] in ('integer', 'bigint', 'smallint'):
+                print("[STARTUP] Migrating grade column from INTEGER to FLOAT...", flush=True)
+                conn.execute(text(
+                    "ALTER TABLE academic_grades ALTER COLUMN grade TYPE DOUBLE PRECISION "
+                    "USING grade::double precision"
+                ))
+                conn.commit()
+                print("[STARTUP] Grade column migrated successfully!", flush=True)
+            else:
+                print(f"[STARTUP] Grade column type: {row[0] if row else 'unknown'} - no migration needed", flush=True)
+    except Exception as e:
+        print(f"[STARTUP] Migration warning: {e}", flush=True)
+
 
 # Include routers
 app.include_router(auth.router, prefix="/api/v1")
@@ -168,7 +191,7 @@ async def global_exception_handler(request: Request, exc: Exception):
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         content={
-            "detail": "Internal server error" if not settings.DEBUG else str(exc)
+            "detail": f"Internal server error: {type(exc).__name__}: {str(exc)}"
         }
     )
 
