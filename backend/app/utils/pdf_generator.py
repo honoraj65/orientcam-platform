@@ -342,14 +342,14 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
         ('LINEABOVE', (0, 0), (-1, 0), 0.5, _hex(GRAY_200)),
     ]))
     elements.append(profile_table)
-    elements.append(Spacer(1, 1 * cm))
+    elements.append(Spacer(1, 0.6 * cm))
 
     # ============================================================
-    # 2. CODE HOLLAND
+    # 2. CODE HOLLAND (même page que le profil)
     # ============================================================
     elements.append(Paragraph("2. Votre Code Holland", section_title_style))
     elements.append(_draw_decorated_line())
-    elements.append(Spacer(1, 0.3 * cm))
+    elements.append(Spacer(1, 0.2 * cm))
 
     # Boîtes colorées du code Holland
     holland_drawing = _draw_holland_code_boxes(riasec_test.holland_code)
@@ -361,21 +361,21 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
     ]))
     elements.append(holland_table)
 
-    elements.append(Spacer(1, 0.8 * cm))
+    elements.append(Spacer(1, 0.4 * cm))
     elements.append(Paragraph(
         "Vos trois dimensions dominantes définissent votre personnalité professionnelle "
         "et les environnements dans lesquels vous vous épanouirez le mieux.",
         ParagraphStyle('HollandDesc', parent=caption_style, fontSize=10,
                        textColor=_hex(GRAY_500))
     ))
-    elements.append(Spacer(1, 0.8 * cm))
+    elements.append(Spacer(1, 0.6 * cm))
 
     # ============================================================
-    # 3. SCORES PAR DIMENSION
+    # 3. SCORES PAR DIMENSION (flux continu, pas de page break)
     # ============================================================
     elements.append(Paragraph("3. Scores par Dimension", section_title_style))
     elements.append(_draw_decorated_line())
-    elements.append(Spacer(1, 0.3 * cm))
+    elements.append(Spacer(1, 0.2 * cm))
 
     # Construire les lignes du tableau avec barres visuelles
     table_header_style = ParagraphStyle('TableHeader', parent=normal_style, textColor=colors.white, fontSize=10)
@@ -450,7 +450,6 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
     # ============================================================
     # 4. CARRIÈRES RECOMMANDÉES
     # ============================================================
-    elements.append(PageBreak())
     elements.append(Paragraph("4. Carrières Recommandées", section_title_style))
     elements.append(_draw_decorated_line())
     elements.append(Spacer(1, 0.3 * cm))
