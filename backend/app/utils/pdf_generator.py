@@ -237,7 +237,7 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
                        alignment=TA_CENTER, textColor=_hex(GRAY_500), spaceAfter=4)
     ))
     elements.append(Paragraph(
-        "Plateforme d'Orientation Académique et Professionnelle",
+        "Plateforme d'Orientation Académique de l'Université de Bertoua",
         ParagraphStyle('BrandDesc', parent=normal_style, fontSize=11,
                        alignment=TA_CENTER, textColor=_hex(GRAY_500), spaceAfter=20)
     ))
@@ -667,13 +667,8 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
         hAlign='CENTER'
     ))
     elements.append(Paragraph(
-        "OrientUniv - Plateforme d'Orientation Académique",
+        "OrientUniv - Plateforme d'Orientation Académique de l'Université de Bertoua",
         ParagraphStyle('FinalFooter', parent=caption_style, fontSize=9,
-                       textColor=_hex(GRAY_500))
-    ))
-    elements.append(Paragraph(
-        "Université de Bertoua - Cameroun",
-        ParagraphStyle('FinalFooter2', parent=caption_style, fontSize=8,
                        textColor=_hex(GRAY_500))
     ))
     elements.append(Paragraph(
