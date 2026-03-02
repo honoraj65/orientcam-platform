@@ -2,8 +2,11 @@
 Authentication Pydantic schemas
 """
 import re
-from typing import Optional, TYPE_CHECKING
-from pydantic import BaseModel, EmailStr, field_validator, Field
+from typing import Annotated, Optional, TYPE_CHECKING
+from pydantic import BaseModel, BeforeValidator, EmailStr, field_validator, Field
+
+# Convert UUID objects to strings automatically
+StrUUID = Annotated[str, BeforeValidator(lambda v: str(v) if v is not None else v)]
 
 if TYPE_CHECKING:
     from app.schemas.student import StudentProfileResponse
@@ -58,7 +61,7 @@ class TokenResponse(BaseModel):
 
 class UserInfo(BaseModel):
     """Schema for user information in token response"""
-    id: str
+    id: StrUUID
     email: str
     role: str
     first_name: Optional[str] = None

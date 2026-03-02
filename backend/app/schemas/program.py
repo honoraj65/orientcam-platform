@@ -1,13 +1,17 @@
 """
 Program Pydantic schemas
 """
-from typing import List, Optional
-from pydantic import BaseModel, Field
+from typing import Annotated, List, Optional
+from pydantic import BaseModel, Field, BeforeValidator
+
+# Convert UUID objects to strings automatically
+StrUUID = Annotated[str, BeforeValidator(lambda v: str(v) if v is not None else v)]
+OptStrUUID = Annotated[Optional[str], BeforeValidator(lambda v: str(v) if v is not None else v)]
 
 
 class ProgramSubjectResponse(BaseModel):
     """Schema for program subject"""
-    id: str
+    id: StrUUID
     name: str
     credits: int
     semester: int
@@ -19,7 +23,7 @@ class ProgramSubjectResponse(BaseModel):
 
 class MasterProgramBrief(BaseModel):
     """Schema for brief master program info"""
-    id: str
+    id: StrUUID
     code: str
     name: str
     duration_years: Optional[int] = None
@@ -30,7 +34,7 @@ class MasterProgramBrief(BaseModel):
 
 class ProgramListItem(BaseModel):
     """Schema for program in list view"""
-    id: str
+    id: StrUUID
     code: str
     name: str
     university: Optional[str] = None
@@ -44,7 +48,7 @@ class ProgramListItem(BaseModel):
     employment_rate: Optional[int] = None
     capacity: int
     is_active: bool
-    master_program_id: Optional[str] = None
+    master_program_id: OptStrUUID = None
     master_program: Optional["MasterProgramBrief"] = None
 
     class Config:
@@ -54,7 +58,7 @@ class ProgramListItem(BaseModel):
 
 class ProgramDetail(BaseModel):
     """Schema for detailed program view"""
-    id: str
+    id: StrUUID
     code: str
     name: str
     university: Optional[str] = None
@@ -88,7 +92,7 @@ class ProgramDetail(BaseModel):
     is_active: bool
 
     # Master program link
-    master_program_id: Optional[str] = None
+    master_program_id: OptStrUUID = None
     master_program: Optional[MasterProgramBrief] = None
 
     # Subjects

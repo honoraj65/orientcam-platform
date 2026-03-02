@@ -1,8 +1,11 @@
 """
 RIASEC test Pydantic schemas
 """
-from typing import Dict, List, Optional
-from pydantic import BaseModel, field_validator, Field
+from typing import Annotated, Dict, List, Optional
+from pydantic import BaseModel, BeforeValidator, field_validator, Field
+
+# Convert UUID objects to strings automatically
+StrUUID = Annotated[str, BeforeValidator(lambda v: str(v) if v is not None else v)]
 
 
 class RiasecDimensionResponse(BaseModel):
@@ -18,8 +21,8 @@ class RiasecDimensionResponse(BaseModel):
 
 class RiasecQuestionResponse(BaseModel):
     """Schema for RIASEC question"""
-    id: str
-    dimension_id: str
+    id: StrUUID
+    dimension_id: StrUUID
     question_number: int
     text: str
     reverse_scored: bool
@@ -106,7 +109,7 @@ class RiasecInterpretation(BaseModel):
 
 class RiasecResultResponse(BaseModel):
     """Schema for RIASEC test result"""
-    test_id: str
+    test_id: StrUUID
     scores: RiasecScores
     holland_code: str
     interpretations: List[RiasecInterpretation]
@@ -118,7 +121,7 @@ class RiasecResultResponse(BaseModel):
 
 class RiasecHistoryItem(BaseModel):
     """Schema for RIASEC test history item"""
-    id: str
+    id: StrUUID
     holland_code: str
     realistic_score: int
     investigative_score: int

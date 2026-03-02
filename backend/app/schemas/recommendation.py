@@ -1,9 +1,12 @@
 """
 Recommendation Pydantic schemas
 """
-from typing import List, Optional
-from pydantic import BaseModel, Field
+from typing import Annotated, List, Optional
+from pydantic import BaseModel, BeforeValidator, Field
 from app.schemas.program import ProgramListItem
+
+# Convert UUID objects to strings automatically
+StrUUID = Annotated[str, BeforeValidator(lambda v: str(v) if v is not None else v)]
 
 
 class RecommendationScores(BaseModel):
@@ -18,9 +21,9 @@ class RecommendationScores(BaseModel):
 
 class RecommendationResponse(BaseModel):
     """Schema for recommendation response"""
-    id: str
-    student_profile_id: str
-    program_id: str
+    id: StrUUID
+    student_profile_id: StrUUID
+    program_id: StrUUID
     ranking: int
     total_score: int
     riasec_score: int
@@ -39,9 +42,9 @@ class RecommendationResponse(BaseModel):
 
 class RecommendationWithDetails(BaseModel):
     """Schema for recommendation with program details"""
-    id: str
-    student_profile_id: str
-    program_id: str
+    id: StrUUID
+    student_profile_id: StrUUID
+    program_id: StrUUID
     ranking: int
     total_score: int
     riasec_score: int

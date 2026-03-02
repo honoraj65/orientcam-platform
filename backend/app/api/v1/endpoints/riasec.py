@@ -191,8 +191,14 @@ async def get_test_questions(db: Session = Depends(get_db)):
     questions = db.query(RiasecQuestion).order_by(RiasecQuestion.question_number).all()
 
     return RiasecTestQuestionsResponse(
-        dimensions=[RiasecDimensionResponse.model_validate(d) for d in dimensions],
-        questions=[RiasecQuestionResponse.model_validate(q) for q in questions]
+        dimensions=[RiasecDimensionResponse(
+            code=d.code, name=d.name, description=d.description, color=d.color
+        ) for d in dimensions],
+        questions=[RiasecQuestionResponse(
+            id=str(q.id), dimension_id=str(q.dimension_id),
+            question_number=q.question_number, text=q.text,
+            reverse_scored=q.reverse_scored
+        ) for q in questions]
     )
 
 
@@ -278,7 +284,7 @@ async def submit_test(
             ))
 
     return RiasecResultResponse(
-        test_id=riasec_test.id,
+        test_id=str(riasec_test.id),
         scores=RiasecScores(
             realistic=scores["R"],
             investigative=scores["I"],
@@ -357,7 +363,7 @@ async def get_latest_result(
             ))
 
     return RiasecResultResponse(
-        test_id=riasec_test.id,
+        test_id=str(riasec_test.id),
         scores=RiasecScores(
             realistic=riasec_test.realistic_score,
             investigative=riasec_test.investigative_score,
@@ -508,7 +514,18 @@ async def get_test_history(
         RiasecTest.student_id == profile.id
     ).order_by(RiasecTest.created_at.desc()).all()
 
-    return [RiasecHistoryItem.model_validate(test) for test in tests]
+    return [RiasecHistoryItem(
+        id=str(test.id),
+        holland_code=test.holland_code,
+        realistic_score=test.realistic_score,
+        investigative_score=test.investigative_score,
+        artistic_score=test.artistic_score,
+        social_score=test.social_score,
+        enterprising_score=test.enterprising_score,
+        conventional_score=test.conventional_score,
+        duration_seconds=test.duration_seconds,
+        created_at=test.created_at.isoformat(),
+    ) for test in tests]
 
 
 @router.get("/careers/{holland_code}", response_model=RiasecCareerMatch)

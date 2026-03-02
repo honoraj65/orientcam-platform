@@ -2,9 +2,12 @@
 Student profile Pydantic schemas
 """
 import re
-from typing import Optional
+from typing import Annotated, Optional
 from datetime import date, datetime
-from pydantic import BaseModel, field_validator, Field
+from pydantic import BaseModel, BeforeValidator, field_validator, Field
+
+# Convert UUID objects to strings automatically
+StrUUID = Annotated[str, BeforeValidator(lambda v: str(v) if v is not None else v)]
 
 
 class StudentProfileUpdate(BaseModel):
@@ -114,8 +117,8 @@ class StudentProfileUpdate(BaseModel):
 
 class StudentProfileResponse(BaseModel):
     """Schema for student profile response"""
-    id: str
-    user_id: str
+    id: StrUUID
+    user_id: StrUUID
     user_type: Optional[str] = "new_bachelor"
     university_establishment: Optional[str] = None
     university_department: Optional[str] = None
@@ -187,8 +190,8 @@ class GradeUpdate(BaseModel):
 
 class GradeResponse(BaseModel):
     """Schema for academic grade response"""
-    id: str
-    student_id: str
+    id: StrUUID
+    student_id: StrUUID
     subject: str
     grade: float
     coefficient: int
@@ -227,8 +230,8 @@ class ValuesUpdate(BaseModel):
 
 class ValuesResponse(BaseModel):
     """Schema for professional values response"""
-    id: str
-    student_id: str
+    id: StrUUID
+    student_id: StrUUID
     autonomy: int
     creativity: int
     helping_others: int
