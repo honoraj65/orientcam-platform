@@ -294,10 +294,9 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
     elements.append(PageBreak())
 
     # ============================================================
-    # 1. INFORMATIONS DU PROFIL
+    # 1. INFORMATIONS DU PROFIL (compact)
     # ============================================================
     elements.append(Paragraph("1. Informations du Profil", section_title_style))
-    elements.append(_draw_decorated_line())
 
     profile_name = f"{student_profile.last_name} {student_profile.first_name}".title()
     email = student_profile.user.email if student_profile.user else 'N/A'
@@ -333,8 +332,8 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
         ('FONTSIZE', (0, 0), (-1, -1), 10),
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('TOPPADDING', (0, 0), (-1, -1), 9),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 9),
+        ('TOPPADDING', (0, 0), (-1, -1), 7),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 7),
         ('LEFTPADDING', (0, 0), (-1, -1), 10),
         ('RIGHTPADDING', (0, 0), (-1, -1), 10),
         ('LINEBELOW', (0, 0), (-1, -2), 0.5, _hex(GRAY_200)),
@@ -342,42 +341,25 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
         ('LINEABOVE', (0, 0), (-1, 0), 0.5, _hex(GRAY_200)),
     ]))
     elements.append(profile_table)
-    elements.append(Spacer(1, 0.6 * cm))
+    elements.append(Spacer(1, 0.4 * cm))
 
     # ============================================================
-    # 2. CODE HOLLAND (même page que le profil)
+    # 2. RÉSULTATS RIASEC (Holland Code + Scores fusionnés)
     # ============================================================
-    elements.append(Paragraph("2. Votre Code Holland", section_title_style))
-    elements.append(_draw_decorated_line())
-    elements.append(Spacer(1, 0.2 * cm))
+    elements.append(Paragraph("2. Résultats RIASEC", section_title_style))
 
-    # Boîtes colorées du code Holland
+    # Boîtes colorées du code Holland (intégrées directement)
     holland_drawing = _draw_holland_code_boxes(riasec_test.holland_code)
-    # Centrer le drawing via un tableau
     holland_table = Table([[holland_drawing]], colWidths=[CONTENT_WIDTH])
     holland_table.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
     ]))
     elements.append(holland_table)
+    elements.append(Spacer(1, 0.3 * cm))
 
-    elements.append(Spacer(1, 0.4 * cm))
-    elements.append(Paragraph(
-        "Vos trois dimensions dominantes définissent votre personnalité professionnelle "
-        "et les environnements dans lesquels vous vous épanouirez le mieux.",
-        ParagraphStyle('HollandDesc', parent=caption_style, fontSize=10,
-                       textColor=_hex(GRAY_500))
-    ))
-    elements.append(Spacer(1, 0.6 * cm))
-
-    # ============================================================
-    # 3. SCORES PAR DIMENSION (flux continu, pas de page break)
-    # ============================================================
-    elements.append(Paragraph("3. Scores par Dimension", section_title_style))
-    elements.append(_draw_decorated_line())
-    elements.append(Spacer(1, 0.2 * cm))
-
-    # Construire les lignes du tableau avec barres visuelles
+    # Tableau des scores avec barres visuelles
     table_header_style = ParagraphStyle('TableHeader', parent=normal_style, textColor=colors.white, fontSize=10)
     table_header_center = ParagraphStyle('TableHeaderC', parent=table_header_style, alignment=TA_CENTER)
 
@@ -394,7 +376,6 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
         pct = score['percentage']
         color = DIMENSION_COLORS.get(code, PRIMARY_BLUE_LIGHT)
 
-        # Badge coloré avec nom
         dim_label = Paragraph(
             f'<font color="{color}"><b>{code}</b></font> - {name}'
             + (f'  <font size="7" color="{EMERALD}"><b>#{idx + 1}</b></font>' if idx < 3 else ''),
@@ -402,10 +383,8 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
                            textColor=_hex(GRAY_900))
         )
 
-        # Barre visuelle
         bar = _draw_score_bar(pct, code, bar_width=200)
 
-        # Score en gras
         score_label = Paragraph(
             f'<b><font color="{color}" size="12">{pct}%</font></b>',
             ParagraphStyle(f'ScoreLabel_{code}', parent=normal_style, alignment=TA_CENTER)
@@ -415,44 +394,37 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
 
     scores_table = Table(score_rows, colWidths=[5.5 * cm, 8 * cm, 2.5 * cm])
     scores_table.setStyle(TableStyle([
-        # En-tête
         ('BACKGROUND', (0, 0), (-1, 0), _hex(PRIMARY_BLUE)),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-        # Lignes alternées
         ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, _hex(GRAY_50)]),
-        # Alignement
         ('ALIGN', (0, 0), (0, -1), 'LEFT'),
         ('ALIGN', (1, 0), (1, -1), 'CENTER'),
         ('ALIGN', (2, 0), (2, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        # Espacement
-        ('TOPPADDING', (0, 0), (-1, 0), 10),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 10),
-        ('TOPPADDING', (0, 1), (-1, -1), 8),
-        ('BOTTOMPADDING', (0, 1), (-1, -1), 8),
+        ('TOPPADDING', (0, 0), (-1, 0), 8),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+        ('TOPPADDING', (0, 1), (-1, -1), 6),
+        ('BOTTOMPADDING', (0, 1), (-1, -1), 6),
         ('LEFTPADDING', (0, 0), (-1, -1), 10),
         ('RIGHTPADDING', (0, 0), (-1, -1), 10),
-        # Bordures subtiles
         ('LINEBELOW', (0, 0), (-1, 0), 1.5, _hex(PRIMARY_BLUE)),
         ('LINEBELOW', (0, 1), (-1, -2), 0.5, _hex(GRAY_200)),
         ('LINEBELOW', (0, -1), (-1, -1), 1, _hex(GRAY_200)),
     ]))
     elements.append(scores_table)
-    elements.append(Spacer(1, 0.5 * cm))
+    elements.append(Spacer(1, 0.3 * cm))
 
-    # Légende des top 3
+    # Légende
     elements.append(Paragraph(
-        f'<font color="{EMERALD}"><b>#1 #2 #3</b></font> = Vos trois dimensions dominantes (Code Holland)',
+        f'<font color="{EMERALD}"><b>#1 #2 #3</b></font> = Vos dimensions dominantes (Code Holland : {riasec_test.holland_code})',
         ParagraphStyle('Legend', parent=caption_style, alignment=TA_LEFT)
     ))
-    elements.append(Spacer(1, 0.5 * cm))
+    elements.append(Spacer(1, 0.4 * cm))
 
     # ============================================================
-    # 4. CARRIÈRES RECOMMANDÉES
+    # 3. CARRIÈRES RECOMMANDÉES
     # ============================================================
-    elements.append(Paragraph("4. Carrières Recommandées", section_title_style))
-    elements.append(_draw_decorated_line())
-    elements.append(Spacer(1, 0.3 * cm))
+    elements.append(Paragraph("3. Carrières Recommandées", section_title_style))
 
     for career_data in careers_data:
         if not career_data.get('dimension'):
@@ -516,7 +488,7 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
     # ============================================================
     if recommendations_data and len(recommendations_data) > 0:
         elements.append(PageBreak())
-        elements.append(Paragraph("5. Programmes Académiques Recommandés", section_title_style))
+        elements.append(Paragraph("4. Programmes Académiques Recommandés", section_title_style))
         elements.append(_draw_decorated_line())
         elements.append(Paragraph(
             f'{len(recommendations_data)} programme{"s" if len(recommendations_data) > 1 else ""} '
@@ -650,7 +622,7 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
     elif recommendations_data is not None:
         # État vide : aucune recommandation
         elements.append(Spacer(1, 1 * cm))
-        elements.append(Paragraph("5. Programmes Académiques Recommandés", section_title_style))
+        elements.append(Paragraph("4. Programmes Académiques Recommandés", section_title_style))
         elements.append(_draw_decorated_line())
         elements.append(Paragraph(
             "Aucun programme recommandé pour le moment. "
