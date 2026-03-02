@@ -70,7 +70,8 @@ export default function RiasecQuizPage() {
         setIsLoading(false);
       } catch (err: any) {
         console.error('Failed to load questions:', err);
-        setError('Impossible de charger les questions du test');
+        const detail = err.response?.data?.detail || err.message || 'Erreur inconnue';
+        setError(`Impossible de charger les questions: ${detail}`);
         setIsLoading(false);
       }
     };
@@ -210,11 +211,11 @@ export default function RiasecQuizPage() {
     );
   }
 
-  if (questions.length === 0) {
+  if (error || questions.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <p className="text-red-600 mb-4">Aucune question disponible</p>
+          <p className="text-red-600 mb-4">{error || 'Aucune question disponible'}</p>
           <Link href="/test-riasec" className="btn btn-primary">
             Retour
           </Link>

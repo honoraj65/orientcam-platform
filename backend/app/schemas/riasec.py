@@ -10,6 +10,7 @@ StrUUID = Annotated[str, BeforeValidator(lambda v: str(v) if v is not None else 
 
 class RiasecDimensionResponse(BaseModel):
     """Schema for RIASEC dimension"""
+    id: StrUUID
     code: str
     name: str
     description: str

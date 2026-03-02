@@ -192,7 +192,7 @@ async def get_test_questions(db: Session = Depends(get_db)):
 
     return RiasecTestQuestionsResponse(
         dimensions=[RiasecDimensionResponse(
-            code=d.code, name=d.name, description=d.description, color=d.color
+            id=str(d.id), code=d.code, name=d.name, description=d.description, color=d.color
         ) for d in dimensions],
         questions=[RiasecQuestionResponse(
             id=str(q.id), dimension_id=str(q.dimension_id),
