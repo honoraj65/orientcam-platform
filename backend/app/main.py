@@ -118,6 +118,34 @@ async def create_tables():
     except Exception as e:
         print(f"[STARTUP] Migration warning: {e}", flush=True)
 
+    # Ensure riasec_test_drafts table exists
+    try:
+        from sqlalchemy import text
+        with engine.connect() as conn:
+            result = conn.execute(text(
+                "SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'riasec_test_drafts')"
+            ))
+            exists = result.scalar()
+            if not exists:
+                print("[STARTUP] Creating riasec_test_drafts table...", flush=True)
+                conn.execute(text("""
+                    CREATE TABLE riasec_test_drafts (
+                        id VARCHAR(36) PRIMARY KEY,
+                        student_id VARCHAR(36) NOT NULL UNIQUE REFERENCES student_profiles(id) ON DELETE CASCADE,
+                        answers JSON NOT NULL DEFAULT '{}',
+                        current_question_index INTEGER NOT NULL DEFAULT 0,
+                        created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+                        updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+                    )
+                """))
+                conn.execute(text("CREATE INDEX ix_riasec_test_drafts_student_id ON riasec_test_drafts(student_id)"))
+                conn.commit()
+                print("[STARTUP] riasec_test_drafts table created!", flush=True)
+            else:
+                print("[STARTUP] riasec_test_drafts table exists", flush=True)
+    except Exception as e:
+        print(f"[STARTUP] riasec_test_drafts migration warning: {e}", flush=True)
+
 
 # Include routers
 app.include_router(auth.router, prefix="/api/v1")
