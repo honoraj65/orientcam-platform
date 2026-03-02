@@ -87,29 +87,32 @@ def _draw_holland_code_boxes(holland_code):
     Crée un Drawing avec des boîtes colorées pour chaque lettre du code Holland.
     Style identique au frontend : carrés colorés avec la lettre et le nom.
     """
-    box_size = 60
-    gap = 12
+    box_size = 55
+    gap = 10
+    label_height = 20
     code_letters = [c for c in holland_code if c.strip()]
     total_width = len(code_letters) * box_size + (len(code_letters) - 1) * gap
-    drawing = Drawing(total_width, box_size + 18)
+    total_height = box_size + label_height + 10
+    drawing = Drawing(total_width, total_height)
 
     for i, code in enumerate(code_letters):
         x = i * (box_size + gap)
         color = DIMENSION_COLORS.get(code, PRIMARY_BLUE)
         name = DIMENSION_NAMES.get(code, code)
 
-        # Boîte colorée
-        drawing.add(Rect(x, 18, box_size, box_size,
+        # Boîte colorée (positionnée en haut, au-dessus du label)
+        box_y = label_height + 5
+        drawing.add(Rect(x, box_y, box_size, box_size,
                           fillColor=_hex(color), strokeColor=None, rx=8, ry=8))
 
         # Lettre centrée en blanc
-        drawing.add(String(x + box_size / 2, 42, code,
-                           fontSize=28, fontName='Helvetica-Bold',
+        drawing.add(String(x + box_size / 2, box_y + box_size / 2 - 8, code,
+                           fontSize=26, fontName='Helvetica-Bold',
                            fillColor=colors.white, textAnchor='middle'))
 
-        # Nom de la dimension en dessous
-        drawing.add(String(x + box_size / 2, 4, name,
-                           fontSize=7, fontName='Helvetica',
+        # Nom de la dimension en dessous de la boîte
+        drawing.add(String(x + box_size / 2, 5, name,
+                           fontSize=8, fontName='Helvetica',
                            fillColor=_hex(GRAY_700), textAnchor='middle'))
 
     return drawing
@@ -358,7 +361,7 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
     ]))
     elements.append(holland_table)
 
-    elements.append(Spacer(1, 0.4 * cm))
+    elements.append(Spacer(1, 0.8 * cm))
     elements.append(Paragraph(
         "Vos trois dimensions dominantes définissent votre personnalité professionnelle "
         "et les environnements dans lesquels vous vous épanouirez le mieux.",
