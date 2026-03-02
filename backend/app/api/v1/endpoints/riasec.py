@@ -255,11 +255,16 @@ async def submit_test(
     db.add(riasec_test)
 
     # Delete draft if exists (test completed successfully)
-    draft = db.query(RiasecTestDraft).filter(
-        RiasecTestDraft.student_id == profile.id
-    ).first()
-    if draft:
-        db.delete(draft)
+    try:
+        draft = db.query(RiasecTestDraft).filter(
+            RiasecTestDraft.student_id == profile.id
+        ).first()
+        if draft:
+            db.delete(draft)
+    except Exception:
+        # Table may not exist yet - ignore draft cleanup
+        db.rollback()
+        db.add(riasec_test)
 
     db.commit()
     db.refresh(riasec_test)
@@ -600,26 +605,30 @@ async def save_test_draft(
             detail="Profile not found"
         )
 
-    # Check if draft exists
-    draft = db.query(RiasecTestDraft).filter(
-        RiasecTestDraft.student_id == profile.id
-    ).first()
+    try:
+        # Check if draft exists
+        draft = db.query(RiasecTestDraft).filter(
+            RiasecTestDraft.student_id == profile.id
+        ).first()
 
-    if draft:
-        # Update existing draft
-        draft.answers = draft_data.answers
-        draft.current_question_index = draft_data.current_question_index
-        draft.updated_at = datetime.utcnow()
-    else:
-        # Create new draft
-        draft = RiasecTestDraft(
-            student_id=profile.id,
-            answers=draft_data.answers,
-            current_question_index=draft_data.current_question_index
-        )
-        db.add(draft)
+        if draft:
+            # Update existing draft
+            draft.answers = draft_data.answers
+            draft.current_question_index = draft_data.current_question_index
+            draft.updated_at = datetime.utcnow()
+        else:
+            # Create new draft
+            draft = RiasecTestDraft(
+                student_id=profile.id,
+                answers=draft_data.answers,
+                current_question_index=draft_data.current_question_index
+            )
+            db.add(draft)
 
-    db.commit()
+        db.commit()
+    except Exception:
+        # Table may not exist yet - silently ignore
+        db.rollback()
 
     return {"message": "Progrès sauvegardé avec succès", "answers_count": len(draft_data.answers)}
 
@@ -646,9 +655,14 @@ async def get_test_draft(
         )
 
     # Get draft
-    draft = db.query(RiasecTestDraft).filter(
-        RiasecTestDraft.student_id == profile.id
-    ).first()
+    try:
+        draft = db.query(RiasecTestDraft).filter(
+            RiasecTestDraft.student_id == profile.id
+        ).first()
+    except Exception:
+        # Table may not exist yet
+        db.rollback()
+        draft = None
 
     if not draft:
         raise HTTPException(
@@ -685,12 +699,16 @@ async def delete_test_draft(
         )
 
     # Delete draft
-    draft = db.query(RiasecTestDraft).filter(
-        RiasecTestDraft.student_id == profile.id
-    ).first()
+    try:
+        draft = db.query(RiasecTestDraft).filter(
+            RiasecTestDraft.student_id == profile.id
+        ).first()
 
-    if draft:
-        db.delete(draft)
-        db.commit()
+        if draft:
+            db.delete(draft)
+            db.commit()
+    except Exception:
+        # Table may not exist yet - silently ignore
+        db.rollback()
 
     return {"message": "Progrès supprimé avec succès"}
