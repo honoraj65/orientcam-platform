@@ -14,6 +14,15 @@ from app.core.config import settings
 from app.core.database import engine, Base
 from app.api.v1.endpoints import auth, student, riasec, programs, recommendations, ubertoua
 
+# Import all models so Base.metadata.create_all() knows about all tables
+import app.models.user  # noqa
+import app.models.student_profile  # noqa
+import app.models.academic_grade  # noqa
+import app.models.professional_value  # noqa
+import app.models.riasec_test  # noqa
+import app.models.program  # noqa
+import app.models.recommendation  # noqa
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO if settings.DEBUG else logging.WARNING,
