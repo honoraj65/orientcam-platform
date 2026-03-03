@@ -41,7 +41,7 @@ async def register(user_data: UserRegister, db: Session = Depends(get_db)):
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Email already registered"
+            detail="Cet email est déjà utilisé. Veuillez vous connecter ou utiliser un autre email."
         )
 
     # Create user
@@ -114,7 +114,7 @@ async def login(credentials: UserLogin, db: Session = Depends(get_db)):
     if attempts >= 5:
         raise HTTPException(
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-            detail="Too many failed login attempts. Please try again in 15 minutes."
+            detail="Trop de tentatives échouées. Veuillez réessayer dans 15 minutes."
         )
 
     # Get user by email
@@ -126,14 +126,14 @@ async def login(credentials: UserLogin, db: Session = Depends(get_db)):
 
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password"
+            detail="Email ou mot de passe incorrect"
         )
 
     # Check if user is active
     if not user.is_active:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Account is inactive. Please contact support."
+            detail="Compte inactif. Veuillez contacter le support."
         )
 
     # Reset login attempts on successful login

@@ -24,15 +24,15 @@ class UserRegister(BaseModel):
     def validate_password_strength(cls, v: str) -> str:
         """Validate password strength"""
         if not re.search(r"[A-Z]", v):
-            raise ValueError("Password must contain at least one uppercase letter")
+            raise ValueError("Le mot de passe doit contenir au moins une majuscule")
         if not re.search(r"[a-z]", v):
-            raise ValueError("Password must contain at least one lowercase letter")
+            raise ValueError("Le mot de passe doit contenir au moins une minuscule")
         if not re.search(r"\d", v):
-            raise ValueError("Password must contain at least one digit")
+            raise ValueError("Le mot de passe doit contenir au moins un chiffre")
         if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", v):
-            raise ValueError("Password must contain at least one special character")
+            raise ValueError("Le mot de passe doit contenir au moins un caractère spécial (!@#$%...)")
         if " " in v:
-            raise ValueError("Password must not contain spaces")
+            raise ValueError("Le mot de passe ne doit pas contenir d'espaces")
         return v
 
     @field_validator("first_name", "last_name")
@@ -40,7 +40,7 @@ class UserRegister(BaseModel):
     def validate_name(cls, v: str) -> str:
         """Validate name format"""
         if not re.match(r"^[a-zA-ZÀ-ÿ\s'-]+$", v):
-            raise ValueError("Name must contain only letters, spaces, hyphens and apostrophes")
+            raise ValueError("Le nom doit contenir uniquement des lettres, espaces, tirets et apostrophes")
         return v.strip()
 
 
@@ -94,15 +94,15 @@ class PasswordResetConfirm(BaseModel):
     def validate_password_strength(cls, v: str) -> str:
         """Validate password strength"""
         if not re.search(r"[A-Z]", v):
-            raise ValueError("Password must contain at least one uppercase letter")
+            raise ValueError("Le mot de passe doit contenir au moins une majuscule")
         if not re.search(r"[a-z]", v):
-            raise ValueError("Password must contain at least one lowercase letter")
+            raise ValueError("Le mot de passe doit contenir au moins une minuscule")
         if not re.search(r"\d", v):
-            raise ValueError("Password must contain at least one digit")
+            raise ValueError("Le mot de passe doit contenir au moins un chiffre")
         if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", v):
-            raise ValueError("Password must contain at least one special character")
+            raise ValueError("Le mot de passe doit contenir au moins un caractère spécial (!@#$%...)")
         if " " in v:
-            raise ValueError("Password must not contain spaces")
+            raise ValueError("Le mot de passe ne doit pas contenir d'espaces")
         return v
 
 

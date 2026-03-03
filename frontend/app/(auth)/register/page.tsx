@@ -19,7 +19,8 @@ const registerSchema = z
       .min(8, 'Minimum 8 caractères')
       .regex(/[A-Z]/, 'Au moins une majuscule')
       .regex(/[a-z]/, 'Au moins une minuscule')
-      .regex(/[0-9]/, 'Au moins un chiffre'),
+      .regex(/[0-9]/, 'Au moins un chiffre')
+      .regex(/[!@#$%^&*(),.?":{}|<>]/, 'Au moins un caractère spécial (!@#$%...)'),
     confirm_password: z.string().min(1, 'Confirmez le mot de passe'),
     first_name: z.string().min(2, 'Minimum 2 caractères'),
     last_name: z.string().min(2, 'Minimum 2 caractères'),
@@ -82,6 +83,15 @@ export default function RegisterPage() {
         setError('Impossible de se connecter au serveur. Veuillez réessayer dans quelques instants.');
       } else if (err.response?.status === 500) {
         setError('Erreur serveur lors de l\'inscription. Veuillez réessayer plus tard.');
+      } else if (err.response?.status === 422) {
+        // Validation errors from FastAPI (Pydantic) - detail is an array
+        const detail = err.response?.data?.detail;
+        if (Array.isArray(detail)) {
+          const messages = detail.map((d: any) => d.msg || d.message || JSON.stringify(d)).join('. ');
+          setError(messages || 'Données invalides. Veuillez vérifier vos informations.');
+        } else {
+          setError(typeof detail === 'string' ? detail : 'Données invalides. Veuillez vérifier vos informations.');
+        }
       } else if (err.response?.status === 400) {
         setError(err.response?.data?.detail || 'Email déjà utilisé ou données invalides.');
       } else {
@@ -135,7 +145,7 @@ export default function RegisterPage() {
 
         {/* Register Card */}
         <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <form onSubmit={(e) => { e.preventDefault(); e.stopPropagation(); handleSubmit(onSubmit)(e); }} className="space-y-5">
             {/* Error Alert */}
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
@@ -255,7 +265,7 @@ export default function RegisterPage() {
                 <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
               )}
               <p className="mt-1 text-xs text-gray-500">
-                Min 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre
+                Min 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre, 1 caractère spécial
               </p>
             </div>
 
