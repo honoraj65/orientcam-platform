@@ -4,6 +4,7 @@ Design professionnel avec barres visuelles, couleurs par dimension et mise en pa
 """
 from io import BytesIO
 from datetime import datetime
+from xml.sax.saxutils import escape as xml_escape
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -57,6 +58,13 @@ CONTENT_WIDTH = PAGE_WIDTH - 4 * cm  # 2cm margins each side
 def _hex(color_str):
     """Raccourci pour HexColor"""
     return colors.HexColor(color_str)
+
+
+def _safe(text):
+    """Échappe le texte pour éviter l'injection dans le XML ReportLab"""
+    if text is None:
+        return ''
+    return xml_escape(str(text))
 
 
 def _draw_score_bar(score_pct, dimension_code, bar_width=None):
@@ -260,8 +268,8 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
                        alignment=TA_CENTER, textColor=_hex(PRIMARY_BLUE_LIGHT), spaceAfter=30)
     ))
 
-    # Informations de l'étudiant sur la couverture
-    full_name = f"{student_profile.last_name} {student_profile.first_name}".title()
+    # Informations de l'étudiant sur la couverture (sanitized)
+    full_name = _safe(f"{student_profile.last_name} {student_profile.first_name}".title())
     test_date = datetime.fromisoformat(riasec_test.created_at.isoformat()).strftime('%d/%m/%Y')
 
     cover_label_style = ParagraphStyle('CoverLabel', parent=normal_style, textColor=colors.white, fontSize=11)
@@ -298,9 +306,9 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
     # ============================================================
     elements.append(Paragraph("1. Informations du Profil", section_title_style))
 
-    profile_name = f"{student_profile.last_name} {student_profile.first_name}".title()
-    email = student_profile.user.email if student_profile.user else 'N/A'
-    phone = student_profile.phone or 'Non renseigné'
+    profile_name = _safe(f"{student_profile.last_name} {student_profile.first_name}".title())
+    email = _safe(student_profile.user.email if student_profile.user else 'N/A')
+    phone = _safe(student_profile.phone or 'Non renseigné')
     test_datetime = datetime.fromisoformat(riasec_test.created_at.isoformat()).strftime('%d/%m/%Y à %H:%M')
 
     profile_rows = [

@@ -237,7 +237,8 @@ async def refresh_token(token_data: RefreshTokenRequest, db: Session = Depends(g
         role=user.role
     )
 
-    # Store new refresh token
+    # Revoke old refresh token then store new one (rotation)
+    revoke_refresh_token(user.id)
     store_refresh_token(user.id, new_refresh_token, settings.REFRESH_TOKEN_EXPIRE_DAYS)
 
     return TokenResponse(

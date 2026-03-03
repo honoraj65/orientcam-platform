@@ -63,14 +63,21 @@ app.add_middleware(
 )
 
 
-# Request logging middleware
+# Security headers + request logging middleware
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
-    """Log all incoming requests"""
+    """Log all incoming requests and add security headers"""
     start_time = datetime.utcnow()
 
     # Process request
     response = await call_next(request)
+
+    # Security headers
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
 
     # Calculate request duration
     duration = (datetime.utcnow() - start_time).total_seconds()
@@ -225,11 +232,13 @@ async def global_exception_handler(request: Request, exc: Exception):
 
     logger.error(f"Unhandled exception: {exc}", exc_info=True)
 
+    detail = "Erreur interne du serveur. Veuillez réessayer plus tard."
+    if settings.DEBUG:
+        detail = f"Internal server error: {type(exc).__name__}: {str(exc)}"
+
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content={
-            "detail": f"Internal server error: {type(exc).__name__}: {str(exc)}"
-        }
+        content={"detail": detail}
     )
 
 
