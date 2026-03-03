@@ -632,9 +632,50 @@ def generate_riasec_pdf(student_profile, riasec_test, scores_list, careers_data,
         ))
 
     # ============================================================
+    # MESSAGE CONSEILLER D'ORIENTATION
+    # ============================================================
+    elements.append(Spacer(1, 0.8 * cm))
+
+    cta_content = []
+    cta_content.append(Paragraph(
+        '<b>PROCHAINE ÉTAPE</b>',
+        ParagraphStyle('CTATitle', parent=normal_style, fontSize=13,
+                       textColor=_hex(PRIMARY_BLUE), alignment=TA_CENTER,
+                       fontName='Helvetica-Bold', spaceAfter=6)
+    ))
+    cta_content.append(Paragraph(
+        'Ce rapport constitue une première étape dans votre parcours d\'orientation. '
+        'Pour finaliser votre orientation académique et bénéficier d\'un accompagnement personnalisé, '
+        'nous vous invitons à vous rendre au <b>Rectorat de l\'Université de Bertoua</b> '
+        'afin de rencontrer un <b>Conseiller d\'Orientation</b>.',
+        ParagraphStyle('CTAText', parent=normal_style, fontSize=10,
+                       textColor=_hex(GRAY_700), alignment=TA_CENTER,
+                       leading=15, spaceAfter=8)
+    ))
+    cta_content.append(Paragraph(
+        'Munissez-vous de ce document lors de votre visite.',
+        ParagraphStyle('CTANote', parent=normal_style, fontSize=9,
+                       textColor=_hex(EMERALD), alignment=TA_CENTER,
+                       fontName='Helvetica-BoldOblique')
+    ))
+
+    cta_table = Table([[cta_content]], colWidths=[CONTENT_WIDTH])
+    cta_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, -1), _hex('#eff6ff')),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('TOPPADDING', (0, 0), (-1, -1), 16),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 16),
+        ('LEFTPADDING', (0, 0), (-1, -1), 20),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 20),
+        ('ROUNDEDCORNERS', [8, 8, 8, 8]),
+        ('BOX', (0, 0), (-1, -1), 1.5, _hex(PRIMARY_BLUE_LIGHT)),
+    ]))
+    elements.append(cta_table)
+
+    # ============================================================
     # PIED DE PAGE FINAL
     # ============================================================
-    elements.append(Spacer(1, 1.5 * cm))
+    elements.append(Spacer(1, 1 * cm))
     elements.append(HRFlowable(
         width="40%", thickness=1,
         color=_hex(GRAY_200), spaceAfter=10, spaceBefore=10,
