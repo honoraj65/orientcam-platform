@@ -1,6 +1,7 @@
 """
 Authentication endpoints
 """
+import secrets
 from datetime import timedelta
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -8,15 +9,18 @@ from app.core.database import get_db
 from app.core.security import hash_password, verify_password, create_access_token, create_refresh_token, decode_token
 from app.core.cache import (
     store_refresh_token, verify_refresh_token, revoke_refresh_token,
-    increment_login_attempts, reset_login_attempts, get_login_attempts
+    increment_login_attempts, reset_login_attempts, get_login_attempts,
+    store_password_reset_token, verify_password_reset_token
 )
 from app.core.config import settings
 from app.core.deps import get_current_user
+from app.core.email import send_password_reset_email
 from app.models.user import User
 from app.models.student_profile import StudentProfile
 from app.schemas.auth import (
     UserRegister, UserLogin, TokenResponse, UserInfo,
-    RefreshTokenRequest, MessageResponse
+    RefreshTokenRequest, MessageResponse,
+    PasswordResetRequest, PasswordResetConfirm
 )
 from app.schemas.student import StudentProfileResponse
 from app.api.v1.endpoints.student import calculate_completion_percentage
@@ -268,6 +272,61 @@ async def logout(current_user: User = Depends(get_current_user)):
     revoke_refresh_token(current_user.id)
 
     return MessageResponse(message="Successfully logged out")
+
+
+@router.post("/forgot-password", response_model=MessageResponse)
+async def forgot_password(data: PasswordResetRequest, db: Session = Depends(get_db)):
+    """
+    Demande de réinitialisation de mot de passe.
+    Envoie un email avec un lien de réinitialisation.
+    """
+    # Toujours retourner le même message (sécurité: ne pas révéler si l'email existe)
+    success_msg = "Si cette adresse email est associée à un compte, vous recevrez un lien de réinitialisation."
+
+    user = db.query(User).filter(User.email == data.email).first()
+    if not user:
+        return MessageResponse(message=success_msg)
+
+    # Générer un token sécurisé
+    token = secrets.token_urlsafe(32)
+    store_password_reset_token(data.email, token, expire_minutes=15)
+
+    # Envoyer l'email
+    email_sent = send_password_reset_email(data.email, token)
+    if not email_sent:
+        print(f"[AUTH] Token de reset pour {data.email}: {token}", flush=True)
+
+    return MessageResponse(message=success_msg)
+
+
+@router.post("/reset-password", response_model=MessageResponse)
+async def reset_password(data: PasswordResetConfirm, db: Session = Depends(get_db)):
+    """
+    Réinitialise le mot de passe avec le token reçu par email.
+    """
+    # Vérifier le token
+    if not verify_password_reset_token(data.email, data.token):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Lien de réinitialisation invalide ou expiré. Veuillez refaire une demande."
+        )
+
+    # Trouver l'utilisateur
+    user = db.query(User).filter(User.email == data.email).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Utilisateur introuvable."
+        )
+
+    # Mettre à jour le mot de passe
+    user.password_hash = hash_password(data.new_password)
+    db.commit()
+
+    # Révoquer les tokens existants
+    revoke_refresh_token(user.id)
+
+    return MessageResponse(message="Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter.")
 
 
 @router.get("/me", response_model=UserInfo)

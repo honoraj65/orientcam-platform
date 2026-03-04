@@ -77,4 +77,16 @@ export const authAPI = {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
   },
+
+  // Forgot password - request reset email
+  forgotPassword: async (email: string): Promise<{ message: string }> => {
+    const response = await apiClient.post('/api/v1/auth/forgot-password', { email });
+    return response.data;
+  },
+
+  // Reset password with token
+  resetPassword: async (email: string, token: string, new_password: string): Promise<{ message: string }> => {
+    const response = await apiClient.post('/api/v1/auth/reset-password', { email, token, new_password });
+    return response.data;
+  },
 };

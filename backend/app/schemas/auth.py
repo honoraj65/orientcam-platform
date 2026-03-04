@@ -86,6 +86,7 @@ class PasswordResetRequest(BaseModel):
 
 class PasswordResetConfirm(BaseModel):
     """Schema for password reset confirmation"""
+    email: EmailStr
     token: str
     new_password: str = Field(..., min_length=8, max_length=100)
 

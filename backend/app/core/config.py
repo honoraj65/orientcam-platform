@@ -30,6 +30,15 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
+    # Email (SMTP)
+    SMTP_HOST: str = ""
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_FROM_EMAIL: str = "noreply@orientuniv.cm"
+    SMTP_FROM_NAME: str = "OrientUniv"
+    FRONTEND_URL: str = "https://www.orientuniv.cm"
+
     # CORS
     CORS_ORIGINS: str = "http://localhost:3000,http://localhost:3001,https://orientcam-platform.vercel.app,https://www.orientuniv.cm,https://orientuniv.cm"
 
