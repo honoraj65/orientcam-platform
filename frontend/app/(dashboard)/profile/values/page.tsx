@@ -172,14 +172,13 @@ export default function ValuesPage() {
       // Refresh user data to update completion percentage
       await fetchUser();
 
-      setSuccess('Valeurs professionnelles enregistrées avec succès !');
+      setSuccess('Valeurs professionnelles enregistrées avec succès ! Redirection...');
       setIsSaving(false);
 
-      // Scroll to top to show success message
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-
-      // Clear success message after 5 seconds
-      setTimeout(() => setSuccess(null), 5000);
+      // Redirect to next step: RIASEC test
+      setTimeout(() => {
+        router.push('/test-riasec');
+      }, 1000);
     } catch (err: any) {
       console.error('Values save error:', err);
       setError(
@@ -568,6 +567,28 @@ export default function ValuesPage() {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Navigation: Next Step */}
+        <div className="flex items-center justify-between mt-8">
+          <button
+            onClick={() => router.push('/profile/grades')}
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-primary-600 font-medium transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Notes académiques
+          </button>
+          <button
+            onClick={() => router.push('/test-riasec')}
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white px-6 py-3 rounded-xl font-semibold hover:from-primary-700 hover:to-primary-800 transform hover:scale-[1.02] transition-all shadow-lg"
+          >
+            Test RIASEC
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </button>
         </div>
       </main>
       <UBertouaFooter />

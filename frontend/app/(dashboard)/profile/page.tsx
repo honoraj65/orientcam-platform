@@ -343,14 +343,13 @@ export default function ProfilePage() {
       // Update completion percentage
       setCompletionPercentage(updatedProfile.completion_percentage || 10);
 
-      setSuccess('Profil mis à jour avec succès !');
+      setSuccess('Profil mis à jour avec succès ! Redirection...');
       setIsSaving(false);
 
-      // Scroll to top to show success message
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-
-      // Clear success message after 5 seconds
-      setTimeout(() => setSuccess(null), 5000);
+      // Redirect to next step: grades
+      setTimeout(() => {
+        router.push('/profile/grades');
+      }, 1000);
     } catch (err: any) {
       console.error('Profile update error:', err);
       setError(
