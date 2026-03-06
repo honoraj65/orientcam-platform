@@ -77,6 +77,7 @@ export default function ProfilePage() {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [missingFields, setMissingFields] = useState<string[]>([]);
+  const [showNextStep, setShowNextStep] = useState(false);
 
   // University data states
   const [establishments, setEstablishments] = useState<Establishment[]>([]);
@@ -343,13 +344,14 @@ export default function ProfilePage() {
       // Update completion percentage
       setCompletionPercentage(updatedProfile.completion_percentage || 10);
 
-      setSuccess('Profil mis à jour avec succès ! Redirection...');
+      setSuccess('Profil mis à jour avec succès !');
       setIsSaving(false);
+      setShowNextStep(true);
 
-      // Redirect to next step: grades
+      // Scroll to next step indicator
       setTimeout(() => {
-        router.push('/profile/grades');
-      }, 1000);
+        document.getElementById('next-step')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 300);
     } catch (err: any) {
       console.error('Profile update error:', err);
       setError(
@@ -1101,10 +1103,36 @@ export default function ProfilePage() {
           </div>
         </form>
 
+            {/* Next Step Banner */}
+            {showNextStep && (
+              <div id="next-step" className="mt-8 bg-gradient-to-r from-emerald-50 to-primary-50 border-2 border-emerald-400 rounded-2xl p-6 animate-pulse">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-emerald-800">Profil enregistre !</h3>
+                    <p className="text-sm text-emerald-700">Passez maintenant a l&apos;etape suivante pour completer votre dossier.</p>
+                  </div>
+                  <Link
+                    href="/profile/grades"
+                    className="inline-flex items-center gap-2 bg-emerald-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-700 transition-all shadow-lg animate-bounce"
+                  >
+                    Notes academiques
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+            )}
+
             {/* Additional Sections */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
               {/* Academic Grades */}
-              <Link href="/profile/grades" className="bg-white rounded-xl p-4 shadow-lg border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all transform hover:scale-105">
+              <Link href="/profile/grades" className={`bg-white rounded-xl p-4 shadow-lg border transition-all transform hover:scale-105 ${showNextStep ? 'border-emerald-400 ring-2 ring-emerald-300 animate-pulse' : 'border-gray-100 hover:shadow-xl hover:border-primary-200'}`}>
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 bg-riasec-investigative/10 rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg className="w-5 h-5 text-riasec-investigative" fill="currentColor" viewBox="0 0 20 20">

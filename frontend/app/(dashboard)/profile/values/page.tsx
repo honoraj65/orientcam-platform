@@ -26,6 +26,7 @@ export default function ValuesPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [showNextStep, setShowNextStep] = useState(false);
 
   // ========================================
   // Auth Check
@@ -172,13 +173,14 @@ export default function ValuesPage() {
       // Refresh user data to update completion percentage
       await fetchUser();
 
-      setSuccess('Valeurs professionnelles enregistrées avec succès ! Redirection...');
+      setSuccess('Valeurs professionnelles enregistrées avec succès !');
       setIsSaving(false);
+      setShowNextStep(true);
 
-      // Redirect to next step: RIASEC test
+      // Scroll to next step indicator
       setTimeout(() => {
-        router.push('/test-riasec');
-      }, 1000);
+        document.getElementById('next-step')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 300);
     } catch (err: any) {
       console.error('Values save error:', err);
       setError(
@@ -569,7 +571,33 @@ export default function ValuesPage() {
           </div>
         </div>
 
-        {/* Navigation: Next Step */}
+        {/* Next Step Banner */}
+        {showNextStep && (
+          <div id="next-step" className="mt-8 bg-gradient-to-r from-emerald-50 to-primary-50 border-2 border-emerald-400 rounded-2xl p-6 animate-pulse">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-bold text-emerald-800">Valeurs enregistrees !</h3>
+                <p className="text-sm text-emerald-700">Passez au test RIASEC pour decouvrir vos profils professionnels.</p>
+              </div>
+              <Link
+                href="/test-riasec"
+                className="inline-flex items-center gap-2 bg-emerald-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-700 transition-all shadow-lg animate-bounce"
+              >
+                Test RIASEC
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Navigation */}
         <div className="flex items-center justify-between mt-8">
           <button
             onClick={() => router.push('/profile/grades')}
@@ -578,7 +606,7 @@ export default function ValuesPage() {
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            Notes académiques
+            Notes academiques
           </button>
           <button
             onClick={() => router.push('/test-riasec')}
