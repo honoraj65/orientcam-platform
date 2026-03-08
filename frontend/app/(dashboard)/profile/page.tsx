@@ -298,6 +298,7 @@ export default function ProfilePage() {
     }
 
     setIsSaving(true);
+    setShowNextStep(true);
 
     try {
       // Clean up data - send undefined for empty fields to allow clearing them
@@ -354,13 +355,13 @@ export default function ProfilePage() {
 
       setSuccess('Profil mis à jour avec succès !');
       setIsSaving(false);
-      setShowNextStep(true);
     } catch (err: any) {
       console.error('Profile update error:', err);
       setError(
         err.response?.data?.detail || 'Erreur lors de la mise à jour du profil'
       );
       setIsSaving(false);
+      setShowNextStep(false);
 
       // Scroll to top to show error message
       window.scrollTo({ top: 0, behavior: 'smooth' });
