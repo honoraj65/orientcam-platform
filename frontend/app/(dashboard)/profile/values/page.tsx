@@ -31,7 +31,7 @@ export default function ValuesPage() {
 
   // Prefetch next step for instant navigation
   useEffect(() => {
-    router.prefetch('/riasec');
+    router.prefetch('/test-riasec');
   }, [router]);
 
   // ========================================
@@ -178,7 +178,7 @@ export default function ValuesPage() {
 
       // Redirect to RIASEC test
       toast.success('Valeurs enregistrees ! Passage au test RIASEC...');
-      router.push('/riasec');
+      router.push('/test-riasec');
     } catch (err: any) {
       console.error('Values save error:', err);
       setError(

@@ -7,7 +7,7 @@ const STEPS = [
   { id: 1, label: 'Profil', path: '/profile' },
   { id: 2, label: 'Notes', path: '/profile/grades' },
   { id: 3, label: 'Valeurs', path: '/profile/values' },
-  { id: 4, label: 'Test RIASEC', path: '/riasec' },
+  { id: 4, label: 'Test RIASEC', path: '/test-riasec' },
 ];
 
 export default function ProfileStepper() {
