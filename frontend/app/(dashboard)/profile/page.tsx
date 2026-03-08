@@ -79,6 +79,7 @@ export default function ProfilePage() {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [missingFields, setMissingFields] = useState<string[]>([]);
+  const [showWelcome, setShowWelcome] = useState(false);
 
   // Prefetch next step for instant navigation
   useEffect(() => {
@@ -213,7 +214,13 @@ export default function ProfilePage() {
         });
 
         // Update completion percentage from API
-        setCompletionPercentage(profile.completion_percentage || 10);
+        const pct = profile.completion_percentage || 10;
+        setCompletionPercentage(pct);
+
+        // Show welcome popup for incomplete profiles (first visit)
+        if (pct < 50 && !sessionStorage.getItem('profile_welcome_dismissed')) {
+          setShowWelcome(true);
+        }
 
         // Load avatar: server URL first, then localStorage fallback
         if (profile.avatar_url) {
@@ -385,6 +392,50 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-primary-50/20 flex flex-col">
       <UBertouaHeader showAuth={true} />
+
+      {/* Welcome Popup */}
+      {showWelcome && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 text-center">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Bienvenue sur votre profil !</h2>
+            <p className="text-gray-600 mb-4">
+              Completez vos informations en <strong>4 etapes</strong> pour recevoir des recommandations personnalisees :
+            </p>
+            <div className="text-left bg-gray-50 rounded-xl p-4 mb-6 space-y-2">
+              <div className="flex items-center gap-3">
+                <span className="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
+                <span className="text-sm text-gray-700">Informations personnelles</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="w-7 h-7 bg-gray-300 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
+                <span className="text-sm text-gray-700">Notes academiques</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="w-7 h-7 bg-gray-300 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
+                <span className="text-sm text-gray-700">Valeurs professionnelles</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="w-7 h-7 bg-gray-300 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>
+                <span className="text-sm text-gray-700">Test RIASEC</span>
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                setShowWelcome(false);
+                sessionStorage.setItem('profile_welcome_dismissed', 'true');
+              }}
+              className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors"
+            >
+              Commencer
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Main Content - GitHub Style Two Column Layout */}
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
