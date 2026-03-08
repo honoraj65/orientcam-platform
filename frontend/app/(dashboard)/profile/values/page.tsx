@@ -29,6 +29,11 @@ export default function ValuesPage() {
   const [success, setSuccess] = useState<string | null>(null);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 
+  // Prefetch next step for instant navigation
+  useEffect(() => {
+    router.prefetch('/riasec');
+  }, [router]);
+
   // ========================================
   // Auth Check
   // ========================================

@@ -80,6 +80,11 @@ export default function ProfilePage() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [missingFields, setMissingFields] = useState<string[]>([]);
 
+  // Prefetch next step for instant navigation
+  useEffect(() => {
+    router.prefetch('/profile/grades');
+  }, [router]);
+
   // University data states
   const [establishments, setEstablishments] = useState<Establishment[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
