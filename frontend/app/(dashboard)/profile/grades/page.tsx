@@ -638,34 +638,50 @@ export default function GradesPage() {
                 </svg>
                 Moyenne par semestre
               </h3>
-              <div className="space-y-3">
-                {semesterAverages.map((s) => (
-                  <div key={s.semester} className="flex items-center gap-3">
-                    <span className="text-sm font-medium text-gray-600 w-24 flex-shrink-0">{s.semester}</span>
-                    <div className="flex-1 bg-gray-100 rounded-full h-4 overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all ${
-                          s.average >= 14 ? 'bg-emerald-500' :
-                          s.average >= 10 ? 'bg-blue-500' :
-                          s.average >= 8 ? 'bg-amber-500' : 'bg-red-500'
-                        }`}
-                        style={{ width: `${Math.min((s.average / 20) * 100, 100)}%` }}
-                      />
+              <div className="space-y-2">
+                {[1, 2, 3].map((year) => {
+                  const yearSemesters = semesterAverages.filter((s) => {
+                    const num = parseInt(s.semester.replace('Semestre ', ''));
+                    return num === year * 2 - 1 || num === year * 2;
+                  });
+                  if (yearSemesters.length === 0) return null;
+                  return (
+                    <div key={year}>
+                      <p className="text-xs font-bold text-purple-600 uppercase tracking-wide mb-1 mt-2">
+                        Annee {year}
+                      </p>
+                      <div className="space-y-2">
+                        {yearSemesters.map((s) => (
+                          <div key={s.semester} className="flex items-center gap-3">
+                            <span className="text-sm font-medium text-gray-600 w-24 flex-shrink-0">{s.semester}</span>
+                            <div className="flex-1 bg-gray-100 rounded-full h-4 overflow-hidden">
+                              <div
+                                className={`h-full rounded-full transition-all ${
+                                  s.average >= 14 ? 'bg-emerald-500' :
+                                  s.average >= 10 ? 'bg-blue-500' :
+                                  s.average >= 8 ? 'bg-amber-500' : 'bg-red-500'
+                                }`}
+                                style={{ width: `${Math.min((s.average / 20) * 100, 100)}%` }}
+                              />
+                            </div>
+                            <span className={`text-sm font-bold w-16 text-right ${
+                              s.average >= 14 ? 'text-emerald-600' :
+                              s.average >= 10 ? 'text-blue-600' :
+                              s.average >= 8 ? 'text-amber-600' : 'text-red-600'
+                            }`}>
+                              {s.average.toFixed(1)}/20
+                            </span>
+                            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                              s.validated ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
+                            }`}>
+                              {s.validated ? 'Valide' : 'Non valide'}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <span className={`text-sm font-bold w-16 text-right ${
-                      s.average >= 14 ? 'text-emerald-600' :
-                      s.average >= 10 ? 'text-blue-600' :
-                      s.average >= 8 ? 'text-amber-600' : 'text-red-600'
-                    }`}>
-                      {s.average.toFixed(1)}/20
-                    </span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                      s.validated ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
-                    }`}>
-                      {s.validated ? 'Valide' : 'Non valide'}
-                    </span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
