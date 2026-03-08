@@ -19,6 +19,7 @@ import { ubertouaAPI } from '@/lib/api/ubertoua';
 import Link from 'next/link';
 import UBertouaHeader from '@/components/UBertouaHeader';
 import UBertouaFooter from '@/components/UBertouaFooter';
+import ProfileStepper from '@/components/ProfileStepper';
 
 // ============================================================================
 // Constants for University Students
@@ -450,15 +451,8 @@ export default function GradesPage() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1">
-        {/* Breadcrumb */}
-        <div className="mb-6">
-          <Link href="/profile" className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-primary-600 font-medium transition-colors">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Retour au profil
-          </Link>
-        </div>
+        {/* Progress Stepper */}
+        <ProfileStepper />
 
         {/* Page Header */}
         <div className="mb-10">

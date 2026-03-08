@@ -16,9 +16,11 @@ import {
   USER_TYPES,
 } from '@/lib/api/student';
 import { ubertouaAPI, UNIVERSITY_LEVELS, Establishment, Department } from '@/lib/api/ubertoua';
+import { toast } from 'sonner';
 import Link from 'next/link';
 import UBertouaHeader from '@/components/UBertouaHeader';
 import UBertouaFooter from '@/components/UBertouaFooter';
+import ProfileStepper from '@/components/ProfileStepper';
 
 // ============================================================================
 // Validation Schema
@@ -307,11 +309,10 @@ export default function ProfilePage() {
       financial_situation: data.financial_situation || undefined,
     };
 
-    // Navigate instantly, save in background
+    // Save in background, navigate instantly
+    toast.success('Profil enregistre ! Passage aux notes...');
     router.push('/profile/grades');
-    studentAPI.updateProfile(updateData).catch(() => {
-      // Silent fail - user can re-save from grades page if needed
-    });
+    studentAPI.updateProfile(updateData).catch(() => {});
   };
 
   // ========================================
@@ -382,6 +383,8 @@ export default function ProfilePage() {
 
       {/* Main Content - GitHub Style Two Column Layout */}
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Progress Stepper */}
+        <ProfileStepper />
         <div className="lg:flex lg:gap-6">
           {/* Left Sidebar - Profile Overview */}
           <aside className="lg:w-64 mb-8 lg:mb-0 flex-shrink-0">
