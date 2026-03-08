@@ -113,7 +113,7 @@ const gradeSchema = z.object({
     .min(1, 'Coefficient minimum: 1')
     .max(10, 'Coefficient maximum: 10'),
   academic_year: z.string().min(1, 'Année académique requise'),
-  term: z.string().min(1, 'Trimestre requis'),
+  term: z.string().optional().default('Baccalaureat'),
 });
 
 type GradeFormData = z.infer<typeof gradeSchema>;
@@ -201,7 +201,7 @@ export default function GradesPage() {
     reValidateMode: 'onChange',
     defaultValues: {
       academic_year: ACADEMIC_YEARS[0],
-      term: userType === 'university_student' ? 'Semestre 1' : TERMS[0],
+      term: userType === 'university_student' ? 'Semestre 1' : 'Baccalaureat',
       coefficient: 1,
     },
   });
@@ -346,7 +346,7 @@ export default function GradesPage() {
         grade: 0,
         coefficient: 1,
         academic_year: ACADEMIC_YEARS[0],
-        term: userType === 'university_student' ? 'Semestre 1' : TERMS[0],
+        term: userType === 'university_student' ? 'Semestre 1' : 'Baccalaureat',
       });
       setIsSaving(false);
 
@@ -404,7 +404,7 @@ export default function GradesPage() {
       grade: 0,
       coefficient: 1,
       academic_year: ACADEMIC_YEARS[0],
-      term: userType === 'university_student' ? 'Semestre 1' : TERMS[0],
+      term: userType === 'university_student' ? 'Semestre 1' : 'Baccalaureat',
     });
   };
 
@@ -840,30 +840,24 @@ export default function GradesPage() {
                   )}
                 </div>
 
-                {/* Term / Semester */}
-                <div>
-                  <label htmlFor="term" className="block text-sm font-medium text-gray-700 mb-2">
-                    {userType === 'university_student' ? 'Semestre' : 'Trimestre'} <span className="text-red-500">*</span>
-                  </label>
-                  <select {...register('term')} id="term" className="input" disabled={isSaving}>
-                    {userType === 'university_student' ? (
-                      availableSemesters.map((semester) => (
+                {/* Term / Semester - only for university students */}
+                {userType === 'university_student' && (
+                  <div>
+                    <label htmlFor="term" className="block text-sm font-medium text-gray-700 mb-2">
+                      Semestre <span className="text-red-500">*</span>
+                    </label>
+                    <select {...register('term')} id="term" className="input" disabled={isSaving}>
+                      {availableSemesters.map((semester) => (
                         <option key={semester} value={semester}>
                           {semester}
                         </option>
-                      ))
-                    ) : (
-                      TERMS.map((term) => (
-                        <option key={term} value={term}>
-                          {term}
-                        </option>
-                      ))
+                      ))}
+                    </select>
+                    {errors.term && (
+                      <p className="mt-1 text-sm text-red-600">{errors.term.message}</p>
                     )}
-                  </select>
-                  {errors.term && (
-                    <p className="mt-1 text-sm text-red-600">{errors.term.message}</p>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
 
               {/* Form Actions */}
@@ -982,7 +976,7 @@ export default function GradesPage() {
                         {grade.coefficient}
                       </td>
                       <td className="py-3 px-4 text-center text-sm text-gray-600 hidden md:table-cell">
-                        {grade.term}, {grade.academic_year}
+                        {userType === 'university_student' ? `${grade.term}, ` : ''}{grade.academic_year}
                       </td>
                       <td className="py-3 px-4 text-right">
                         <div className="flex justify-end gap-2">
