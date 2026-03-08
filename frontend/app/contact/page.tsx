@@ -187,8 +187,8 @@ export default function ContactPage() {
                 </svg>
                 <div>
                   <p className="font-semibold text-gray-900">Email de support</p>
-                  <a href="mailto:support@orientcam.cm" className="text-primary-600 hover:text-primary-700">
-                    support@orientcam.cm
+                  <a href="mailto:support@orientuniv.cm" className="text-primary-600 hover:text-primary-700">
+                    support@orientuniv.cm
                   </a>
                 </div>
               </div>
@@ -289,7 +289,7 @@ export default function ContactPage() {
           <h3 className="text-2xl font-bold text-gray-900 mb-4">Vous n'avez pas trouvé de réponse ?</h3>
           <p className="text-gray-600 mb-6 text-lg">Notre équipe de support est prête à vous aider</p>
           <a
-            href="mailto:support@orientcam.cm"
+            href="mailto:support@orientuniv.cm"
             className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:from-primary-700 hover:to-primary-800 transform hover:scale-105 transition-all shadow-lg hover:shadow-xl"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

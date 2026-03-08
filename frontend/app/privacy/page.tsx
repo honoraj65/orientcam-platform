@@ -249,8 +249,8 @@ export default function PrivacyPage() {
 
               <p className="text-gray-700 leading-relaxed mt-4">
                 Pour exercer ces droits, contactez-nous à l'adresse :
-                <a href="mailto:privacy@orientcam.cm" className="text-primary-600 hover:text-primary-700 font-medium ml-1">
-                  privacy@orientcam.cm
+                <a href="mailto:support@orientuniv.cm" className="text-primary-600 hover:text-primary-700 font-medium ml-1">
+                  support@orientuniv.cm
                 </a>
               </p>
             </section>
@@ -337,7 +337,7 @@ export default function PrivacyPage() {
                   BP 652 Bertoua, Région de l'Est, Cameroun
                 </p>
                 <p className="text-gray-700 leading-relaxed mb-2">
-                  E-mail : <a href="mailto:privacy@orientcam.cm" className="text-primary-600 hover:text-primary-700">privacy@orientcam.cm</a>
+                  E-mail : <a href="mailto:support@orientuniv.cm" className="text-primary-600 hover:text-primary-700">support@orientuniv.cm</a>
                 </p>
                 <p className="text-gray-700 leading-relaxed">
                   Téléphone : <a href="tel:+237695683462" className="text-primary-600 hover:text-primary-700">+237 695 683 462</a>
@@ -353,7 +353,7 @@ export default function PrivacyPage() {
                 vous pouvez nous contacter :
               </p>
               <ul className="list-disc pl-6 mb-4 text-gray-700 space-y-2">
-                <li>Par e-mail : <a href="mailto:privacy@orientcam.cm" className="text-primary-600 hover:text-primary-700">privacy@orientcam.cm</a></li>
+                <li>Par e-mail : <a href="mailto:support@orientuniv.cm" className="text-primary-600 hover:text-primary-700">support@orientuniv.cm</a></li>
                 <li>Par téléphone : <a href="tel:+237695683462" className="text-primary-600 hover:text-primary-700">+237 695 683 462</a></li>
                 <li>Via notre <Link href="/contact" className="text-primary-600 hover:text-primary-700">page de contact</Link></li>
               </ul>

@@ -321,7 +321,7 @@ export default function ConditionsPage() {
                 </div>
                 <div className="border-t border-primary-200 mt-4 pt-4">
                   <p className="font-semibold text-gray-900">Support Technique (TMS)</p>
-                  <p>Email : <a href="mailto:support@orientcam.cm" className="text-primary-600 hover:text-primary-700">support@orientcam.cm</a></p>
+                  <p>Email : <a href="mailto:support@orientuniv.cm" className="text-primary-600 hover:text-primary-700">support@orientuniv.cm</a></p>
                   <p>Téléphone : <a href="tel:+237695683462" className="text-primary-600 hover:text-primary-700">+237 695 683 462</a></p>
                 </div>
               </div>
