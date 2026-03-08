@@ -147,7 +147,7 @@ export default function GradesPage() {
   // Get subjects for the selected curriculum
   const availableSubjects = SUBJECTS_BY_CURRICULUM[selectedCurriculum];
 
-  // All 6 semesters are always available - student can fill any semester
+  // All semesters are always available - student can fill any semester freely
   const availableSemesters = UNIVERSITY_SEMESTERS;
 
   const {
@@ -781,30 +781,36 @@ export default function GradesPage() {
                   <p className="text-sm text-gray-600 mb-2">
                     Entrez vos notes d'Unités d'Enseignement (UE) de l'Université de Bertoua
                   </p>
-                  <p className="text-xs text-purple-600 mb-4">
-                    Selectionnez le semestre correspondant a vos notes
+                  <p className="text-xs text-amber-600 mb-4 flex items-start gap-1">
+                    <svg className="w-4 h-4 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                    </svg>
+                    <span>Vous devez remplir les semestres dans l'ordre (Semestre 1 → 2 → 3...)</span>
                   </p>
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-                    {UNIVERSITY_SEMESTERS.map((semester, idx) => (
-                      <div key={semester} className="text-center">
-                        {idx % 2 === 0 && (
-                          <p className="text-[10px] font-bold text-purple-500 uppercase mb-1">Annee {Math.floor(idx / 2) + 1}</p>
-                        )}
+                    {UNIVERSITY_SEMESTERS.map((semester) => {
+                      const isAvailable = availableSemesters.includes(semester);
+                      return (
                         <button
+                          key={semester}
                           type="button"
-                          onClick={() => setValue('term', semester)}
-                          className={`w-full p-3 rounded-lg border-2 transition-all ${
-                            watch('term') === semester
+                          onClick={() => isAvailable && setValue('term', semester)}
+                          disabled={!isAvailable}
+                          className={`p-3 rounded-lg border-2 transition-all text-center ${
+                            !isAvailable
+                              ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed opacity-50'
+                              : watch('term') === semester
                               ? 'border-purple-500 bg-purple-50 shadow-md'
                               : 'border-purple-200 bg-white hover:border-purple-400 hover:bg-purple-50 cursor-pointer'
                           }`}
+                          title={!isAvailable ? 'Complétez les semestres précédents d\'abord' : ''}
                         >
-                          <div className="font-semibold text-sm text-gray-900">
+                          <div className={`font-semibold text-sm ${!isAvailable ? 'text-gray-400' : 'text-gray-900'}`}>
                             {semester}
                           </div>
                         </button>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               ) : (
