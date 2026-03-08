@@ -424,6 +424,39 @@ export default function GradesPage() {
     return totalCoefficients > 0 ? totalWeighted / totalCoefficients : 0;
   };
 
+  // Calculate averages per semester (for university students)
+  const semesterAverages = useMemo(() => {
+    if (userType !== 'university_student' || grades.length === 0) return [];
+
+    const bySemester: Record<string, { total: number; coeff: number; count: number }> = {};
+    grades.forEach((g) => {
+      if (!bySemester[g.term]) bySemester[g.term] = { total: 0, coeff: 0, count: 0 };
+      bySemester[g.term].total += g.grade * g.coefficient;
+      bySemester[g.term].coeff += g.coefficient;
+      bySemester[g.term].count += 1;
+    });
+
+    return UNIVERSITY_SEMESTERS
+      .filter((s) => bySemester[s])
+      .map((s) => ({
+        semester: s,
+        average: bySemester[s].coeff > 0 ? bySemester[s].total / bySemester[s].coeff : 0,
+        count: bySemester[s].count,
+        validated: bySemester[s].coeff > 0 && (bySemester[s].total / bySemester[s].coeff) >= 10,
+      }));
+  }, [grades, userType]);
+
+  // Identify strengths and weaknesses (for university students)
+  const strengthsWeaknesses = useMemo(() => {
+    if (userType !== 'university_student' || grades.length < 3) return null;
+
+    const sorted = [...grades].sort((a, b) => b.grade - a.grade);
+    const strengths = sorted.slice(0, 3).filter((g) => g.grade >= 12);
+    const weaknesses = sorted.slice(-3).reverse().filter((g) => g.grade < 10);
+
+    return { strengths, weaknesses };
+  }, [grades, userType]);
+
   // ========================================
   // Loading State
   // ========================================
@@ -592,6 +625,96 @@ export default function GradesPage() {
             </p>
           </div>
         </div>
+        )}
+
+        {/* University Student: Semester Breakdown + Strengths/Weaknesses */}
+        {userType === 'university_student' && isProfileComplete && semesterAverages.length > 0 && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+            {/* Semester Averages */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                Moyenne par semestre
+              </h3>
+              <div className="space-y-3">
+                {semesterAverages.map((s) => (
+                  <div key={s.semester} className="flex items-center gap-3">
+                    <span className="text-sm font-medium text-gray-600 w-24 flex-shrink-0">{s.semester}</span>
+                    <div className="flex-1 bg-gray-100 rounded-full h-4 overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all ${
+                          s.average >= 14 ? 'bg-emerald-500' :
+                          s.average >= 10 ? 'bg-blue-500' :
+                          s.average >= 8 ? 'bg-amber-500' : 'bg-red-500'
+                        }`}
+                        style={{ width: `${Math.min((s.average / 20) * 100, 100)}%` }}
+                      />
+                    </div>
+                    <span className={`text-sm font-bold w-16 text-right ${
+                      s.average >= 14 ? 'text-emerald-600' :
+                      s.average >= 10 ? 'text-blue-600' :
+                      s.average >= 8 ? 'text-amber-600' : 'text-red-600'
+                    }`}>
+                      {s.average.toFixed(1)}/20
+                    </span>
+                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                      s.validated ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
+                    }`}>
+                      {s.validated ? 'Valide' : 'Non valide'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Strengths & Weaknesses */}
+            {strengthsWeaknesses && (strengthsWeaknesses.strengths.length > 0 || strengthsWeaknesses.weaknesses.length > 0) && (
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+                  </svg>
+                  Forces et faiblesses
+                </h3>
+
+                {strengthsWeaknesses.strengths.length > 0 && (
+                  <div className="mb-4">
+                    <p className="text-sm font-semibold text-emerald-700 mb-2">Points forts</p>
+                    <div className="space-y-2">
+                      {strengthsWeaknesses.strengths.map((g) => (
+                        <div key={g.id} className="flex items-center gap-2 bg-emerald-50 rounded-lg px-3 py-2">
+                          <svg className="w-4 h-4 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                          <span className="text-sm text-gray-700 flex-1">{g.subject}</span>
+                          <span className="text-sm font-bold text-emerald-600">{g.grade}/20</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {strengthsWeaknesses.weaknesses.length > 0 && (
+                  <div>
+                    <p className="text-sm font-semibold text-red-700 mb-2">A ameliorer</p>
+                    <div className="space-y-2">
+                      {strengthsWeaknesses.weaknesses.map((g) => (
+                        <div key={g.id} className="flex items-center gap-2 bg-red-50 rounded-lg px-3 py-2">
+                          <svg className="w-4 h-4 text-red-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                          </svg>
+                          <span className="text-sm text-gray-700 flex-1">{g.subject}</span>
+                          <span className="text-sm font-bold text-red-600">{g.grade}/20</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         )}
 
         {/* Add Grade Button */}
