@@ -77,15 +77,6 @@ export default function ProfilePage() {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [missingFields, setMissingFields] = useState<string[]>([]);
-  const [showNextStep, setShowNextStep] = useState(false);
-  const nextStepRef = useRef<HTMLDivElement>(null);
-
-  // Auto-scroll to next step when it appears
-  useEffect(() => {
-    if (showNextStep && nextStepRef.current) {
-      nextStepRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
-    }
-  }, [showNextStep]);
 
   // University data states
   const [establishments, setEstablishments] = useState<Establishment[]>([]);
@@ -298,10 +289,8 @@ export default function ProfilePage() {
     }
 
     setIsSaving(true);
-    setShowNextStep(true);
 
     try {
-      // Clean up data - send undefined for empty fields to allow clearing them
       const updateData: UpdateProfileData = {
         user_type: data.user_type,
         university_establishment: data.university_establishment || undefined,
@@ -321,49 +310,17 @@ export default function ProfilePage() {
         financial_situation: data.financial_situation || undefined,
       };
 
-      console.log('Update data being sent:', updateData);
-      const response = await studentAPI.updateProfile(updateData);
-      console.log('API response:', response);
-      // Refresh user data
-      await fetchUser();
+      await studentAPI.updateProfile(updateData);
 
-      // Reload profile to update form with saved data
-      const updatedProfile = await studentAPI.getProfile();
-      console.log('Profile after update:', updatedProfile);
-      console.log('user_type from API:', updatedProfile.user_type);
-      reset({
-        user_type: updatedProfile.user_type || 'new_bachelor',
-        university_establishment: updatedProfile.university_establishment || '',
-        university_department: updatedProfile.university_department || '',
-        university_level: updatedProfile.university_level || '',
-        first_name: updatedProfile.first_name,
-        last_name: updatedProfile.last_name,
-        phone: updatedProfile.phone || '',
-        date_of_birth: updatedProfile.date_of_birth || '',
-        gender: updatedProfile.gender,
-        city: updatedProfile.city,
-        region: updatedProfile.region,
-        current_education_level: updatedProfile.current_education_level,
-        bac_series: updatedProfile.bac_series,
-        bac_year: updatedProfile.bac_year || NaN,
-        bac_grade: updatedProfile.bac_grade || NaN,
-        financial_situation: updatedProfile.financial_situation || '',
-      });
-
-      // Update completion percentage
-      setCompletionPercentage(updatedProfile.completion_percentage || 10);
-
-      setSuccess('Profil mis à jour avec succès !');
-      setIsSaving(false);
+      // Redirect immediately to next step - no need to wait for fetchUser/getProfile
+      router.push('/profile/grades');
     } catch (err: any) {
       console.error('Profile update error:', err);
       setError(
         err.response?.data?.detail || 'Erreur lors de la mise à jour du profil'
       );
       setIsSaving(false);
-      setShowNextStep(false);
 
-      // Scroll to top to show error message
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
@@ -1107,36 +1064,10 @@ export default function ProfilePage() {
           </div>
         </form>
 
-            {/* Next Step Banner */}
-            {showNextStep && (
-              <div ref={nextStepRef} className="mt-8 bg-gradient-to-r from-emerald-50 to-primary-50 border-2 border-emerald-400 rounded-2xl p-6 animate-pulse">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-emerald-800">Profil enregistre !</h3>
-                    <p className="text-sm text-emerald-700">Passez maintenant a l&apos;etape suivante pour completer votre dossier.</p>
-                  </div>
-                  <Link
-                    href="/profile/grades"
-                    className="inline-flex items-center gap-2 bg-emerald-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-700 transition-all shadow-lg animate-bounce"
-                  >
-                    Notes academiques
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                  </Link>
-                </div>
-              </div>
-            )}
-
             {/* Additional Sections */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
               {/* Academic Grades */}
-              <Link href="/profile/grades" className={`bg-white rounded-xl p-4 shadow-lg border transition-all transform hover:scale-105 ${showNextStep ? 'border-emerald-400 ring-2 ring-emerald-300 animate-pulse' : 'border-gray-100 hover:shadow-xl hover:border-primary-200'}`}>
+              <Link href="/profile/grades" className="bg-white rounded-xl p-4 shadow-lg border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all transform hover:scale-105">
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 bg-riasec-investigative/10 rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg className="w-5 h-5 text-riasec-investigative" fill="currentColor" viewBox="0 0 20 20">
