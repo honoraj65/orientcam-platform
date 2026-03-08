@@ -581,6 +581,37 @@ export default function GradesPage() {
           </div>
         )}
 
+        {/* University student with no grades: suggest filling bac grades or adding university grades */}
+        {userType === 'university_student' && isProfileComplete && grades.length === 0 && !showForm && (
+          <div className="mb-8 bg-blue-50 border-2 border-blue-200 rounded-2xl p-6 shadow-lg">
+            <h3 className="text-lg font-bold text-blue-900 mb-2">Aucune note universitaire enregistree</h3>
+            <p className="text-blue-800 mb-4">
+              Vous pouvez ajouter vos notes de semestre pour une reorientation basee sur vos resultats universitaires,
+              ou remplir vos notes du baccalaureat si vous n'avez pas encore de resultats universitaires.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={handleOpenForm}
+                className="inline-flex items-center justify-center gap-2 bg-purple-600 text-white px-5 py-3 rounded-xl font-semibold hover:bg-purple-700 transition-all"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Ajouter notes universitaires
+              </button>
+              <button
+                onClick={() => router.push('/profile')}
+                className="inline-flex items-center justify-center gap-2 bg-white text-blue-700 border-2 border-blue-300 px-5 py-3 rounded-xl font-semibold hover:bg-blue-100 transition-all"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                </svg>
+                Changer de filiere / Remplir notes du bac
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Statistics - Only show if profile is complete for university students */}
         {(userType !== 'university_student' || isProfileComplete) && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
