@@ -348,10 +348,10 @@ export default function ProfilePage() {
       setIsSaving(false);
       setShowNextStep(true);
 
-      // Scroll to next step indicator
+      // Scroll to next step indicator after DOM update
       setTimeout(() => {
-        document.getElementById('next-step')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 300);
+        document.getElementById('next-step')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 500);
     } catch (err: any) {
       console.error('Profile update error:', err);
       setError(
