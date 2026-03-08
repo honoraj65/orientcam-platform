@@ -288,41 +288,30 @@ export default function ProfilePage() {
       }
     }
 
-    setIsSaving(true);
+    const updateData: UpdateProfileData = {
+      user_type: data.user_type,
+      university_establishment: data.university_establishment || undefined,
+      university_department: data.university_department || undefined,
+      university_level: data.university_level || undefined,
+      first_name: data.first_name,
+      last_name: data.last_name,
+      phone: data.phone || undefined,
+      date_of_birth: data.date_of_birth || undefined,
+      gender: data.gender || undefined,
+      city: data.city || undefined,
+      region: data.region || undefined,
+      current_education_level: data.current_education_level || undefined,
+      bac_series: data.bac_series || undefined,
+      bac_year: data.bac_year && !isNaN(data.bac_year) ? data.bac_year : undefined,
+      bac_grade: data.bac_grade && !isNaN(data.bac_grade) ? data.bac_grade : undefined,
+      financial_situation: data.financial_situation || undefined,
+    };
 
-    try {
-      const updateData: UpdateProfileData = {
-        user_type: data.user_type,
-        university_establishment: data.university_establishment || undefined,
-        university_department: data.university_department || undefined,
-        university_level: data.university_level || undefined,
-        first_name: data.first_name,
-        last_name: data.last_name,
-        phone: data.phone || undefined,
-        date_of_birth: data.date_of_birth || undefined,
-        gender: data.gender || undefined,
-        city: data.city || undefined,
-        region: data.region || undefined,
-        current_education_level: data.current_education_level || undefined,
-        bac_series: data.bac_series || undefined,
-        bac_year: data.bac_year && !isNaN(data.bac_year) ? data.bac_year : undefined,
-        bac_grade: data.bac_grade && !isNaN(data.bac_grade) ? data.bac_grade : undefined,
-        financial_situation: data.financial_situation || undefined,
-      };
-
-      await studentAPI.updateProfile(updateData);
-
-      // Redirect immediately to next step - no need to wait for fetchUser/getProfile
-      router.push('/profile/grades');
-    } catch (err: any) {
-      console.error('Profile update error:', err);
-      setError(
-        err.response?.data?.detail || 'Erreur lors de la mise à jour du profil'
-      );
-      setIsSaving(false);
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    // Navigate instantly, save in background
+    router.push('/profile/grades');
+    studentAPI.updateProfile(updateData).catch(() => {
+      // Silent fail - user can re-save from grades page if needed
+    });
   };
 
   // ========================================
