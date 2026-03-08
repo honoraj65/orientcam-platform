@@ -177,10 +177,10 @@ export default function ValuesPage() {
       setIsSaving(false);
       setShowNextStep(true);
 
-      // Scroll to next step indicator after DOM update
+      // Scroll to next step indicator
       setTimeout(() => {
-        document.getElementById('next-step')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 500);
+        document.getElementById('next-step')?.scrollIntoView({ behavior: 'auto', block: 'start' });
+      }, 100);
     } catch (err: any) {
       console.error('Values save error:', err);
       setError(
