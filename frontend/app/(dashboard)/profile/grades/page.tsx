@@ -1148,25 +1148,43 @@ export default function GradesPage() {
 
         {/* Navigation: Next Step */}
         {(userType !== 'university_student' || isProfileComplete) && (
-          <div className="flex items-center justify-between mt-8">
-            <button
-              onClick={() => router.push('/profile')}
-              className="inline-flex items-center gap-2 text-gray-600 hover:text-primary-600 font-medium transition-colors"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              Retour au profil
-            </button>
-            <button
-              onClick={() => router.push('/profile/values')}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white px-6 py-3 rounded-xl font-semibold hover:from-primary-700 hover:to-primary-800 transform hover:scale-[1.02] transition-all shadow-lg"
-            >
-              Valeurs professionnelles
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </button>
+          <div className="mt-8 space-y-4">
+            {/* University: Add next semester button */}
+            {userType === 'university_student' && (
+              <div className="flex justify-center">
+                <button
+                  onClick={handleOpenForm}
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-purple-700 hover:to-blue-700 transform hover:scale-[1.02] transition-all shadow-lg"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  Passer au semestre suivant
+                </button>
+              </div>
+            )}
+
+            {/* Navigation */}
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => router.push('/profile')}
+                className="inline-flex items-center gap-2 text-gray-600 hover:text-primary-600 font-medium transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Retour au profil
+              </button>
+              <button
+                onClick={() => router.push('/profile/values')}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white px-6 py-3 rounded-xl font-semibold hover:from-primary-700 hover:to-primary-800 transform hover:scale-[1.02] transition-all shadow-lg"
+              >
+                Valeurs professionnelles
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </button>
+            </div>
           </div>
         )}
       </main>
