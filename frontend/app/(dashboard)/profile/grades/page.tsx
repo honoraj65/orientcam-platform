@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -132,6 +132,7 @@ export default function GradesPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const formRef = useRef<HTMLDivElement>(null);
   const [editingGrade, setEditingGrade] = useState<AcademicGrade | null>(null);
   const [selectedCurriculum, setSelectedCurriculum] = useState<CurriculumType>('francophone_general');
   const [userType, setUserType] = useState<'new_bachelor' | 'university_student'>('new_bachelor');
@@ -281,6 +282,10 @@ export default function GradesPage() {
         setValue('term', availableSemesters[0]);
       }, 0);
     }
+    // Scroll to form after it renders
+    setTimeout(() => {
+      formRef.current?.scrollIntoView({ behavior: 'auto', block: 'start' });
+    }, 50);
   };
 
   const onSubmit = async (data: GradeFormData) => {
@@ -745,7 +750,7 @@ export default function GradesPage() {
 
         {/* Grade Form - Only show if profile is complete for university students */}
         {(userType !== 'university_student' || isProfileComplete) && showForm ? (
-          <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 mb-8">
+          <div ref={formRef} className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 mb-8">
             <div className="flex items-center gap-3 mb-6">
               <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                 userType === 'university_student'
