@@ -82,6 +82,12 @@ body {
     @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 bg-white;
   }
 
+  /* Ensure select options are readable on all devices */
+  select option {
+    color: #111827;
+    background-color: #ffffff;
+  }
+
   .input-error {
     @apply border-red-500 focus:ring-red-500;
   }

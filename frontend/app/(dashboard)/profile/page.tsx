@@ -709,7 +709,7 @@ export default function ProfilePage() {
                     {...register('university_establishment')}
                     id="university_establishment"
                     disabled={isSaving || loadingEstablishments}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed ${
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 transition-colors text-gray-900 bg-white disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed ${
                       missingFields.includes('university_establishment')
                         ? 'border-red-500 border-2 bg-red-50 animate-pulse focus:ring-red-500 focus:border-red-500'
                         : 'border-gray-300 focus:ring-primary-500 focus:border-transparent'
@@ -743,7 +743,7 @@ export default function ProfilePage() {
                     {...register('university_department')}
                     id="university_department"
                     disabled={isSaving || loadingDepartments || !selectedEstablishment}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed ${
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 transition-colors text-gray-900 bg-white disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed ${
                       missingFields.includes('university_department')
                         ? 'border-red-500 border-2 bg-red-50 animate-pulse focus:ring-red-500 focus:border-red-500'
                         : 'border-gray-300 focus:ring-primary-500 focus:border-transparent'
@@ -781,7 +781,7 @@ export default function ProfilePage() {
                     {...register('university_level')}
                     id="university_level"
                     disabled={isSaving}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed ${
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 transition-colors text-gray-900 bg-white disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed ${
                       missingFields.includes('university_level')
                         ? 'border-red-500 border-2 bg-red-50 animate-pulse focus:ring-red-500 focus:border-red-500'
                         : 'border-gray-300 focus:ring-primary-500 focus:border-transparent'
