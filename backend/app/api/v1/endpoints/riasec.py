@@ -14,6 +14,7 @@ from app.models.student_profile import StudentProfile
 from app.models.riasec_test import RiasecTest, RiasecDimension, RiasecQuestion, RiasecTestDraft
 from app.models.recommendation import Recommendation
 from app.models.program import Program
+from app.models.professional_value import ProfessionalValue
 from app.schemas.riasec import (
     RiasecTestQuestionsResponse, RiasecDimensionResponse, RiasecQuestionResponse,
     RiasecSubmit, RiasecResultResponse, RiasecScores, RiasecInterpretation,
@@ -444,11 +445,115 @@ async def download_latest_result_pdf(
                 'careers': RIASEC_CAREERS[code]['careers']
             })
 
-    # Charger les recommandations (score >= 50%)
+    # Charger les recommandations existantes
     recommendations = db.query(Recommendation).filter(
         Recommendation.student_id == profile.id,
         Recommendation.total_score >= 50
     ).order_by(Recommendation.total_score.desc()).all()
+
+    # Si aucune recommandation n'existe, essayer de les générer automatiquement
+    if not recommendations:
+        try:
+            from app.api.v1.endpoints.programs import (
+                calculate_riasec_compatibility,
+                calculate_grades_compatibility,
+                calculate_values_compatibility
+            )
+
+            # Vérifier si les valeurs professionnelles existent
+            values = db.query(ProfessionalValue).filter(
+                ProfessionalValue.student_id == profile.id
+            ).first()
+
+            # Récupérer les programmes actifs
+            programs_query = db.query(Program).filter(Program.is_active == True)
+            if profile.user_type == "new_bachelor":
+                programs_query = programs_query.filter(Program.level.in_(["Licence", "Ingenieur"]))
+            all_programs = programs_query.all()
+
+            if all_programs:
+                # Supprimer les anciennes recommandations (même celles < 50)
+                db.query(Recommendation).filter(
+                    Recommendation.student_id == profile.id
+                ).delete()
+
+                program_scores = []
+                for prog in all_programs:
+                    riasec_score = calculate_riasec_compatibility(
+                        riasec_test.holland_code,
+                        prog.riasec_match
+                    )
+
+                    grades_score = calculate_grades_compatibility(profile, prog, db) if values else 50
+                    values_score = calculate_values_compatibility(profile, prog, db) if values else 50
+
+                    employment_score = int(prog.employment_rate) if prog.employment_rate else 50
+
+                    financial_score = 50
+                    if profile.max_annual_budget and prog.annual_tuition:
+                        try:
+                            if prog.annual_tuition <= profile.max_annual_budget * 0.7:
+                                financial_score = 100
+                            elif prog.annual_tuition <= profile.max_annual_budget:
+                                financial_score = 80
+                            elif prog.annual_tuition <= profile.max_annual_budget * 1.2:
+                                financial_score = 60
+                            else:
+                                financial_score = 30
+                        except Exception:
+                            financial_score = 50
+
+                    total_score = int(
+                        riasec_score * 0.30 +
+                        grades_score * 0.30 +
+                        values_score * 0.20 +
+                        employment_score * 0.15 +
+                        financial_score * 0.05
+                    )
+
+                    program_scores.append({
+                        "program": prog,
+                        "total_score": total_score,
+                        "riasec_score": riasec_score,
+                        "grades_score": grades_score,
+                        "values_score": values_score,
+                        "employment_score": employment_score,
+                        "financial_score": financial_score,
+                    })
+
+                program_scores.sort(key=lambda x: x["total_score"], reverse=True)
+
+                for idx, score_data in enumerate(program_scores[:20], start=1):
+                    recommendation = Recommendation(
+                        student_id=profile.id,
+                        program_id=score_data["program"].id,
+                        ranking=idx,
+                        total_score=score_data["total_score"],
+                        riasec_score=score_data["riasec_score"],
+                        grades_score=score_data["grades_score"],
+                        values_score=score_data["values_score"],
+                        employment_score=score_data["employment_score"],
+                        financial_score=score_data["financial_score"],
+                        strengths=[],
+                        weaknesses=[],
+                        advice="",
+                        algorithm_version="1.0"
+                    )
+                    db.add(recommendation)
+
+                db.commit()
+
+                # Recharger les recommandations fraîchement générées
+                recommendations = db.query(Recommendation).filter(
+                    Recommendation.student_id == profile.id,
+                    Recommendation.total_score >= 50
+                ).order_by(Recommendation.total_score.desc()).all()
+
+                import logging
+                logging.info(f"[PDF] Auto-generated {len(recommendations)} recommendations for student {profile.id}")
+        except Exception as e:
+            import logging
+            logging.warning(f"[PDF] Could not auto-generate recommendations: {e}")
 
     # Préparer les données des recommandations pour le PDF
     recommendations_data = []
