@@ -159,7 +159,7 @@ export default function TestRiasecPage() {
                     Votre code Holland : <strong className="text-green-700">{latestResult.holland_code}</strong>
                     <br />
                     <span className="text-sm text-gray-600">
-                      Date : {new Date(latestResult.completed_at).toLocaleDateString('fr-FR')}
+                      Date : {new Date(latestResult.created_at || latestResult.completed_at).toLocaleDateString('fr-FR')}
                     </span>
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3">

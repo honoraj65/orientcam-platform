@@ -251,7 +251,7 @@ export default function RiasecResultsPage() {
             Vous avez terminé le test RIASEC
           </p>
           <p className="text-sm text-gray-500 mt-2">
-            Complété le {new Date(result.completed_at).toLocaleDateString('fr-FR', {
+            Complété le {new Date(result.created_at || result.completed_at).toLocaleDateString('fr-FR', {
               day: 'numeric',
               month: 'long',
               year: 'numeric',
