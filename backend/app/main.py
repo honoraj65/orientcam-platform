@@ -234,7 +234,9 @@ async def global_exception_handler(request: Request, exc: Exception):
 
     error_type = type(exc).__name__
     error_msg = str(exc)
-    detail = f"Erreur interne: {error_type}: {error_msg}"
+    detail = f"Erreur interne: {error_type}"
+    if settings.DEBUG:
+        detail = f"Internal server error: {error_type}: {error_msg}"
 
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
