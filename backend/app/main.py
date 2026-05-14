@@ -232,9 +232,9 @@ async def global_exception_handler(request: Request, exc: Exception):
 
     logger.error(f"Unhandled exception: {exc}", exc_info=True)
 
-    detail = "Erreur interne du serveur. Veuillez réessayer plus tard."
-    if settings.DEBUG:
-        detail = f"Internal server error: {type(exc).__name__}: {str(exc)}"
+    error_type = type(exc).__name__
+    error_msg = str(exc)
+    detail = f"Erreur interne: {error_type}: {error_msg}"
 
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
