@@ -618,7 +618,7 @@ export default function ProfilePage() {
             e.stopPropagation();
             handleSubmit(onSubmit)(e);
           }}
-          className="space-y-8"
+          className="space-y-8 animate-slide-up"
         >
           {/* User Type Selection */}
           <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
