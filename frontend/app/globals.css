@@ -57,7 +57,11 @@ body {
 
   /* Button styles */
   .btn {
-    @apply px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+  }
+
+  .btn:active {
+    transform: scale(0.97);
   }
 
   .btn-primary {
@@ -74,12 +78,21 @@ body {
 
   /* Card styles */
   .card {
-    @apply bg-white rounded-lg shadow-md p-6;
+    @apply bg-white rounded-lg shadow-md p-6 transition-all duration-300;
+  }
+
+  .card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
   }
 
   /* Input styles */
   .input {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 bg-white;
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 bg-white transition-all duration-200;
+  }
+
+  .input:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1), 0 0 0 3px rgba(16, 185, 129, 0.15);
   }
 
   /* Ensure select options are readable on all devices */
@@ -126,6 +139,23 @@ body {
     animation: fadeIn 0.2s ease-out;
   }
 
+  /* Page content slide up */
+  .animate-slide-up {
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Staggered card entrance */
+  .animate-card-in {
+    animation: cardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  .animate-card-in:nth-child(1) { animation-delay: 0ms; }
+  .animate-card-in:nth-child(2) { animation-delay: 60ms; }
+  .animate-card-in:nth-child(3) { animation-delay: 120ms; }
+  .animate-card-in:nth-child(4) { animation-delay: 180ms; }
+  .animate-card-in:nth-child(5) { animation-delay: 240ms; }
+  .animate-card-in:nth-child(6) { animation-delay: 300ms; }
+
   /* Grid pattern background */
   .bg-grid-pattern {
     background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
@@ -155,5 +185,27 @@ body {
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }

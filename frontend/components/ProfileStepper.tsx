@@ -16,7 +16,7 @@ export default function ProfileStepper() {
   const currentStep = STEPS.findIndex((s) => s.path === pathname) + 1 || 1;
 
   return (
-    <div className="w-full max-w-2xl mx-auto mb-8">
+    <div className="w-full max-w-2xl mx-auto mb-8 animate-slide-up">
       <div className="flex items-center">
         {STEPS.map((step, index) => (
           <div key={step.id} className="flex items-center flex-1 last:flex-initial">

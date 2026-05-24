@@ -395,8 +395,8 @@ export default function ProfilePage() {
 
       {/* Welcome Popup */}
       {showWelcome && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 text-center">
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 text-center animate-slide-up">
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -1115,7 +1115,7 @@ export default function ProfilePage() {
             {/* Additional Sections */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
               {/* Academic Grades */}
-              <Link href="/profile/grades" className="bg-white rounded-xl p-4 shadow-lg border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all transform hover:scale-105">
+              <Link href="/profile/grades" className="bg-white rounded-xl p-4 shadow-lg border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all transform hover:scale-105 animate-card-in">
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 bg-riasec-investigative/10 rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg className="w-5 h-5 text-riasec-investigative" fill="currentColor" viewBox="0 0 20 20">
@@ -1136,7 +1136,7 @@ export default function ProfilePage() {
               </Link>
 
               {/* Professional Values */}
-              <Link href="/profile/values" className="bg-white rounded-xl p-4 shadow-lg border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all transform hover:scale-105">
+              <Link href="/profile/values" className="bg-white rounded-xl p-4 shadow-lg border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all transform hover:scale-105 animate-card-in">
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 bg-riasec-social/10 rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg className="w-5 h-5 text-riasec-social" fill="currentColor" viewBox="0 0 20 20">
@@ -1156,7 +1156,7 @@ export default function ProfilePage() {
               </Link>
 
               {/* RIASEC Test */}
-              <Link href="/test-riasec" className="bg-white rounded-xl p-4 shadow-lg border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all transform hover:scale-105">
+              <Link href="/test-riasec" className="bg-white rounded-xl p-4 shadow-lg border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all transform hover:scale-105 animate-card-in">
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 bg-riasec-realistic/10 rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg className="w-5 h-5 text-riasec-realistic" fill="currentColor" viewBox="0 0 20 20">
